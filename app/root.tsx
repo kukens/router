@@ -32,8 +32,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body>   
+          <main className="flex min-h-screen flex-col items-center justify-center bg-white px-4 py-24 dark:bg-gray-900">
+          <div className="absolute inset-0 size-full">
+            <div className="relative h-full w-full select-none">
+            </div>
+          </div>
+          <div className="relative flex w-full max-w-5xl flex-col items-center justify-center gap-12"> {children}</div>
+        </main>
         <ScrollRestoration />
         <Scripts />
       </body>
