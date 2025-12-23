@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from 'path';
 import flowbiteReact from "flowbite-react/plugin/vite";
+import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
 resolve: {
@@ -12,5 +13,5 @@ resolve: {
       "~": path.resolve(__dirname, "./app"), 
     },
   },
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), flowbiteReact()],
+  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), flowbiteReact(), devtoolsJson()],
 });

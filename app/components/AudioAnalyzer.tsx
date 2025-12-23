@@ -19,7 +19,7 @@ export default function AudioAnalyzer() {
     const audioCtxRef = useRef<AudioContext | null>(null);
     const processorRef = useRef<ScriptProcessorNode | null>(null);
 
-    const windowSize = 4096;
+    const windowSize = 4096 *2;
 
     const [isRecording, setIsRecording] = useState(true);
     const [diagnosticsEnabled, setDiagnosticsEnabled] = useState(false);
