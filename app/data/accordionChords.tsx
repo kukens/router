@@ -14,15 +14,15 @@ export interface ChordProgression {
 export const ACCORDION_CHORDS: ChordsChallenge[] = [
   {
     "difficulty": 1,
-    "description": "Simple diatonic harmony in C Major, focusing on the primary chords (I, IV, V) and the relative minor (vi). This is the foundation of most folk and pop music, relying on easily accessible buttons.",
+    "description": "Simple diatonic harmony in Cor, focusing on the primary chords (I, IV, V) and the relative minor (vi). This is the foundation of most folk and pop music, relying on easily accessible buttons.",
     "progressions": [
       {
         "name": "The Four Chords",
         "chords": [
-          "C Maj",
-          "G Maj",
+          "C",
+          "G",
           "A min",
-          "F Maj"
+          "F"
         ],
         "description": "The most common progression, easy to play and instantly recognizable.",
         "tags": [
@@ -34,8 +34,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Simple Rock/Pop",
         "chords": [
-          "C Maj",
-          "G Maj",
+          "C",
+          "G",
           "A min",
           "E min"
         ],
@@ -48,10 +48,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Waltz Pattern (I-IV-V)",
         "chords": [
-          "G Maj",
-          "C Maj",
-          "D Maj",
-          "G Maj"
+          "G",
+          "C",
+          "D",
+          "G"
         ],
         "description": "Perfectly suits a 3/4 time signature, common in German/Alpine folk.",
         "tags": [
@@ -66,9 +66,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "A min",
           "D min",
           "A min",
-          "E Maj"
+          "E"
         ],
-        "description": "Uses the major V (E Maj) to create a strong, classical resolution back to the tonic minor.",
+        "description": "Uses theor V (E) to create a strong, classical resolution back to the tonic minor.",
         "tags": [
           "Classical",
           "Minor Ballad",
@@ -78,10 +78,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "March/Shanty",
         "chords": [
-          "F Maj",
-          "C Maj",
-          "Bb Maj",
-          "F Maj"
+          "F",
+          "C",
+          "Bb",
+          "F"
         ],
         "description": "Strong subdominant movement (IV to I) suitable for marches and sea shanties.",
         "tags": [
@@ -93,15 +93,15 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
   },
   {
     "difficulty": 2,
-    "description": "Introduces Dominant 7th chords (V7) for tension and release, and the simple 2-5-1 in a major key. The player begins to use the dedicated 7th chord row.",
+    "description": "Introduces Dominant 7th chords (V7) for tension and release, and the simple 2-5-1 in aor key. The player begins to use the dedicated 7th chord row.",
     "progressions": [
       {
         "name": "Basic Blues in F",
         "chords": [
-          "F Maj",
-          "Bb Maj",
+          "F",
+          "Bb",
           "C 7",
-          "F Maj"
+          "F"
         ],
         "description": "The fundamental I-IV-V7 structure of a 12-bar blues simplified to four chords.",
         "tags": [
@@ -115,8 +115,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "D min",
           "G 7",
-          "C Maj",
-          "C Maj"
+          "C",
+          "C"
         ],
         "description": "The classic ii-V-I cadence, the cornerstone of Jazz and popular harmony.",
         "tags": [
@@ -130,10 +130,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "G min",
           "C 7",
-          "F Maj",
-          "Bb Maj"
+          "F",
+          "Bb"
         ],
-        "description": "A minor ii-V-I variation that resolves to a Major key, typical of French Musette.",
+        "description": "A minor ii-V-I variation that resolves to aor key, typical of French Musette.",
         "tags": [
           "French Musette",
           "Continental Folk"
@@ -157,7 +157,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Secondary Dominant (V/vi)",
         "chords": [
-          "C Maj",
+          "C",
           "A 7",
           "D min",
           "G 7"
@@ -172,15 +172,15 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
   },
   {
     "difficulty": 3,
-    "description": "Incorporates basic modal interchange and secondary dominants that require quick, precise movement across the major, minor, and 7th chord rows, including the use of the diminished button.",
+    "description": "Incorporates basic modal interchange and secondary dominants that require quick, precise movement across theor, minor, and 7th chord rows, including the use of the diminished button.",
     "progressions": [
       {
         "name": "Tonicization of V",
         "chords": [
-          "C Maj",
+          "C",
           "D 7",
-          "G Maj",
-          "C Maj"
+          "G",
+          "C"
         ],
         "description": "The D7 (V of G) strongly tonicizes the V chord before returning to the tonic.",
         "tags": [
@@ -193,8 +193,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "F Dim",
           "Bb 7",
-          "Eb Maj",
-          "Eb Maj"
+          "Eb",
+          "Eb"
         ],
         "description": "Uses the diminished chord button (a common substitution for the half-diminished ii chord) in a minor key progression.",
         "tags": [
@@ -205,12 +205,12 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Chromatic Bass Walk",
         "chords": [
-          "C Maj",
+          "C",
           "A min",
-          "Ab Maj",
+          "Ab",
           "G 7"
         ],
-        "description": "Utilizes the borrowed bVI chord (Ab Maj) for a smooth chromatic descending bass line (C-A-Ab-G).",
+        "description": "Utilizes the borrowed bVI chord (Ab) for a smooth chromatic descending bass line (C-A-Ab-G).",
         "tags": [
           "Soul",
           "Advanced Pop"
@@ -219,7 +219,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Cannonball's Changes",
         "chords": [
-          "C Maj",
+          "C",
           "E 7",
           "A min",
           "D min"
@@ -253,7 +253,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Descending 7ths (Chromatic)",
         "chords": [
-          "C Maj",
+          "C",
           "B 7",
           "Bb 7",
           "A 7"
@@ -268,7 +268,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Diminished as V/vi",
         "chords": [
-          "C Maj",
+          "C",
           "G Dim",
           "A min",
           "D 7"
@@ -282,10 +282,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Modulating Sequence",
         "chords": [
-          "C Maj",
-          "F Maj",
-          "Bb Maj",
-          "Eb Maj"
+          "C",
+          "F",
+          "Bb",
+          "Eb"
         ],
         "description": "Sequencing by perfect fourths, moving rapidly through four different keys.",
         "tags": [
@@ -299,8 +299,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "D min",
           "Db Dim",
-          "C Maj",
-          "F Maj"
+          "C",
+          "F"
         ],
         "description": "Uses the Db Diminished chord as a tritone substitution for the G7 to resolve to C.",
         "tags": [
@@ -313,10 +313,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "A min",
           "D min",
-          "G Maj",
-          "C Maj"
+          "G",
+          "C"
         ],
-        "description": "A minor progression where the G major chord is used for a temporary 'major' lift before resolution.",
+        "description": "A minor progression where the Gor chord is used for a temporary 'major' lift before resolution.",
         "tags": [
           "Gypsy Jazz",
           "East European Folk"
@@ -333,8 +333,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "D min",
           "Db 7",
-          "C Maj",
-          "C Maj"
+          "C",
+          "C"
         ],
         "description": "The Db7 (substitute V) is a half-step away from the tonic, creating a smooth but tense resolution.",
         "tags": [
@@ -347,7 +347,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "G min",
           "C 7",
-          "F Maj",
+          "F",
           "Bb 7"
         ],
         "description": "A very common Jazz vamp that delays resolution and maintains momentum.",
@@ -359,12 +359,12 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Chromatic Mediant Skip",
         "chords": [
-          "C Maj",
-          "A Maj",
-          "F Maj",
-          "Db Maj"
+          "C",
+          "A",
+          "F",
+          "Db"
         ],
-        "description": "Jumps between keys whose roots are major thirds apart, creating a lush, unexpected sound.",
+        "description": "Jumps between keys whose roots areor thirds apart, creating a lush, unexpected sound.",
         "tags": [
           "Cinematic Score",
           "Romantic Era",
@@ -390,7 +390,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "E min",
           "A 7",
-          "D Maj",
+          "D",
           "B 7"
         ],
         "description": "A loop that avoids resting on a clear tonic, keeping the harmony open and evolving.",
