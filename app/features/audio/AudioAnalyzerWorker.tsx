@@ -1,8 +1,8 @@
 import Meyda from 'meyda';
 import type { MeydaFeaturesObject } from 'meyda';
 
-import { AudioAnalyzerService } from '../features/audio/AudioAnalyzerService'
-import type { AnalysisResult } from '../features/audio/AudioAnalyzerService.types';
+import { AudioAnalyzerService } from '~/features/audio/AudioAnalyzerService'
+import type { AnalysisResult } from '~/features/audio/AudioAnalyzerService.types';
 
 export type AudioAnalyzerWorkerIn =
     {

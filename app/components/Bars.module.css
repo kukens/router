@@ -6,21 +6,15 @@
 
 .bar {
     margin:1px;
-     &.active {
-
-
-        /* 🎨 Gradient Setup (the 'fill' color) */
-        background-image: linear-gradient(to right, #87929d, #9aa6b3);
-
-        /* 📏 Initial Size & Position (Start hidden at 0% width) */
-        background-size: 0% 100%;
-        background-repeat: no-repeat;
-        background-position: top left;
-
-        /* Apply the animation */
-        /* Name | Duration | Timing Func | Delay | Iteration Count | Fill Mode */
-        animation: fillFromTopLeft linear forwards;
-    }
+     &.active
+{
+    background-image: linear-gradient(to right, #87929d, #9aa6b3);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: top left;
+    animation: fillFromTopLeft linear forwards;
+    animation-iteration-count: infinite;
+}
 } 
 
 

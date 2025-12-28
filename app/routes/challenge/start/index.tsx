@@ -1,11 +1,10 @@
 'use client'
 
 import AudioAnalyzer from '~/components/AudioAnalyzer';
-import ChallengePlayer from './ChallengePlayer';
+import ChallengePlayer from '~/components/ChallengePlayer';
 import { ChordProvider } from '~/features/audio/ChordContext';
 import { Button } from "flowbite-react";
-import { Link, useParams} from "react-router";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 
 export default function PlayTrack() {
@@ -17,7 +16,7 @@ const difficulty = searchParams.get("difficulty") ?? "";
 
   return (
       <>
-       <Link key="back" className="m-5" to={`/challenge`}> <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button></Link> 
+          <Link key="back" className="m-5" to={`/challenge?instrument=${instrument}&difficulty=${difficulty}`}> <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button></Link> 
 
         <ChordProvider>
           <ChallengePlayer instrument={instrument} difficulty={difficulty} />

@@ -38,7 +38,7 @@ export default function AudioAnalyzer() {
 
             console.log("Creating web worker");
             workerRef.current = new Worker(
-                new URL("../workers/AudioAnalyzerWorker.tsx", import.meta.url),
+                new URL("~/features/audio/AudioAnalyzerWorker.tsx", import.meta.url),
                 { type: "module" }
             );
             startRecording();

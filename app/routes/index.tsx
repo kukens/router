@@ -2,7 +2,7 @@
 
 import { Link } from "react-router";
 import { Button } from "flowbite-react";
-import TrackList  from "./TrackList"
+import TrackList from "~/components/TrackList"
 
 export default function Home() {
   return (

@@ -14,7 +14,7 @@ export default function TrackPlayer(props: BarProps) {
 
     const { evaluatedChord } = useChord();
 
-    const [trackData, setTrackData] = useState<TrackData | null>(null)
+    const [trackData, setTrackData] = useState<TrackData | null>(null);
 
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
@@ -84,8 +84,10 @@ export default function TrackPlayer(props: BarProps) {
 
         bars[currentBar].classList.add(styles.active);
         bars[currentBar].style.animationDuration = `${timePerBar}ms`;
-        bars[previousBar].classList.remove(styles.active);
-        bars[previousBar].style.animationDuration = "";
+        if (previousBar != currentBar) {
+            bars[previousBar].classList.remove(styles.active);
+            bars[previousBar].style.animationDuration = "";
+        }
 
         const previousBeat = currentIndex == 0 ? beatsLength - 1 : currentIndex - 1;
         beats[currentIndex].classList.add(styles.active);

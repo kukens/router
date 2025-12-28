@@ -1,7 +1,7 @@
 'use client'
 
 import AudioAnalyzer from '~/components/AudioAnalyzer';
-import TrackPlayer from './TrackPlayer';
+import TrackPlayer from '~/components/TrackPlayer';
 import { ChordProvider } from '~/features/audio/ChordContext';
 import { Button } from "flowbite-react";
 import { Link, useParams} from "react-router";

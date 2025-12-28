@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useChord } from '~/features/audio/ChordContext';
-import { difficultyLevels, instruments } from '../Challenge';
+import { difficultyLevels, instruments } from '~/components/Challenge';
 import { ACCORDION_CHORDS } from '~/data/accordionChords';
 import styles from '~/components/Bars.module.css';
 import type { ChordProgression } from '~/data/accordionChords';
@@ -42,7 +42,7 @@ export default function challengePlayer(props: ChallengeProps) {
     const handlers = useSwipeable({
         onSwiped: (eventData) => {
             console.log(progressionIndex)
-            if (eventData.dir == 'Left' && progressionIndex < progressions.current.length -1){
+            if (eventData.dir == 'Left' && progressionIndex < progressions.current.length - 1) {
                 setProgressionIndex(progressionIndex + 1)
             }
             else if (eventData.dir == 'Right' && progressionIndex > 0) {
@@ -60,7 +60,7 @@ export default function challengePlayer(props: ChallengeProps) {
     }, []);
 
     useEffect(() => {
-      
+
         setProgression(progressions.current[progressionIndex]);
 
         indexRef.current = 0;
@@ -71,7 +71,7 @@ export default function challengePlayer(props: ChallengeProps) {
         }, timePerBeat);
 
         return () => clearInterval(id);
-        
+
     }, [progressionIndex]);
 
 
@@ -106,7 +106,7 @@ export default function challengePlayer(props: ChallengeProps) {
         }
     };
 
-     function tick(timePerBar: number) {
+    function tick(timePerBar: number) {
 
 
         const beats = beatsElementsRef.current;
@@ -118,11 +118,13 @@ export default function challengePlayer(props: ChallengeProps) {
 
         const currentBar = Math.ceil((currentIndex + 1) / 4) - 1;
         const previousBar = currentBar == 0 ? barsLength - 1 : currentBar - 1;
-
+        console.log(currentBar + " " + timePerBar)
         bars[currentBar].classList.add(styles.active);
         bars[currentBar].style.animationDuration = `${timePerBar}ms`;
-        bars[previousBar].classList.remove(styles.active);
-        bars[previousBar].style.animationDuration = "";
+        if (previousBar != currentBar) {
+            bars[previousBar].classList.remove(styles.active);
+            bars[previousBar].style.animationDuration = "";
+        }
 
         const previousBeat = currentIndex == 0 ? beatsLength - 1 : currentIndex - 1;
         beats[currentIndex].classList.add(styles.active);
@@ -137,7 +139,7 @@ export default function challengePlayer(props: ChallengeProps) {
         <div className="bars relative overflow-hidden h-96" {...handlers}>
             <p>Difficulty: {difficultyLevels[props.difficulty]}</p>
             <p>Instrument: {instruments[props.instrument]}</p>
-            
+
 
             <p>{progression?.name}</p>
             <p>{progression?.description}</p>
@@ -148,20 +150,17 @@ export default function challengePlayer(props: ChallengeProps) {
             ))}
             </p>
 
-            <div className="bars relative overflow-hidden h-96">
-                <div className="slider-verticalx">
-                  
-                        <div className="bar-wrapper flex items-center">
-                            <div ref={registerBars} className={`${styles['bar']} grid grid-cols-4 gap-1 w-full p-1`}>
-                              {progression?.chords.map((chord, j) => (
-                                    <div key={j} ref={registerBeats} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
-                                        {chord}
-                                    </div>
-                                ))}
+            <div className="slider-verticalx">
+                <div className="bar-wrapper flex items-center">
+                    <div ref={registerBars} className={`${styles['bar']} grid grid-cols-4 gap-1 w-full p-1`}>
+                        {progression?.chords.map((chord, j) => (
+                            <div key={j} ref={registerBeats} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
+                                {chord}
                             </div>
-                        </div>
-
+                        ))}
+                    </div>
                 </div>
+
             </div>
 
         </div>

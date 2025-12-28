@@ -19,10 +19,15 @@ export const instruments: Record<string, string> = {
   3: "Piano",
 } as const;
 
-export default function Challenge() {
+interface ChallengeProps {
+    difficulty: string,
+    instrument: string
+}
 
-  const [instrument, setInstrument] = useState<string>("")
-  const [dificulty, setDificulty] = useState<string>("");
+export default function (props: ChallengeProps) {
+
+    const [instrument, setInstrument] = useState<string>(props.instrument)
+    const [dificulty, setDificulty] = useState<string>(props.difficulty);
 
   const changeDifficultyLevel = (difficulty: string) => {
     setDificulty(difficulty)
