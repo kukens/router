@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { useChord } from '~/features/audio/ChordContext';
@@ -73,7 +73,6 @@ export default function challengePlayer(props: ChallengeProps) {
         return () => clearInterval(id);
 
     }, [progressionIndex]);
-
 
 
     useEffect(() => {
@@ -155,7 +154,7 @@ export default function challengePlayer(props: ChallengeProps) {
                     <div ref={registerBars} className={`${styles['bar']} grid grid-cols-4 gap-1 w-full p-1`}>
                         {progression?.chords.map((chord, j) => (
                             <div key={j} ref={registerBeats} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
-                                {chord}
+                                {chord.replace("b", "♭").replace("#", "♯")}
                             </div>
                         ))}
                     </div>

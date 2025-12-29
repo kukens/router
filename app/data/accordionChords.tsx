@@ -21,7 +21,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "C",
           "G",
-          "A min",
+          "Am",
           "F"
         ],
         "description": "The most common progression, easy to play and instantly recognizable.",
@@ -36,8 +36,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "C",
           "G",
-          "A min",
-          "E min"
+          "Am",
+          "Em"
         ],
         "description": "A very stable progression that cycles through roots C-G-A-E.",
         "tags": [
@@ -63,9 +63,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Minor-Key Lament",
         "chords": [
-          "A min",
-          "D min",
-          "A min",
+          "Am",
+          "Dm",
+          "Am",
           "E"
         ],
         "description": "Uses theor V (E) to create a strong, classical resolution back to the tonic minor.",
@@ -100,7 +100,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "chords": [
           "F",
           "Bb",
-          "C 7",
+          "C7",
           "F"
         ],
         "description": "The fundamental I-IV-V7 structure of a 12-bar blues simplified to four chords.",
@@ -113,8 +113,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "V-I Resolution",
         "chords": [
-          "D min",
-          "G 7",
+          "Dm",
+          "G7",
           "C",
           "C"
         ],
@@ -128,8 +128,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Musette Valse",
         "chords": [
-          "G min",
-          "C 7",
+          "Gm",
+          "C7",
           "F",
           "Bb"
         ],
@@ -142,10 +142,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Tango Feel",
         "chords": [
-          "A min",
-          "E 7",
-          "A min",
-          "D min"
+          "Am",
+          "E7",
+          "Am",
+          "Dm"
         ],
         "description": "The strong V7-i movement that provides the dramatic, driving tension needed for tango.",
         "tags": [
@@ -158,9 +158,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "name": "Secondary Dominant (V/vi)",
         "chords": [
           "C",
-          "A 7",
-          "D min",
-          "G 7"
+          "A7",
+          "Dm",
+          "G7"
         ],
         "description": "The A7 (V/vi) briefly pulls the ear toward A minor before the G7 brings it back to C.",
         "tags": [
@@ -178,7 +178,7 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "name": "Tonicization of V",
         "chords": [
           "C",
-          "D 7",
+          "D7",
           "G",
           "C"
         ],
@@ -191,8 +191,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Minor 2-5-1 (Simplified)",
         "chords": [
-          "F Dim",
-          "Bb 7",
+          "Fdim",
+          "Bb7",
           "Eb",
           "Eb"
         ],
@@ -206,9 +206,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "name": "Chromatic Bass Walk",
         "chords": [
           "C",
-          "A min",
+          "Am",
           "Ab",
-          "G 7"
+          "G7"
         ],
         "description": "Utilizes the borrowed bVI chord (Ab) for a smooth chromatic descending bass line (C-A-Ab-G).",
         "tags": [
@@ -220,9 +220,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "name": "Cannonball's Changes",
         "chords": [
           "C",
-          "E 7",
-          "A min",
-          "D min"
+          "E7",
+          "Am",
+          "Dm"
         ],
         "description": "A progression popularized by 'Autumn Leaves,' featuring I-III7-vi-ii.",
         "tags": [
@@ -233,10 +233,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Minor Key 2-5-1",
         "chords": [
-          "B Dim",
-          "E 7",
-          "A min",
-          "D min"
+          "Bdim",
+          "E7",
+          "Am",
+          "Dm"
         ],
         "description": "The standard minor key ii-V-i (B dim is the ii° of A minor) requiring accurate diminished button use.",
         "tags": [
@@ -254,9 +254,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "name": "Descending 7ths (Chromatic)",
         "chords": [
           "C",
-          "B 7",
-          "Bb 7",
-          "A 7"
+          "B7",
+          "Bb7",
+          "A7"
         ],
         "description": "A dramatic, sequential descent of dominant 7th chords often used in jazz/show tunes.",
         "tags": [
@@ -269,9 +269,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "name": "Diminished as V/vi",
         "chords": [
           "C",
-          "G Dim",
-          "A min",
-          "D 7"
+          "Gdim",
+          "Am",
+          "D7"
         ],
         "description": "Uses the fully diminished chord as a substitute for the E7 (V/vi) for a darker sound.",
         "tags": [
@@ -297,8 +297,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Extended 2-5-1",
         "chords": [
-          "D min",
-          "Db Dim",
+          "Dm",
+          "Dbdim",
           "C",
           "F"
         ],
@@ -311,8 +311,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Harmonic Minor Feel",
         "chords": [
-          "A min",
-          "D min",
+          "Am",
+          "Dm",
           "G",
           "C"
         ],
@@ -331,8 +331,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Tritone Sub (2-subV-I)",
         "chords": [
-          "D min",
-          "Db 7",
+          "Dm",
+          "Db7",
           "C",
           "C"
         ],
@@ -345,10 +345,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Backdoor Progression",
         "chords": [
-          "G min",
-          "C 7",
+          "Gm",
+          "C7",
           "F",
-          "Bb 7"
+          "Bb7"
         ],
         "description": "A very common Jazz vamp that delays resolution and maintains momentum.",
         "tags": [
@@ -374,10 +374,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Diminished Chain",
         "chords": [
-          "G Dim",
-          "Bb Dim",
-          "C Dim",
-          "E Dim"
+          "Gdim",
+          "Bbdim",
+          "Cdim",
+          "Edim"
         ],
         "description": "A sequence of diminished chords, often used for fast, tension-building transitions.",
         "tags": [
@@ -388,10 +388,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
       {
         "name": "Vamp with Tonal Ambiguity",
         "chords": [
-          "E min",
-          "A 7",
+          "Em",
+          "A7",
           "D",
-          "B 7"
+          "B7"
         ],
         "description": "A loop that avoids resting on a clear tonic, keeping the harmony open and evolving.",
         "tags": [

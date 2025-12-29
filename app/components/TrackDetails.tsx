@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
@@ -36,7 +36,7 @@ export default function TrackDetails(props: TrackDetailsProps) {
                         <div className={`${styles['bar']} grid grid-cols-4 gap-1 w-full p-1`}>
                             {bar.chords.map((chord, j) => (
                                 <div key={j} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
-                                    {chord}
+                                    {chord.replace("b", "♭").replace("#", "♯")}
                                 </div>
                             ))}
                         </div>

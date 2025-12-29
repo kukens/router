@@ -5,7 +5,7 @@ import type { HitsData, CurrentAudioData, EvaluatedChord } from '~/features/audi
 
 import { getTolerance } from '~/features/audio/AudioAnalyzerUtilities';
 import { useChord } from "~/features/audio/ChordContext";
-import type { AudioAnalyzerWorkerIn, AudioAnalyzerWorkerOut } from "~/workers/AudioAnalyzerWorker";
+import type { AudioAnalyzerWorkerIn, AudioAnalyzerWorkerOut } from "~/features/audio/AudioAnalyzerWorker";
 import { Button } from "flowbite-react";
 
 export default function AudioAnalyzer() {
@@ -17,18 +17,20 @@ export default function AudioAnalyzer() {
 
     const workerRef = useRef<Worker>(null);
     const audioCtxRef = useRef<AudioContext | null>(null);
+    const streamRef = useRef<MediaStream | null>(null);
+    const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
     const processorRef = useRef<ScriptProcessorNode | null>(null);
 
-    const windowSize = 4096 *2;
+    const windowSize = 4096 * 2;
 
     const [isRecording, setIsRecording] = useState(true);
     const [diagnosticsEnabled, setDiagnosticsEnabled] = useState(false);
 
 
     useEffect(() => {
-       
-            return () => stopRecording();
-        }, []);
+
+        return () => stopRecording();
+    }, []);
 
     useEffect(() => {
 
@@ -79,17 +81,14 @@ export default function AudioAnalyzer() {
     };
 
     const startRecording = async () => {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        streamRef.current = await navigator.mediaDevices.getUserMedia({
             audio: true,
         });
 
-        const audioCtx = new AudioContext();
-        audioCtxRef.current = audioCtx;
+        audioCtxRef.current = new AudioContext();
 
-        const source = audioCtx.createMediaStreamSource(stream);
-        const processor = audioCtx.createScriptProcessor(windowSize, 1, 1);
-      
-        processorRef.current = processor;
+        sourceRef.current = audioCtxRef.current.createMediaStreamSource(streamRef.current);
+        processorRef.current = audioCtxRef.current.createScriptProcessor(windowSize, 1, 1);
 
         workerRef.current?.postMessage(
             {
@@ -98,17 +97,17 @@ export default function AudioAnalyzer() {
             } as AudioAnalyzerWorkerIn
         );
 
-        source.connect(processor);
-        processor.connect(audioCtx.destination);
+        sourceRef.current.connect(processorRef.current);
+        processorRef.current.connect(audioCtxRef.current.destination);
 
-        processor.onaudioprocess = (e) => {
+        processorRef.current.onaudioprocess = (e) => {
             const samples = e.inputBuffer.getChannelData(0);
 
             workerRef.current?.postMessage(
                 {
                     type: "push",
                     samples,
-                    sampleRate: audioCtx.sampleRate,
+                    sampleRate: audioCtxRef.current?.sampleRate,
                 } as AudioAnalyzerWorkerIn,
                 [samples.buffer]
             );
@@ -118,14 +117,27 @@ export default function AudioAnalyzer() {
     };
 
     const stopRecording = () => {
-     
-        if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
-             processorRef.current?.disconnect();
-             audioCtxRef.current.close()
-             workerRef.current?.terminate();
 
-            console.log('Closing audio ctx and disposing web worker');
-        };
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => {
+                track.stop();
+                track.enabled = false;
+            });
+            streamRef.current = null;
+        }
+
+        if (audioCtxRef.current) {
+            sourceRef.current?.disconnect();
+            processorRef.current?.disconnect();
+
+            if (audioCtxRef.current.state !== 'closed') {
+                audioCtxRef.current.close();
+            }
+            audioCtxRef.current = null;
+        }
+
+        workerRef.current?.terminate();
+        workerRef.current = null;
 
         setIsRecording(false);
     };
