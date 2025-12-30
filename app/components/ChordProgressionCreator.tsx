@@ -2,127 +2,147 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { TrackData, Bar } from "~/types/TrackData";
-import { Button, TextInput } from "flowbite-react";
+import { Button, TextInput, Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 import { useNavigate } from "react-router";
-
+import ChordSelector from "~/components/ChordSelector"
+import { CHORDS_DATA } from '~/data/chordsData';
 interface ChordProgressionCreatorProps {
-  TrackData: TrackData | null
-  Id: string
+    TrackData: TrackData | null
+    Id: string
 }
 
 export default function ChordProgressionCreator(props: ChordProgressionCreatorProps) {
 
-  const [trackName, setTrackName] = useState(props.TrackData?.name || "");
-  const [beatsPerBar, setBeatsPerBar] = useState(4);
-  const [tempo, setTempo] = useState(props.TrackData?.tempo || 120);
-  const [id, setId] = useState(props.Id || crypto.randomUUID());
-  const [bars, setBars] = useState<Bar[]>(props.TrackData?.bars ||[{ chords: new Array(beatsPerBar).fill('') }]);
-  
-  const navigate = useNavigate();
+    const [trackName, setTrackName] = useState(props.TrackData?.name || "");
+    const [beatsPerBar, setBeatsPerBar] = useState(4);
 
-  const beatsElementsRef = useRef<HTMLInputElement[]>([]);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    if (props.TrackData) {
-      setBars(props.TrackData.bars);
-      setTrackName(props.TrackData.name)
-      setTempo(props.TrackData.tempo)
-      setId(props.Id)
-    }
-  }, [props.TrackData]);
+    const [tempo, setTempo] = useState(props.TrackData?.tempo || 120);
+    const [id, setId] = useState(props.Id || crypto.randomUUID());
+    const [bars, setBars] = useState<Bar[]>(props.TrackData?.bars || [{ chords: new Array(beatsPerBar).fill('') }]);
+    const [selectedBarIndex, setSelectedBarIndex] = useState(0);
+    const [selectedBeatIndex, setSelectedBeatIndex] = useState(0);
+    const navigate = useNavigate();
 
-  const updateBeats = (value: number) => {
-    setBeatsPerBar(value);
-    setBars((prev) => prev.map(() => { return { chords: new Array(beatsPerBar).fill('') } }));
-  };
+    const beatsElementsRef = useRef<HTMLInputElement[]>([]);
 
-  const addBar = () => {
-    setBars((prev) => [...prev, { chords: new Array(beatsPerBar).fill('') }]);
-  };
+    useEffect(() => {
+        if (props.TrackData) {
+            setBars(props.TrackData.bars);
+            setTrackName(props.TrackData.name)
+            setTempo(props.TrackData.tempo)
+            setId(props.Id)
+        }
+    }, [props.TrackData]);
 
-  const saveTrack = () => {
-    let bars: Bar[] = [];
+    const updateBeats = (value: number) => {
+        setBeatsPerBar(value);
+        setBars((prev) => prev.map(() => { return { chords: new Array(beatsPerBar).fill('') } }));
+    };
 
-    beatsElementsRef.current.forEach((element, index) => {
-      const barIndex = Math.floor(index / beatsPerBar);
+    const addBar = () => {
+        setBars((prev) => [...prev, { chords: new Array(beatsPerBar).fill('') }]);
+    };
 
-      if (index % beatsPerBar == 0) {
-        const bar: Bar = {
-          chords: []
-        };
-        bars.push(bar)
-      }
-      bars[barIndex].chords.push(element.value);
-    });
+    const saveTrack = () => {
+        let bars: Bar[] = [];
 
-    const trackData: TrackData = {
-      id: id,
-      name: trackName,
-      tempo: tempo,
-      bars: bars,
-      loop: false
-    }
+        beatsElementsRef.current.forEach((element, index) => {
+            const barIndex = Math.floor(index / beatsPerBar);
 
-    localStorage.setItem(`trackData-${trackData.id}`, JSON.stringify(trackData));
-    navigate(`/tracks/${id}`);
-  };
+            if (index % beatsPerBar == 0) {
+                const bar: Bar = {
+                    chords: []
+                };
+                bars.push(bar)
+            }
+            bars[barIndex].chords.push(element.value);
+        });
 
-  const deleteTrack = () => {
-    localStorage.removeItem(`trackData-${id}`);
-    navigate('/');
-  };
+        const trackData: TrackData = {
+            id: id,
+            name: trackName,
+            tempo: tempo,
+            bars: bars,
+            loop: false
+        }
 
-  const updateChord = (barIndex: number, beatIndex: number, value: string) => {
-    const updated = [...bars];
-    updated[barIndex].chords[beatIndex] = value;
-    setBars(updated);
-  };
+        localStorage.setItem(`trackData-${trackData.id}`, JSON.stringify(trackData));
+        navigate(`/tracks/${id}`);
+    };
 
-  const registerBeats = (el: HTMLInputElement | null) => {
-    if (el && !beatsElementsRef.current.includes(el)) {
-      beatsElementsRef.current.push(el);
-    }
-  };
+    const deleteTrack = () => {
+        localStorage.removeItem(`trackData-${id}`);
+        navigate('/');
+    };
 
-  return (
-    <div className="p-6 max-w-xl mx-auto space-y-6">
-      <div className="grid grid-cols-1 gap-4">
-        <div>
-          <label className="dark:text-white">Track name</label>
-          <TextInput id="trackName" value={trackName} type="text" placeholder="Track name" required onChange={(e) => setTrackName(e.target.value)} />
-        </div>
+    const updateChord = (barIndex: number, beatIndex: number, value: string) => {
+        const updated = [...bars];
+        updated[barIndex].chords[beatIndex] = value;
+        setBars(updated);
+    };
 
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="dark:text-white">Beats per Bar</label>
-          <TextInput id="beatsPerBar" value={beatsPerBar} type="number" required onChange={(e) => updateBeats(Number.parseInt(e.target.value))} />
-        </div>
+    const registerBeats = (el: HTMLInputElement | null) => {
+        if (el && !beatsElementsRef.current.includes(el)) {
+            beatsElementsRef.current.push(el);
+        }
+    };
 
-        <div>
-          <label className="dark:text-white">Tempo (BPM)</label>
-          <TextInput id="tempo" value={tempo} type="number" min={20} max={300} required onChange={(e) => setTempo(Number.parseInt(e.target.value))} />
-        </div>
-      </div>
+    const dupa = (chordName: string) => {
+        updateChord(selectedBarIndex, selectedBeatIndex, chordName)
+        setIsDrawerOpen(false)
+    };
 
-      <Button color="teal" pill onClick={addBar}>Add Bar</Button>
 
-      <div className="space-y-6">
-        {bars?.map((bar, barIndex) => (
-          <div key={barIndex} className="space-y-2">
-            <div className="grid grid-cols-4 gap-2">
-              {Array.from({ length: beatsPerBar }).map((_, beatIndex) => (
-                <TextInput key={beatIndex} ref={registerBeats} type="text" required
-                  value={bars[barIndex].chords[beatIndex] || ""}
-                  onChange={(e) => updateChord(barIndex, beatIndex, e.target.value)} />
-              ))}
+
+    return (
+        <div className="p-6 max-w-xl mx-auto space-y-6">
+            <div className="grid grid-cols-1 gap-4">
+                <div>
+                    <label className="dark:text-white">Track name</label>
+                    <TextInput id="trackName" value={trackName} type="text" placeholder="Track name" required onChange={(e) => setTrackName(e.target.value)} />
+                </div>
+
             </div>
-          </div>
-        ))}
-      </div>
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <label className="dark:text-white">Beats per Bar</label>
+                    <TextInput id="beatsPerBar" value={beatsPerBar} type="number" required onChange={(e) => updateBeats(Number.parseInt(e.target.value))} />
+                </div>
 
-      <Button onClick={saveTrack} color="teal" pill>Save</Button>
-      <Button onClick={deleteTrack} color="teal" pill>Delete</Button>
-    </div>
-  );
+                <div>
+                    <label className="dark:text-white">Tempo (BPM)</label>
+                    <TextInput id="tempo" value={tempo} type="number" min={20} max={300} required onChange={(e) => setTempo(Number.parseInt(e.target.value))} />
+                </div>
+            </div>
+
+            <Button color="teal" pill onClick={addBar}>Add Bar</Button>
+
+            <div className="space-y-6">
+                {bars?.map((bar, barIndex) => (
+                    <div key={barIndex} className="space-y-2">
+                        <div className="grid grid-cols-4 gap-2">
+                            {Array.from({ length: beatsPerBar }).map((_, beatIndex) => (
+                                <TextInput key={beatIndex} ref={registerBeats} type="text" required
+                                    value={bars[barIndex].chords[beatIndex] || ""}
+                                    onFocus={() => { 
+                                        setSelectedBarIndex(barIndex)
+                                        setSelectedBeatIndex(beatIndex)
+                                        setIsDrawerOpen(true)
+                                        }
+                                    }
+                         />
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <ChordSelector isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={dupa}  />
+
+            <Button onClick={saveTrack} color="teal" pill>Save</Button>
+            <Button onClick={deleteTrack} color="teal" pill>Delete</Button>
+        </div>
+    );
 }

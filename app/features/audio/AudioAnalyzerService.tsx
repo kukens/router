@@ -125,26 +125,29 @@ export class AudioAnalyzerService {
     
             const chords: EvaluatedChord[] = [];
     
-            CHORDS_DATA.forEach(chordInfo => {
-                let finalScore = 0;
-    
-                if (chordInfo.notes.every(note => {
-                    const matchedNoteFamily = familyScores.filter(x => x[0] == note);
-                    const isMatch = matchedNoteFamily?.length == 1;
-    
-                    if (isMatch) {
-                        finalScore += matchedNoteFamily[0][1];
+            CHORDS_DATA.forEach(chordType => {              
+
+                chordType.chords.forEach(chord => {
+                    let finalScore = 0;
+
+                    if (chord.notes.every(note => {
+                        const matchedNoteFamily = familyScores.filter(x => x[0] == note);
+                        const isMatch = matchedNoteFamily?.length == 1;
+
+                        if (isMatch) {
+                            finalScore += matchedNoteFamily[0][1];
+                        }
+                        return isMatch;
+                    })) {
+                        const matchedChordInfo: EvaluatedChord = {
+                            chordName: chord.name,
+                            score: finalScore,
+                            notes: chord.notes
+                        }
+
+                        chords.push(matchedChordInfo)
                     }
-                    return isMatch;
-                })) {
-                    const matchedChordInfo: EvaluatedChord = {
-                        chordName: chordInfo.chord,
-                        score: finalScore,
-                        notes: chordInfo.notes
-                    }
-    
-                    chords.push(matchedChordInfo)
-                }
+                });
             });
     
             const sortedChords = Object.entries(chords).sort((a, b) => b[1].score - a[1].score).map(x => x[1]);
