@@ -62,14 +62,22 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
         navigate('/');
     };
 
-    const updateChord = (barIndex: number, beatIndex: number, value: string) => {
+    const updateChord = (barIndex: number, beatIndex: number, value: string, fill: boolean) => {
+
         const updated = [...bars];
-        updated[barIndex].chords[beatIndex] = value;
+
+        if (fill) {
+            updated[barIndex].chords.fill(value, beatIndex, beatsPerBar);
+        }
+        else {
+            updated[barIndex].chords[beatIndex] = value;
+        }
+
         setBars(updated);
     };
 
-    const handleChordSelection = (chordName: string) => {
-        updateChord(selectedBarIndex, selectedBeatIndex, chordName)
+    const handleChordSelection = (chordName: string, fill: boolean) => {
+        updateChord(selectedBarIndex, selectedBeatIndex, chordName, fill)
         setIsDrawerOpen(false)
     };
 
