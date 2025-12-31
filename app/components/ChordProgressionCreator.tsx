@@ -5,7 +5,7 @@ import type { TrackData, Bar } from "~/types/TrackData";
 import { Button, TextInput, Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 import { useNavigate } from "react-router";
 import ChordSelector from "~/components/ChordSelector"
-import { CHORDS_DATA } from '~/data/chordsData';
+
 interface ChordProgressionCreatorProps {
     TrackData: TrackData | null
     Id: string
@@ -23,9 +23,8 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
     const [bars, setBars] = useState<Bar[]>(props.TrackData?.bars || [{ chords: new Array(beatsPerBar).fill('') }]);
     const [selectedBarIndex, setSelectedBarIndex] = useState(0);
     const [selectedBeatIndex, setSelectedBeatIndex] = useState(0);
+    const [selectedChord, setSelectedChord] = useState("");
     const navigate = useNavigate();
-
-    const beatsElementsRef = useRef<HTMLInputElement[]>([]);
 
     useEffect(() => {
         if (props.TrackData) {
@@ -46,20 +45,6 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
     };
 
     const saveTrack = () => {
-        let bars: Bar[] = [];
-
-        beatsElementsRef.current.forEach((element, index) => {
-            const barIndex = Math.floor(index / beatsPerBar);
-
-            if (index % beatsPerBar == 0) {
-                const bar: Bar = {
-                    chords: []
-                };
-                bars.push(bar)
-            }
-            bars[barIndex].chords.push(element.value);
-        });
-
         const trackData: TrackData = {
             id: id,
             name: trackName,
@@ -83,13 +68,7 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
         setBars(updated);
     };
 
-    const registerBeats = (el: HTMLInputElement | null) => {
-        if (el && !beatsElementsRef.current.includes(el)) {
-            beatsElementsRef.current.push(el);
-        }
-    };
-
-    const dupa = (chordName: string) => {
+    const handleChordSelection = (chordName: string) => {
         updateChord(selectedBarIndex, selectedBeatIndex, chordName)
         setIsDrawerOpen(false)
     };
@@ -124,22 +103,22 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
                     <div key={barIndex} className="space-y-2">
                         <div className="grid grid-cols-4 gap-2">
                             {Array.from({ length: beatsPerBar }).map((_, beatIndex) => (
-                                <TextInput key={beatIndex} ref={registerBeats} type="text" required
-                                    value={bars[barIndex].chords[beatIndex] || ""}
+                                <Button key={beatIndex} color="light"
                                     onFocus={() => { 
                                         setSelectedBarIndex(barIndex)
                                         setSelectedBeatIndex(beatIndex)
                                         setIsDrawerOpen(true)
+                                        setSelectedChord(bars[barIndex].chords[beatIndex])
                                         }
                                     }
-                         />
+                                >{bars[barIndex].chords[beatIndex] || ""}</Button>
                             ))}
                         </div>
                     </div>
                 ))}
             </div>
 
-            <ChordSelector isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={dupa}  />
+            <ChordSelector selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
 
             <Button onClick={saveTrack} color="teal" pill>Save</Button>
             <Button onClick={deleteTrack} color="teal" pill>Delete</Button>
