@@ -65,6 +65,16 @@ export default function challengePlayer(props: ChallengeProps) {
 
         indexRef.current = 0;
 
+        barsElementsRef.current.forEach(bar => {
+            bar.classList.remove(styles.active)
+            bar.style.animationDuration = ``;
+        });
+
+        beatsElementsRef.current.forEach(beat => {
+            beat.classList.remove(styles.active);
+            beat.classList.remove("bg-green-800");
+        });
+
         const timePerBeat = 60 / tempo * 1000;
         const id = setInterval(() => {
             tick(timePerBeat * 4)
@@ -118,14 +128,17 @@ export default function challengePlayer(props: ChallengeProps) {
         const currentBar = Math.ceil((currentIndex + 1) / 4) - 1;
         const previousBar = currentBar == 0 ? barsLength - 1 : currentBar - 1;
         console.log(currentBar + " " + timePerBar)
+
         bars[currentBar].classList.add(styles.active);
         bars[currentBar].style.animationDuration = `${timePerBar}ms`;
+
         if (previousBar != currentBar) {
             bars[previousBar].classList.remove(styles.active);
             bars[previousBar].style.animationDuration = "";
         }
 
         const previousBeat = currentIndex == 0 ? beatsLength - 1 : currentIndex - 1;
+
         beats[currentIndex].classList.add(styles.active);
         beats[currentIndex].classList.remove("bg-green-800");
         beats[previousBeat].classList.remove(styles.active);

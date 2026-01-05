@@ -26,24 +26,55 @@ export default function AudioAnalyzer() {
     const [isRecording, setIsRecording] = useState(true);
     const [diagnosticsEnabled, setDiagnosticsEnabled] = useState(false);
 
-
     useEffect(() => {
 
-        return () => stopRecording();
-    }, []);
+        let isCurrent = true;
 
-    useEffect(() => {
+        const startRecording = async () => {
 
-        console.log("AudioAnalyzer effect toggle" + isRecording);
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+            });
 
-        if (isRecording) {
+            if (!isCurrent) {
+                stream.getTracks().forEach(track => track.stop());
+                return;
+            }
 
-            console.log("Creating web worker");
             workerRef.current = new Worker(
                 new URL("~/features/audio/AudioAnalyzerWorker.tsx", import.meta.url),
                 { type: "module" }
             );
-            startRecording();
+            workerRef.current?.postMessage(
+                {
+                    type: "init",
+                    windowSize: windowSize,
+                } as AudioAnalyzerWorkerIn
+            );
+
+            streamRef.current = stream;
+
+            audioCtxRef.current = new AudioContext();
+
+            sourceRef.current = audioCtxRef.current.createMediaStreamSource(streamRef.current);
+            processorRef.current = audioCtxRef.current.createScriptProcessor(windowSize, 1, 1);
+
+            sourceRef.current.connect(processorRef.current);
+            processorRef.current.connect(audioCtxRef.current.destination);
+
+            processorRef.current.onaudioprocess = (e) => {
+                const samples = e.inputBuffer.getChannelData(0);
+
+                workerRef.current?.postMessage(
+                    {
+                        type: "push",
+                        samples,
+                        sampleRate: audioCtxRef.current?.sampleRate,
+                    } as AudioAnalyzerWorkerIn,
+                    [samples.buffer]
+                );
+            };
+
             workerRef.current.onmessage = (e: MessageEvent<AudioAnalyzerWorkerOut>) => {
 
                 if (e.data.type === "spectrum") {
@@ -63,97 +94,63 @@ export default function AudioAnalyzer() {
                     }
                 }
             };
-        }
+        };
 
-    }, [isRecording]);
+        const cleanup = () => {
 
-    const handleToggle = () => {
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach(track => {
+                    track.stop();
+                    track.enabled = false;
+                });
+                streamRef.current = null;
+            }
+
+            if (audioCtxRef.current) {
+                sourceRef.current?.disconnect();
+                processorRef.current?.disconnect();
+                if (audioCtxRef.current.state !== 'closed') {
+                    audioCtxRef.current.close();
+                }
+                audioCtxRef.current = null;
+            }
+
+            workerRef.current?.terminate();
+            workerRef.current = null;
+        };
+
         if (isRecording) {
-            stopRecording();
+            startRecording();          
         }
         else {
-            startRecording();
+            cleanup();    
         }
+
+        return () => {
+            isCurrent = false;
+            cleanup();
+        }
+
+    }, [isRecording, diagnosticsEnabled]);
+
+    const handleToggle = () => {
+        setIsRecording(!isRecording);
     };
 
     const enableDiagnostics = () => {
-        setDiagnosticsEnabled(prevState => !prevState);
+        setDiagnosticsEnabled(!diagnosticsEnabled);
     };
 
-    const startRecording = async () => {
-        streamRef.current = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-        });
+    return <>
 
-        audioCtxRef.current = new AudioContext();
-
-        sourceRef.current = audioCtxRef.current.createMediaStreamSource(streamRef.current);
-        processorRef.current = audioCtxRef.current.createScriptProcessor(windowSize, 1, 1);
-
-        workerRef.current?.postMessage(
-            {
-                type: "init",
-                windowSize: windowSize,
-            } as AudioAnalyzerWorkerIn
-        );
-
-        sourceRef.current.connect(processorRef.current);
-        processorRef.current.connect(audioCtxRef.current.destination);
-
-        processorRef.current.onaudioprocess = (e) => {
-            const samples = e.inputBuffer.getChannelData(0);
-
-            workerRef.current?.postMessage(
-                {
-                    type: "push",
-                    samples,
-                    sampleRate: audioCtxRef.current?.sampleRate,
-                } as AudioAnalyzerWorkerIn,
-                [samples.buffer]
-            );
-        };
-
-        setIsRecording(true);
-    };
-
-    const stopRecording = () => {
-
-        if (streamRef.current) {
-            streamRef.current.getTracks().forEach(track => {
-                track.stop();
-                track.enabled = false;
-            });
-            streamRef.current = null;
-        }
-
-        if (audioCtxRef.current) {
-            sourceRef.current?.disconnect();
-            processorRef.current?.disconnect();
-
-            if (audioCtxRef.current.state !== 'closed') {
-                audioCtxRef.current.close();
-            }
-            audioCtxRef.current = null;
-        }
-
-        workerRef.current?.terminate();
-        workerRef.current = null;
-
-        setIsRecording(false);
-    };
-
-
-    return <div className="w-full">
-
-        <Button className="m-2" as="span" color="teal" pill onClick={handleToggle}>
-            {isRecording ? 'STOP' : 'START'}
+        <Button color="teal" pill onClick={handleToggle}>
+            {isRecording ? 'STOP' : 'START'} RECORDING
         </Button>
 
-        <Button className="m-2" as="span" color="teal" pill onClick={enableDiagnostics}>
-            {diagnosticsEnabled ? 'DIAGNOSTICS OFF' : 'DIAGNOSTICS ON'}
+        <Button color="teal" pill onClick={enableDiagnostics}>
+            {diagnosticsEnabled ? 'DISABLE' : 'ENABLE'} DIAGNOSTICS
         </Button>
 
-        <br />  <br />
 
         {diagnosticsEnabled &&
             <div><p>mean: {audioData?.mean.toFixed(1)}</p>
@@ -191,5 +188,5 @@ export default function AudioAnalyzer() {
             </div>
 
         }
-    </div>
+    </>
 }
