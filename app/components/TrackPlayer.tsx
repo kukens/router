@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useChord } from '~/features/audio/ChordContext';
 import styles from '~/components/Bars.module.css';
 
+import { EmptyTrackData } from '~/types/TrackData';
 import type { TrackData } from '~/types/TrackData';
 
 interface BarProps {
@@ -14,10 +15,14 @@ export default function TrackPlayer(props: BarProps) {
 
     const { evaluatedChord } = useChord();
 
-    const [trackData, setTrackData] = useState<TrackData | null>(null);
+    const [trackData, setTrackData] = useState<TrackData>(EmptyTrackData);
 
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
+    const animationContainerRef = useRef<HTMLDivElement>(null);
+    const animationKeyFramesStyleRef = useRef<HTMLStyleElement>(null);
+
+
     const evaluatedChordRef = useRef(evaluatedChord);
     const evaluatedChordVerionsRef = useRef(evaluatedChord?.version);
 
@@ -25,18 +30,64 @@ export default function TrackPlayer(props: BarProps) {
 
     useEffect(() => {
         const trackDataFromLocalStorage = JSON.parse(localStorage.getItem(`trackData-${props.id}`) ?? "") as TrackData;
+
+        trackDataFromLocalStorage.bars = [...trackDataFromLocalStorage.bars, ...trackDataFromLocalStorage.bars]
+
         setTrackData(trackDataFromLocalStorage)
+
     }, []);
 
     useEffect(() => {
-        if (trackData != null) {
+        if (trackData.bars.length > 0 && animationContainerRef.current != null && animationKeyFramesStyleRef.current != null) {
+
+
+
+
             const timePerBeat = 60 / trackData.tempo * 1000;
+            const timePerBar = trackData.bars.length / 2 * timePerBeat * 4;
+
+            console.log(timePerBeat * 4)
+            let isFirstRun = true;
+
+            const animationContainer = animationContainerRef.current;
+
+            let numberOfBars = trackData.bars.length / 2;
+            let animationSplit = 100 / numberOfBars;
+
+            console.log(timePerBar)
+           let rules = "";
+            for (let i = 0; i < numberOfBars; i++) {
+                rules += `
+                 ${animationSplit * i}%, ${animationSplit * (i + 1) - (timePerBeat * 4 / 1000 / numberOfBars * 3)}% {
+                        transform: translateY(-${i * 152/2}px);
+                    }
+                `;
+            }
+
+            animationKeyFramesStyleRef.current.innerHTML = `
+                @keyframes dynamic-step {
+                    ${rules}
+                    100% {
+                        transform: translateY(-50%);
+                    }
+                 }
+            `
+
+
             const id = setInterval(() => {
+
+                if (isFirstRun) {
+                    animationContainer.className = "animate-dynamic-step";
+                    animationContainer.style.animationDuration = `${timePerBeat * 4 * numberOfBars}ms`;
+                    isFirstRun = false;
+                }
+
                 tick(timePerBeat * 4)
-            },
-                timePerBeat);
+
+            }, timePerBeat);
 
             return () => clearInterval(id);
+
         }
     }, [trackData]);
 
@@ -71,47 +122,51 @@ export default function TrackPlayer(props: BarProps) {
 
     function tick(timePerBar: number) {
 
+        const beatsLength = beatsElementsRef.current.length / 2;
+        const barsLength = barsElementsRef.current.length / 2;
 
-        const beats = beatsElementsRef.current;
-        const bars = barsElementsRef.current;
-        const currentIndex = indexRef.current;
-
-        const beatsLength = beatsElementsRef.current.length;
-        const barsLength = bars.length;
-
-        const currentBar = Math.ceil((currentIndex + 1) / 4) - 1;
+        const currentBar = Math.ceil((indexRef.current + 1) / 4) - 1;
         const previousBar = currentBar == 0 ? barsLength - 1 : currentBar - 1;
 
-        bars[currentBar].classList.add(styles.active);
-        bars[currentBar].style.animationDuration = `${timePerBar}ms`;
+        barsElementsRef.current[currentBar].classList.add(styles.active);
+        barsElementsRef.current[currentBar].style.animationDuration = `${timePerBar}ms`;
+
         if (previousBar != currentBar) {
-            bars[previousBar].classList.remove(styles.active);
-            bars[previousBar].style.animationDuration = "";
+            barsElementsRef.current[previousBar].classList.remove(styles.active);
+            barsElementsRef.current[previousBar].style.animationDuration = "";
         }
 
-        const previousBeat = currentIndex == 0 ? beatsLength - 1 : currentIndex - 1;
-        beats[currentIndex].classList.add(styles.active);
-        beats[currentIndex].classList.remove("bg-green-800");
-        beats[previousBeat].classList.remove(styles.active);
+        const previousBeat = indexRef.current == 0 ? beatsLength - 1 : indexRef.current - 1;
 
-        indexRef.current = (currentIndex + 1) % beatsLength
+        beatsElementsRef.current[indexRef.current].classList.add(styles.active);
+        beatsElementsRef.current[indexRef.current].classList.remove("bg-green-800");
+        beatsElementsRef.current[previousBeat].classList.remove(styles.active);
+
+        indexRef.current = (indexRef.current + 1) % beatsLength
     }
 
+    if (trackData.bars.length == 0) {
+        return <></>
+    }
+
+
     return (
-        <div className="bars relative overflow-hidden h-96">
-            <div className="slider-verticalx">
-                {trackData?.bars.map((bar, i) => (
+        <div className="bars relative overflow-hidden h-38">
+            <style ref={animationKeyFramesStyleRef} />
+            <div ref={animationContainerRef}>
+                {trackData.bars.map((bar, i) => (
                     <div key={i} className="bar-wrapper flex items-center">
-                        <div ref={registerBars} className={`${styles['bar']} grid grid-cols-4 gap-1 w-full p-1`}>
-                            {bar.chords.map((chord, j) => (
-                                <div key={j} ref={registerBeats} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
-                                    {chord.replace("b", "♭").replace("#", "♯")}
+                        <div ref={registerBars} className={`${styles['bar']} grid grid-cols-4 gap-0 w-full p-1`}>
+                            {bar.chords.map((chord, index) => (
+                                <div key={index} ref={registerBeats} className={`${styles['beat']} ${index == 0 ? "rounded-l-sm" : ""} ${index == 3 ? "rounded-r-sm" : ""} bg-gray-500 p-5 m-px text-center`} data-chord={chord}>
+                                    {(index == 0 || bar.chords[index - 1] != bar.chords[index]) && chord.replace("b", "♭").replace("#", "♯")}
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
             </div>
+
         </div>
-    );
+    )
 }

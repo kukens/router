@@ -6,6 +6,14 @@ export interface TrackData {
   bars: Bar[];
 }
 
+export const EmptyTrackData: TrackData = {
+    id: "",
+    name: "",
+    tempo: 0,
+    loop: false,
+    bars: [],
+}
+
 export interface Bar {
   chords: string[];
 }
