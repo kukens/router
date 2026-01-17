@@ -30,6 +30,7 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
         if (props.TrackData) {
             setBars(props.TrackData.bars);
             setTrackName(props.TrackData.name)
+            setBeatsPerBar(props.TrackData.beatsPerBar)
             setTempo(props.TrackData.tempo)
             setId(props.Id)
         }
@@ -37,7 +38,7 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
 
     const updateBeats = (value: number) => {
         setBeatsPerBar(value);
-        setBars((prev) => prev.map(() => { return { chords: new Array(beatsPerBar).fill('') } }));
+        setBars((prev) => prev.map((x) => { return { chords: x.chords.slice(0, value) } }));
     };
 
     const addBar = () => {
@@ -48,6 +49,7 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
         const trackData: TrackData = {
             id: id,
             name: trackName,
+            beatsPerBar: beatsPerBar,
             tempo: tempo,
             bars: bars,
             loop: false
@@ -109,7 +111,7 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
             <div className="space-y-6">
                 {bars?.map((bar, barIndex) => (
                     <div key={barIndex} className="space-y-2">
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className={`grid grid-cols-${beatsPerBar} gap-2`}>
                             {Array.from({ length: beatsPerBar }).map((_, beatIndex) => (
                                 <Button key={beatIndex} color="light"
                                     onFocus={() => { 

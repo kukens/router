@@ -33,7 +33,7 @@ export default function TrackDetails(props: TrackDetailsProps) {
             <div className="slider-verticalx">
                 {props.TrackData?.bars.map((bar, i) => (
                     <div key={i} className="bar-wrapper flex items-center">
-                        <div className={`${styles['bar']} grid grid-cols-4 gap-1 w-full p-1`}>
+                        <div className={`${styles['bar']} grid grid-cols-${props.TrackData?.beatsPerBar} gap-1 w-full p-1`}>
                             {bar.chords.map((chord, j) => (
                                 <div key={j} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
                                     {chord.replace("b", "♭").replace("#", "♯")}
