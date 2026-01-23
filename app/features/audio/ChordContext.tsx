@@ -5,7 +5,9 @@ import type { ReactNode } from "react";
 
 export interface ChordContextValue {
   evaluatedChord: ChordValue | null;
-  setEvaluatedChord: (value: ChordValue | null) => void;
+    setEvaluatedChord: (value: ChordValue | null) => void;
+    isAnalyzing: boolean;
+    setIsAnalyzing: (value: boolean) => void;
 }
 
 export interface ChordValue {
@@ -21,11 +23,14 @@ interface ChordProviderProps {
 }
 
 export const ChordProvider: React.FC<ChordProviderProps> = ({ children }) => {
-  const [evaluatedChord, setEvaluatedChord] = useState<ChordValue | null>(null);
+    const [evaluatedChord, setEvaluatedChord] = useState<ChordValue | null>(null);
+    const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
 
   const value: ChordContextValue = {
     evaluatedChord,
-    setEvaluatedChord,
+      setEvaluatedChord,
+      isAnalyzing,
+      setIsAnalyzing
   };
 
   return (

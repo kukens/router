@@ -13,11 +13,14 @@ interface BarProps {
 
 export default function TrackPlayer(props: BarProps) {
 
-    const { evaluatedChord } = useChord();
+    const { evaluatedChord, isAnalyzing } = useChord();
 
     const [trackData, setTrackData] = useState<TrackData>(EmptyTrackData);
 
     const [iteration, setIteration] = useState<number>(1);
+    const [countDownToStart, setCountDownToStart] = useState<number>(3);
+
+    const [isReadyToPlay, setIsReadyToPlay] = useState<boolean>(false);
 
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
@@ -28,71 +31,69 @@ export default function TrackPlayer(props: BarProps) {
     const evaluatedChordVerionsRef = useRef(evaluatedChord?.version);
 
     const currentBeatIndexRef = useRef(0);
+    const beatsToSkip = useRef(0);
 
     useEffect(() => {
         const trackDataFromLocalStorage = JSON.parse(localStorage.getItem(`trackData-${props.id}`) ?? "") as TrackData;
-
+        console.log('isAnalyzing ' + isAnalyzing)
         setTrackData(trackDataFromLocalStorage)
     }, []);
 
     useEffect(() => {
-        if (trackData.bars.length > 0 && animationContainerRef.current != null && animationKeyFramesStyleRef.current != null) {
+        if (isAnalyzing && trackData.bars.length > 0) {
+
+            const id = setInterval(() => {
+                setCountDownToStart(prevCount => prevCount - 1)
+            }, 1000);
+
+            return () => clearInterval(id);
+        }
+    }, [isAnalyzing, trackData]);
+
+    useEffect(() => {
+        if (countDownToStart == 0) {
+            setIsReadyToPlay(true)
+        }
+    }, [countDownToStart]);
+
+    useEffect(() => {
+        if (isReadyToPlay && animationContainerRef.current != null && animationKeyFramesStyleRef.current != null) {
 
             const timePerBeat = 60 / trackData.tempo * 1000;
 
-            console.log(timePerBeat * trackData.beatsPerBar)
-            let isFirstRun = true;
-
-            const animationContainer = animationContainerRef.current;
-
-            let barsCount = trackData.bars.length;
-            let animationSplit = 100 / barsCount;
+            const barsCount = trackData.bars.length;
+            const animationSplit = 100 / barsCount;
 
             let keyframes = "";
             for (let i = 0; i <= barsCount; i++) {
-
-                const keyFrameStep = i == barsCount ? "100%"
-                    : `${animationSplit * i}%, ${animationSplit * (i + 1) - (timePerBeat * trackData.beatsPerBar / 1000 / barsCount * 6)}%`
-
+                const keyFrameStep = i == barsCount ? "100%" : `${animationSplit * i}%, ${animationSplit * (i + 1) - (timePerBeat * trackData.beatsPerBar / 1000 / barsCount * 6)}%`
                 keyframes += `
-                 ${keyFrameStep}{
-                        transform: translateY(${-i * 76}px);
-                    }
-                `;
+                ${keyFrameStep} { transform: translateY(${-i * 76}px); }`;
             }
+            animationKeyFramesStyleRef.current.innerHTML = `@keyframes dynamic-step { ${keyframes} }`
 
-            animationKeyFramesStyleRef.current.innerHTML = `
-                @keyframes dynamic-step {
-                    ${keyframes}
-                 }
-            `
+            animationContainerRef.current.className = "animate-dynamic-step";
+            animationContainerRef.current.style.animationDuration = `${timePerBeat * trackData.beatsPerBar * barsCount}ms`;
+
+            tick(timePerBeat * trackData.beatsPerBar)
+
             const id = setInterval(() => {
-
-                if (isFirstRun) {
-                    animationContainer.className = "animate-dynamic-step";
-                    animationContainer.style.animationDuration = `${timePerBeat * trackData.beatsPerBar * barsCount}ms`;
-                    isFirstRun = false;
-                }
-
                 tick(timePerBeat * trackData.beatsPerBar)
-
             }, timePerBeat);
 
             return () => clearInterval(id);
-
         }
-    }, [trackData]);
+    }, [isReadyToPlay]);
 
     useEffect(() => {
         console.log('chord changed')
         evaluatedChordRef.current = evaluatedChord;
 
-        const beats = beatsElementsRef.current;
-        const currentIndex = currentBeatIndexRef.current - 1 < 0 ? beats.length - 1 : currentBeatIndexRef.current - 1;
+        const currentIndex = currentBeatIndexRef.current - 1 < 0 ? beatsElementsRef.current.length - 1 : currentBeatIndexRef.current - 1;
 
         if (evaluatedChordVerionsRef.current != evaluatedChordRef.current?.version) {
-            if (beats[currentIndex].dataset.chord == evaluatedChordRef.current?.value) {
-                beats[currentIndex].classList.add("bg-green-800")
+            if (beatsElementsRef.current[currentIndex].dataset.chord == evaluatedChordRef.current?.value) {
+                beatsElementsRef.current[currentIndex].classList.add("bg-green-800")
             }
         }
 
@@ -113,6 +114,12 @@ export default function TrackPlayer(props: BarProps) {
     };
 
     function tick(timePerBar: number) {
+
+        if (beatsToSkip.current > 0) {
+            console.log('Beats to skip: ' + beatsToSkip.current)
+            beatsToSkip.current = beatsToSkip.current - 1
+            return;
+        }
 
         const overallBeatsCount = beatsElementsRef.current.length;
         const barsCount = barsElementsRef.current.length;
@@ -136,7 +143,10 @@ export default function TrackPlayer(props: BarProps) {
 
         currentBeatIndexRef.current = (currentBeatIndexRef.current + 1) % overallBeatsCount
 
+        console.log('currentBeatIndexRef: ' + currentBeatIndexRef.current)
+
         if (currentBeatIndexRef.current == overallBeatsCount - 1) {
+            //beatsToSkip.current = trackData.beatsPerBar;
             setIteration(iteration + 1);
         }
     }
@@ -144,7 +154,6 @@ export default function TrackPlayer(props: BarProps) {
     if (trackData.bars.length == 0) {
         return <></>
     }
-
 
     const generateBarsHtml = (bars: Bar[], useFakeBars: boolean, usePlaceholder: boolean) => {
 
@@ -166,18 +175,17 @@ export default function TrackPlayer(props: BarProps) {
 
     return (
         <div>
-      
             <div className="bars relative overflow-hidden h-57 ">
+                <div className="absolute top-5 left-0 right-0 flex justify-center z-20 text-teal">{countDownToStart > 0 ? <p>{countDownToStart}</p> : ""}</div>
                 <div className="absolute top-0 inset-x-0 h-18 w-full bg-gradient-to-b from-gray-900 pointer-events-none z-10"></div>
-            <style ref={animationKeyFramesStyleRef} />
-            <div ref={animationContainerRef}>
-                {generateBarsHtml(trackData.bars.slice(-1), true, iteration == 1)}
-                {generateBarsHtml(trackData.bars, false, false)}
-                {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
+                <style ref={animationKeyFramesStyleRef} />
+                <div ref={animationContainerRef}>
+                    {generateBarsHtml(trackData.bars.slice(-1), true, iteration == 1)}
+                    {generateBarsHtml(trackData.bars, false, false)}
+                    {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
                 </div>
                 <div className="absolute bottom-0 inset-x-0 h-18 w-full bg-gradient-to-b to-gray-900 pointer-events-none z-10"></div>
             </div>
-      
         </div>
     )
 }

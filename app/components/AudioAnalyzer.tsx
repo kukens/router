@@ -14,6 +14,7 @@ export default function AudioAnalyzer() {
     const [audioData, setAudioData] = useState<CurrentAudioData | null>(null);
     const [evaluatedChords, setEvaluatedChords] = useState<EvaluatedChord[]>([]);
     const { setEvaluatedChord } = useChord();
+    const { isAnalyzing, setIsAnalyzing } = useChord();
 
     const workerRef = useRef<Worker>(null);
     const audioCtxRef = useRef<AudioContext | null>(null);
@@ -36,10 +37,13 @@ export default function AudioAnalyzer() {
                 audio: true,
             });
 
+
             if (!isCurrent) {
                 stream.getTracks().forEach(track => track.stop());
                 return;
             }
+
+            console.log('approved')
 
             workerRef.current = new Worker(
                 new URL("~/features/audio/AudioAnalyzerWorker.tsx", import.meta.url),
@@ -78,6 +82,10 @@ export default function AudioAnalyzer() {
             workerRef.current.onmessage = (e: MessageEvent<AudioAnalyzerWorkerOut>) => {
 
                 if (e.data.type === "spectrum") {
+                    if (!isAnalyzing) {
+                        setIsAnalyzing(true);
+                    }
+
                     const analyzisResult = e.data.analysisResult;
                     if (diagnosticsEnabled) {
                         if (analyzisResult.audioData) setAudioData(analyzisResult.audioData);
@@ -97,6 +105,7 @@ export default function AudioAnalyzer() {
         };
 
         const cleanup = () => {
+            setIsAnalyzing(false);
 
             if (streamRef.current) {
                 streamRef.current.getTracks().forEach(track => {
