@@ -22,6 +22,7 @@ export default function TrackPlayer(props: BarProps) {
 
     const [isReadyToPlay, setIsReadyToPlay] = useState<boolean>(false);
 
+    const statusRef = useRef<string>("null");
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
     const animationContainerRef = useRef<HTMLDivElement>(null);
@@ -40,14 +41,17 @@ export default function TrackPlayer(props: BarProps) {
     }, []);
 
     useEffect(() => {
-        if (isAnalyzing && trackData.bars.length > 0) {
+        statusRef.current = `${isAnalyzing} + ${trackData.bars?.length}`;
 
+        if (isAnalyzing && trackData.bars.length > 0) {
+            console.log('isAnalyzing ' + isAnalyzing)
             const id = setInterval(() => {
                 setCountDownToStart(prevCount => prevCount - 1)
             }, 1000);
 
             return () => clearInterval(id);
         }
+
     }, [isAnalyzing, trackData]);
 
     useEffect(() => {
@@ -176,7 +180,7 @@ export default function TrackPlayer(props: BarProps) {
     return (
         <div>
             <div className="bars relative overflow-hidden h-57 ">
-                <div className="absolute top-5 left-0 right-0 flex justify-center z-20 text-teal">{countDownToStart > 0 ? <p>{countDownToStart}</p> : ""}</div>
+                <div className="absolute top-5 left-0 right-0 flex justify-center z-20 text-teal">{countDownToStart > 0 ? <p>{countDownToStart}</p> : ""} - {statusRef.current}</div>
                 <div className="absolute top-0 inset-x-0 h-18 w-full bg-gradient-to-b from-gray-900 pointer-events-none z-10"></div>
                 <style ref={animationKeyFramesStyleRef} />
                 <div ref={animationContainerRef}>
