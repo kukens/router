@@ -4,14 +4,14 @@ import { Button, Drawer, DrawerHeader, DrawerItems, ToggleSwitch } from "flowbit
 import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
 
-interface ChordChordSelectorProps {
+interface ChordSelectorDrawerProps {
     isOpen: boolean
     selectedChord: string;
     handleClose: () => void;
     handleSelect: (chordName: string, fill: boolean) => void;
 }
 
-export default function ChordSelector(props: ChordChordSelectorProps) {
+export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
 
     const [selectedChordType, setSelectedChordType] = useState("");
     const [activeChordType, setActiveChordType] = useState("major");

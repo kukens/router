@@ -53,7 +53,7 @@ export default function (props: ChallengeProps) {
       </Dropdown>
 
       {dificulty && instrument ? (
-        <Link className="m-5" to={`/challenge/start?difficulty=${dificulty}&instrument=${instrument}`}>
+        <Link className="m-5" to={`/quick-jam/start?difficulty=${dificulty}&instrument=${instrument}`}>
           <Button as="span" color="teal" pill> Start</Button>
         </Link>
       ) : (

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useChord } from '~/features/audio/ChordContext';
-import { difficultyLevels, instruments } from '~/components/Challenge';
+import { difficultyLevels, instruments } from '~/components/Jam';
 import { ACCORDION_CHORDS } from '~/data/accordionChords';
 import styles from '~/components/Bars.module.css';
 import type { ChordProgression } from '~/data/accordionChords';

@@ -24,6 +24,7 @@ export default function TrackPlayer(props: BarProps) {
 
     const [isReadyToPlay, setIsReadyToPlay] = useState(false);
 
+    const dividerRef = useRef<HTMLDivElement>(null);
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
     const animationContainerRef = useRef<HTMLDivElement>(null);
@@ -123,8 +124,12 @@ export default function TrackPlayer(props: BarProps) {
 
     function tick(timePerBar: number) {
 
-        if (beatsToSkip.current > 0) {
+        if (beatsToSkip.current > 0 && dividerRef.current ) {
             barsElementsRef.current[currentBarIndexRef.current].classList.remove(styles.active);
+
+            dividerRef.current.classList.add(styles.active);
+            dividerRef.current.style.animationDuration = `${timePerBar}ms`;
+
             beatsToSkip.current = beatsToSkip.current - 1
             return;
         }
@@ -163,13 +168,25 @@ export default function TrackPlayer(props: BarProps) {
         return <></>
     }
 
+
+    const getRef: any = (useFakeBars: boolean, usePlaceholder: boolean) => {
+        if (usePlaceholder) {
+            return dividerRef;
+        }
+
+        if (useFakeBars) {
+            return null;
+        }
+
+        return registerBars;
+    }
+
     const generateBarsHtml = (bars: Bar[], useFakeBars: boolean, usePlaceholder: boolean) => {
 
         return (
             bars.map((bar, barIndex) => (
-                <div key={barIndex} className={`${usePlaceholder ? "invisible" : ""} bar-wrapper flex items-center`}>
-                    <div ref={useFakeBars ? null : registerBars} className={`${styles['bar']} grid grid-cols-${trackData.beatsPerBar} gap-0 w-full p-1`}>
-
+                <div key={barIndex} className={`${usePlaceholder ? "opacity-25" : ""} bar-wrapper flex items-center`}>
+                    <div ref={getRef(useFakeBars, usePlaceholder)} className={`${styles['bar']} grid grid-cols-${trackData.beatsPerBar} gap-0 w-full p-1`}>
                         {bar.chords.map((beat, beatIndex) => (
                             <div key={beatIndex} ref={useFakeBars ? null : registerBeats} className={`${styles['beat']} ${barIndex == 0 ? "border-t-4 border-gray-400" : ""} ${beatIndex == 0 ? "rounded-l-sm" : ""} ${beatIndex == trackData.beatsPerBar - 1 ? "rounded-r-sm" : ""} h-16 bg-gray-500 p-5 m-px text-center`} data-chord={useFakeBars ? null : beat}>
                                 {(beatIndex == 0 || bar.chords[beatIndex - 1] != bar.chords[beatIndex]) && beat.replace("b", "♭").replace("#", "♯")}
@@ -193,9 +210,9 @@ export default function TrackPlayer(props: BarProps) {
                 <div className="absolute top-0 inset-x-0 h-18 w-full bg-gradient-to-b from-gray-900 pointer-events-none z-10"></div>
                 <style ref={animationKeyFramesStyleRef} />
                 <div ref={animationContainerRef}>
-                    {generateBarsHtml(trackData.bars.slice(-1), true, true)}
+                    {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}
                     {generateBarsHtml(trackData.bars, false, false)}
-                    {generateBarsHtml(trackData.bars.slice(-1), true, true)}            
+                    {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}            
                     {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
                 </div>
                 <div className="absolute bottom-0 inset-x-0 h-18 w-full bg-gradient-to-b to-gray-900 pointer-events-none z-10"></div>

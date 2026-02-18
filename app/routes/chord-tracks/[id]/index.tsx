@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useParams, Link }  from "react-router";
+import { useParams, Link } from "react-router";
 
 import type { TrackData } from '~/types/TrackData';
 import { Button } from "flowbite-react";
@@ -21,16 +21,8 @@ export default function Tracks() {
 
     return (
         <>
-            <div>
-                <Link key="back" className="m-5" to={`/`}> <Button as="span" color="teal" pill> ← Go Back</Button></Link>
+            <Link key="back" className="m-5" to={`/chord-tracks`}> <Button as="span" color="teal" pill> ← Go Back</Button></Link>
 
-
-                <h2 className="dark:text-white text-center">{trackData?.name}</h2>
-                <p className="dark:text-white text-center">Tempo: {trackData?.tempo} </p>
-
-                <Link className="m-5" to={`/tracks/${trackData?.id}/play`}><Button as="span" color="teal" pill >Play</Button></Link>
-                <Link className="m-5" to={`/tracks/${trackData?.id}/edit`}><Button as="span" color="teal" pill >Edit</Button></Link>
-            </div>
             <TrackDetails TrackData={trackData} />
         </>
     );

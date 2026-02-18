@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "flowbite-react";
-import Challenge from "~/components/Challenge"
+import Challenge from "~/components/Jam"
 import { Link } from "react-router";
 import { useSearchParams } from "react-router";
 

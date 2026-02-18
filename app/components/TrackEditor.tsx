@@ -2,19 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { TrackData, Bar } from "~/types/TrackData";
-import { Button, TextInput, Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
+import { Button, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router";
-import ChordSelector from "~/components/ChordSelector"
+import ChordSelectorDrawer from "~/components/ChordSelectorDrawer"
+import { HR } from "flowbite-react";
 
-interface ChordProgressionCreatorProps {
+interface TrackEditorProps {
     TrackData: TrackData | null
     Id: string
 }
 
-export default function ChordProgressionCreator(props: ChordProgressionCreatorProps) {
+export default function TrackEditor(props: TrackEditorProps) {
 
     const [trackName, setTrackName] = useState(props.TrackData?.name || "");
     const [beatsPerBar, setBeatsPerBar] = useState(4);
+    const [tags, setTags] = useState<string[]>([]);
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -46,22 +48,22 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
     };
 
     const saveTrack = () => {
+        const now = new Date().toISOString();
+
         const trackData: TrackData = {
             id: id,
             name: trackName,
             beatsPerBar: beatsPerBar,
             tempo: tempo,
             bars: bars,
-            loop: false
+            tags: tags,
+            loop: false,
+            createdAt: props.TrackData?.createdAt ?? now,
+            modifiedAt: now
         }
 
         localStorage.setItem(`trackData-${trackData.id}`, JSON.stringify(trackData));
-        navigate(`/tracks/${id}`);
-    };
-
-    const deleteTrack = () => {
-        localStorage.removeItem(`trackData-${id}`);
-        navigate('/');
+        navigate(`/chord-tracks/${id}`);
     };
 
     const updateChord = (barIndex: number, beatIndex: number, value: string, fill: boolean) => {
@@ -106,7 +108,8 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
                 </div>
             </div>
 
-            <Button color="teal" pill onClick={addBar}>Add Bar</Button>
+            <HR />
+
 
             <div className="space-y-6">
                 {bars?.map((bar, barIndex) => (
@@ -128,10 +131,18 @@ export default function ChordProgressionCreator(props: ChordProgressionCreatorPr
                 ))}
             </div>
 
-            <ChordSelector selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
+            <Button color="alternative" pill onClick={addBar}>Add Bar</Button>
 
+
+            <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
+
+            <HR />
+            <p>Tags</p>
+            <Button color="alternative" pill onClick={addBar}>Add tags</Button>
+
+            <HR />
             <Button onClick={saveTrack} color="teal" pill>Save</Button>
-            <Button onClick={deleteTrack} color="teal" pill>Delete</Button>
+
         </div>
     );
 }

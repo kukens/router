@@ -1,10 +1,13 @@
 export interface TrackData {
-  id: string;
-  name: string;
-  tempo: number;
-  beatsPerBar: number;
-  loop: boolean;
-  bars: Bar[];
+    id: string;
+    name: string;
+    tempo: number;
+    beatsPerBar: number;
+    loop: boolean;
+    bars: Bar[];
+    tags: string[];
+    createdAt?: string;
+    modifiedAt?: string;
 }
 
 export const EmptyTrackData: TrackData = {
@@ -14,8 +17,9 @@ export const EmptyTrackData: TrackData = {
     beatsPerBar: 0,
     loop: false,
     bars: [],
+    tags: [],
 }
 
 export interface Bar {
-  chords: string[];
+    chords: string[];
 }
