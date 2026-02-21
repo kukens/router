@@ -48,6 +48,17 @@ export default function TrackDetails(props: TrackDetailsProps) {
 
             <HR />
 
+            <div className="my-4">
+                <p className="dark:text-white">Tags</p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                    {props.TrackData?.tags?.map((t, i) => (
+                        <Button key={i} color="dark" pill>
+                            {t}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+
             <div className="bars relative overflow-hidden h-96">
                 <div className="slider-verticalx">
                     {props.TrackData?.bars.map((bar, i) => (

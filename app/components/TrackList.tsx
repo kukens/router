@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { TrackData } from "~/types/TrackData";
-import { Button, HR } from "flowbite-react";
+import type { TrackData } from "../types/TrackData";
+import { Button, HR, CloseIcon } from "flowbite-react";
 import { Link } from "react-router";
-import OrderingDrawer from "~/components/OrderingDrawer";
-import FilterDrawer from "~/components/FilterDrawer";
+import OrderingDrawer from "./OrderingDrawer";
+import FilterDrawer from "./FilterDrawer";
 
 export const orderBy: Record<string, string> = {
   1: "Recently played",
@@ -24,6 +24,7 @@ export default function TrackList() {
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterText, setFilterText] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     const tempTracks: TrackData[] = [];
@@ -82,22 +83,39 @@ export default function TrackList() {
       }
     };
 
-    // apply filter (case-insensitive name contains)
+    // apply filter (case-insensitive name contains) and tag filters
     const filtered = rawTracks.filter((t) => {
-      if (!filterText) return true;
-      return (t.name ?? "").toLowerCase().includes(filterText.toLowerCase());
+      if (filterText && !(t.name ?? "").toLowerCase().includes(filterText.toLowerCase())) return false;
+
+      if (selectedTags && selectedTags.length > 0) {
+        const trackTags = (t.tags || []).map(x => x.toLowerCase().trim());
+        // require that track contains any of the selected tags (case-insensitive OR semantics)
+        return selectedTags
+          .map(x => x.toLowerCase().trim())
+          .some((st) => trackTags.includes(st));
+      }
+
+      return true;
     });
 
     setTracks(sortTracks(filtered, selectedOrder));
     // reset visible count when ordering or filter changes
     setVisibleCount(2);
-  }, [rawTracks, selectedOrder, filterText]);
+  }, [rawTracks, selectedOrder, filterText, selectedTags]);
 
   const loadMore = () => {
     setVisibleCount((prev) => Math.min(prev + 2, tracks.length));
   };
 
   const allLoaded = visibleCount >= tracks.length;
+
+    const isFilterTextApplied = () => {
+        if (filterText?.length > 0){
+            return 1;
+        }
+
+        return 0;
+    }
 
   return (
     <div>
@@ -108,16 +126,19 @@ export default function TrackList() {
         <Button className="m-2" as="span" color="alternative" pill onClick={() => setIsOrderingOpen(true)}>
           Ordering
         </Button>
-        <Button
-          className="m-2"
-          as="span"
-          color={filterText ? "teal" : "alternative"}
-          pill
-          onClick={() => setIsFilterOpen(true)}
-        >
-          {filterText ? `Filter: ${filterText}` : "Filters"}
-        </Button>
-      </div>
+        <Button className="m-2" as="span" color="alternative" pill onClick={() => setIsFilterOpen(true)}>
+              {`Filters ${filterText || selectedTags.length > 0 ? selectedTags.length + isFilterTextApplied() : ""}`}
+              </Button>
+          </div>
+          <div className="flex gap-2">
+              {filterText &&
+                  <Button className="m-2" as="span" color="alternative" pill onClick={() => setFilterText("")}>Text: {filterText}  <CloseIcon /></Button>}
+
+              {selectedTags.length > 0 &&
+                  selectedTags.map(tag => <Button className="m-2" as="span" color="alternative" pill onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}  <CloseIcon /></Button>)
+              }
+          </div>
+
 
       <OrderingDrawer
         open={isOrderingOpen}
@@ -132,7 +153,9 @@ export default function TrackList() {
         onClose={() => setIsFilterOpen(false)}
         filterText={filterText}
         onChangeFilter={(v) => setFilterText(v)}
-        onClear={() => setFilterText("")}
+        onClear={() => { setFilterText(""); setSelectedTags([]); }}
+        selectedTags={selectedTags}
+        onChangeTags={(ts: string[]) => setSelectedTags(ts)}
       />
 
       {tracks.length === 0 && <p className="m-5 dark:text-white">No tracks found.</p>}

@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { TrackData, Bar } from "~/types/TrackData";
-import { Button, TextInput } from "flowbite-react";
-import { useNavigate } from "react-router";
+import { Button, TextInput, CloseIcon } from "flowbite-react";
+import TagSelectorDrawer from "~/components/TagSelectorDrawer"
 import ChordSelectorDrawer from "~/components/ChordSelectorDrawer"
+import { useNavigate } from "react-router";
 import { HR } from "flowbite-react";
 
 interface TrackEditorProps {
@@ -19,6 +20,7 @@ export default function TrackEditor(props: TrackEditorProps) {
     const [tags, setTags] = useState<string[]>([]);
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isTagsDrawerOpen, setIsTagsDrawerOpen] = useState(false);
 
     const [tempo, setTempo] = useState(props.TrackData?.tempo || 120);
     const [id, setId] = useState(props.Id || crypto.randomUUID());
@@ -35,6 +37,7 @@ export default function TrackEditor(props: TrackEditorProps) {
             setBeatsPerBar(props.TrackData.beatsPerBar)
             setTempo(props.TrackData.tempo)
             setId(props.Id)
+            setTags(props.TrackData.tags || [])
         }
     }, [props.TrackData]);
 
@@ -45,6 +48,14 @@ export default function TrackEditor(props: TrackEditorProps) {
 
     const addBar = () => {
         setBars((prev) => [...prev, { chords: new Array(beatsPerBar).fill('') }]);
+    };
+
+    const removeBar = (barIndex: number) => {
+        setBars(prev => prev.filter((_, idx) => idx !== barIndex))
+    };
+
+    const removeTag = (tag: string) => {
+        setTags(prev => prev.filter(_ => _ !== tag))
     };
 
     const saveTrack = () => {
@@ -114,18 +125,22 @@ export default function TrackEditor(props: TrackEditorProps) {
             <div className="space-y-6">
                 {bars?.map((bar, barIndex) => (
                     <div key={barIndex} className="space-y-2">
-                        <div className={`grid grid-cols-${beatsPerBar} gap-2`}>
+                        <div className={`grid grid-cols-${beatsPerBar + 1} gap-2`}>
                             {Array.from({ length: beatsPerBar }).map((_, beatIndex) => (
                                 <Button key={beatIndex} color="light"
-                                    onFocus={() => { 
+                                    onFocus={() => {
                                         setSelectedBarIndex(barIndex)
                                         setSelectedBeatIndex(beatIndex)
                                         setIsDrawerOpen(true)
                                         setSelectedChord(bars[barIndex].chords[beatIndex])
-                                        }
+                                    }
                                     }
                                 >{bars[barIndex].chords[beatIndex] || ""}</Button>
                             ))}
+
+                            <Button key={barIndex} color="red" outline onClick={() => removeBar(barIndex)}>
+                                <CloseIcon className="h-4 w-4" />
+                            </Button>
                         </div>
                     </div>
                 ))}
@@ -138,7 +153,18 @@ export default function TrackEditor(props: TrackEditorProps) {
 
             <HR />
             <p>Tags</p>
-            <Button color="alternative" pill onClick={addBar}>Add tags</Button>
+            <div className="flex flex-wrap gap-2 mb-4">
+                {tags?.map((tag, tagIndex) => (
+                    <Button key={tagIndex} color="dark" outline pill onClick={() => removeTag(tag)}>
+                        {tag}
+                        <CloseIcon />
+                    </Button>
+                ))}
+            </div>
+
+            <Button color="alternative" pill onClick={() => setIsTagsDrawerOpen(true)}>Add tags</Button>
+
+            <TagSelectorDrawer isOpen={isTagsDrawerOpen} selectedTags={tags} handleClose={() => setIsTagsDrawerOpen(false)} handleSave={(newTags) => { setTags(newTags); setIsTagsDrawerOpen(false); }} />
 
             <HR />
             <Button onClick={saveTrack} color="teal" pill>Save</Button>

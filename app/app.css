@@ -2,7 +2,7 @@
 @import "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
-@source inline("grid-cols-{1..4}");
+@source inline("grid-cols-{1..5}");
 
 
 @theme {
