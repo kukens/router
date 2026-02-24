@@ -1,22 +1,17 @@
-export interface ChordsChallenge {
-  difficulty: number;
-  description: string;
-  progressions: ChordProgression[];
-}
 
-export interface ChordProgression {
+export interface WorkOutTrack {
+  difficulty: number;
   name:string;
   chords: string[];
   description: string;
   tags: string[];
 }
 
-export const ACCORDION_CHORDS: ChordsChallenge[] = [
-  {
-    "difficulty": 1,
-    "description": "Simple diatonic harmony in Cor, focusing on the primary chords (I, IV, V) and the relative minor (vi). This is the foundation of most folk and pop music, relying on easily accessible buttons.",
-    "progressions": [
-      {
+
+export const WORKOUT_TRAKCS: WorkOutTrack[] = [
+
+    {
+        "difficulty": 1,
         "name": "The Four Chords",
         "chords": [
           "C",
@@ -31,7 +26,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Ballad"
         ]
       },
-      {
+    {
+        "difficulty": 1,
         "name": "Simple Rock/Pop",
         "chords": [
           "C",
@@ -45,7 +41,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Pop-Rock"
         ]
       },
-      {
+    {
+        "difficulty": 1,
         "name": "Waltz Pattern (I-IV-V)",
         "chords": [
           "G",
@@ -60,7 +57,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Alpine Folk"
         ]
       },
-      {
+    {
+        "difficulty": 1,
         "name": "Minor-Key Lament",
         "chords": [
           "Am",
@@ -75,7 +73,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Lament"
         ]
       },
-      {
+    {
+        "difficulty": 1,
         "name": "March/Shanty",
         "chords": [
           "F",
@@ -88,14 +87,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "March",
           "Sea Shanty"
         ]
-      }
-    ]
-  },
-  {
-    "difficulty": 2,
-    "description": "Introduces Dominant 7th chords (V7) for tension and release, and the simple 2-5-1 in aor key. The player begins to use the dedicated 7th chord row.",
-    "progressions": [
-      {
+      },
+        {
+            "difficulty": 2,
         "name": "Basic Blues in F",
         "chords": [
           "F",
@@ -110,7 +104,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Early Rock"
         ]
       },
-      {
+    {
+        "difficulty": 2,
         "name": "V-I Resolution",
         "chords": [
           "Dm",
@@ -125,7 +120,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Swing"
         ]
       },
-      {
+    {
+        "difficulty": 2,
         "name": "Musette Valse",
         "chords": [
           "Gm",
@@ -139,7 +135,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Continental Folk"
         ]
       },
-      {
+    {
+        "difficulty": 2,
         "name": "Tango Feel",
         "chords": [
           "Am",
@@ -154,7 +151,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Milonga"
         ]
       },
-      {
+    {
+        "difficulty": 2,
         "name": "Secondary Dominant (V/vi)",
         "chords": [
           "C",
@@ -165,16 +163,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         "description": "The A7 (V/vi) briefly pulls the ear toward A minor before the G7 brings it back to C.",
         "tags": [
           "Popular Songwriting",
-          "Classic Pop"
-        ]
-      }
-    ]
-  },
-  {
-    "difficulty": 3,
-    "description": "Incorporates basic modal interchange and secondary dominants that require quick, precise movement across theor, minor, and 7th chord rows, including the use of the diminished button.",
-    "progressions": [
-      {
+          "Classic Pop"]
+ },
+    {
+        "difficulty": 3,
         "name": "Tonicization of V",
         "chords": [
           "C",
@@ -188,7 +180,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Show Tunes"
         ]
       },
-      {
+    {
+        "difficulty": 3,
         "name": "Minor 2-5-1 (Simplified)",
         "chords": [
           "Fdim",
@@ -202,7 +195,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Minor Key Jazz"
         ]
       },
-      {
+    {
+        "difficulty": 3,
         "name": "Chromatic Bass Walk",
         "chords": [
           "C",
@@ -216,7 +210,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Advanced Pop"
         ]
       },
-      {
+    {
+        "difficulty": 3,
         "name": "Cannonball's Changes",
         "chords": [
           "C",
@@ -230,7 +225,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Cool Jazz"
         ]
       },
-      {
+    {
+        "difficulty": 3,
         "name": "Minor Key 2-5-1",
         "chords": [
           "Bdim",
@@ -244,13 +240,9 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Flamenco"
         ]
       }
-    ]
-  },
-  {
+,
+{
     "difficulty": 4,
-    "description": "Focuses on Modulating 2-5-1 sequences, frequent use of the Diminished 7th button, and chromaticism. Requires the player to jump keys frequently and utilize the diminished button as a passing chord.",
-    "progressions": [
-      {
         "name": "Descending 7ths (Chromatic)",
         "chords": [
           "C",
@@ -265,7 +257,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Vaudeville"
         ]
       },
-      {
+    {
+        "difficulty": 4,
         "name": "Diminished as V/vi",
         "chords": [
           "C",
@@ -279,7 +272,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Melodrama"
         ]
       },
-      {
+    {
+        "difficulty": 4,
         "name": "Modulating Sequence",
         "chords": [
           "C",
@@ -294,7 +288,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Jazz Waltz"
         ]
       },
-      {
+    {
+        "difficulty": 4,
         "name": "Extended 2-5-1",
         "chords": [
           "Dm",
@@ -308,7 +303,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Modern Jazz"
         ]
       },
-      {
+    {
+        "difficulty": 4,
         "name": "Harmonic Minor Feel",
         "chords": [
           "Am",
@@ -321,14 +317,10 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Gypsy Jazz",
           "East European Folk"
         ]
-      }
-    ]
-  },
-  {
-    "difficulty": 5,
-    "description": "Advanced jazz harmony requiring high-speed button navigation, including Tritone Substitution (subV7 to I) and non-functional chromatic movement. The player must fluidly switch between widely spaced buttons.",
-    "progressions": [
-      {
+      },
+
+    {
+        "difficulty": 5,
         "name": "Tritone Sub (2-subV-I)",
         "chords": [
           "Dm",
@@ -342,7 +334,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Post-Bop"
         ]
       },
-      {
+    {
+        "difficulty": 5,
         "name": "Backdoor Progression",
         "chords": [
           "Gm",
@@ -356,7 +349,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Modal Jazz"
         ]
       },
-      {
+    {
+        "difficulty": 5,
         "name": "Chromatic Mediant Skip",
         "chords": [
           "C",
@@ -371,7 +365,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Progressive Rock"
         ]
       },
-      {
+    {
+        "difficulty": 5,
         "name": "Diminished Chain",
         "chords": [
           "Gdim",
@@ -385,7 +380,8 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
           "Dissonant Jazz"
         ]
       },
-      {
+    {
+        "difficulty": 5,
         "name": "Vamp with Tonal Ambiguity",
         "chords": [
           "Em",
@@ -400,5 +396,3 @@ export const ACCORDION_CHORDS: ChordsChallenge[] = [
         ]
       }
     ]
-  }
-]

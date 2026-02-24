@@ -13,11 +13,11 @@ export default function StartChallenge() {
     const instrument = searchParams.get("instrument") ?? "";
     const difficulty = searchParams.get("difficulty") ?? "";
 
-  return (
-    <main className="">
-      <Link className="m-5" to="/"><Button className="m-5 mb-10" as="span" color="teal" pill> ← Go Back</Button></Link>
+    return (
+        <main className="">
+            <Link className="m-5" to="/"><Button className="m-5 mb-10" as="span" color="teal" pill> ← Go Back</Button></Link>
 
-          <Challenge instrument={instrument} difficulty={difficulty} />
-    </main>
-  );
+            <Challenge />
+        </main>
+    );
 }
