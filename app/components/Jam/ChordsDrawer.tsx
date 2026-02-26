@@ -44,14 +44,14 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
 
     useEffect(() => {
         let baseTracks = WORKOUT_TRAKCS;
-        
+
         // Filter tracks based on selected tags
         if (props.selectedTags && props.selectedTags.length > 0) {
-            baseTracks = baseTracks.filter(track => 
+            baseTracks = baseTracks.filter(track =>
                 props.selectedTags!.some(tag => track.tags.includes(tag))
             );
         }
-        
+
         // Filter tracks based on selected difficulty levels
         if (props.selectedDifficultyLevels && props.selectedDifficultyLevels.length > 0) {
             const difficultyMap: Record<string, number> = {
@@ -64,12 +64,12 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
             const selectedNumbers = props.selectedDifficultyLevels
                 .map(level => difficultyMap[level])
                 .filter(n => !isNaN(n));
-            
-            baseTracks = baseTracks.filter(track => 
+
+            baseTracks = baseTracks.filter(track =>
                 selectedNumbers.includes(track.difficulty)
             );
         }
-        
+
         // Get unique chords from filtered tracks
         const availableChordsList = [...new Set(baseTracks.flatMap(item => item.chords))];
         setAvailableChords(availableChordsList);
@@ -84,16 +84,19 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
         <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom" >
             <DrawerHeader title="Select chord" titleIcon={() => <></>} />
             <DrawerItems>
+                <p>Select scale</p>
                 <div className="flex m-5 flex-wrap gap-2">
-                    
-                    {CHORDS_DATA.map((chordType, index) => (
-                        <Button key={index} color={getChordTypeButtonColor(chordType.name)} pill onClick={() => handleChordTypeSelect(chordType.name)}>
+
+                    {CHORDS_DATA.map((chordType) => (
+                        <Button key={chordType.name} color={getChordTypeButtonColor(chordType.name)} pill onClick={() => handleChordTypeSelect(chordType.name)}>
                             {chordType.name}
                         </Button>
                     ))}
                 </ div>
 
                 <HR />
+
+                <p>Select chords</p>
                 <div className="flex m-5 flex-wrap gap-2">
                     {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
                         chordType.chords.filter(chord => availableChords.includes(chord.name)).map(chord => (
@@ -104,6 +107,7 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
                     ))}
                 </ div>
             </DrawerItems>
+
             <HR />
             <div className="flex m-5 flex-wrap gap-2">
                 <Button color="teal" pill onClick={() => props.handleApply([])}>

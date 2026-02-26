@@ -76,7 +76,7 @@ export default function TagsDrawer(props: TagsDrawerProps) {
 
     return (
         <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom">
-            <DrawerHeader title="Filter tracks" />
+            <DrawerHeader title="Select Tags" />
             <DrawerItems>
                 <div className="p-4">
                     <TextInput
@@ -89,6 +89,7 @@ export default function TagsDrawer(props: TagsDrawerProps) {
                 </div>
             </DrawerItems>
             <HR />
+                  <p>Select tags</p>
             <div className="m-5" style={{ height: '40vh', overflowY: 'auto' }}>
                 <div className="flex flex-wrap gap-2">
                     {filteredTags.map((value) => (

@@ -21,6 +21,7 @@ export default function () {
     const [selectedDifficultyLevels, setSelectedDifficultyLevels] = useState<string[]>([]);
     const [isItemsDrawerOpen, setIsItemsDrawerOpen] = useState(false);
     const [excludedItems, setExcludedItems] = useState<string[]>([]);
+    const [reorderedFilteredItems, setReorderedFilteredItems] = useState<string[]>([]);
 
 
     const RemoveFilterItem = (value: string, setStateAction: Dispatch<SetStateAction<string[]>>) => {
@@ -62,7 +63,22 @@ export default function () {
         });
     }, [selectedChords, selectedTags, selectedDifficultyNumbers]);
 
-    const finalFilteredItems = useMemo(() => filteredItems.filter(i => !excludedItems.includes(i.name)), [filteredItems, excludedItems]);
+    const finalFilteredItems = useMemo(() => {
+        const base = filteredItems;
+
+        // Apply ordering first (order is tracked over the full filtered list)
+        const ordered = reorderedFilteredItems.length > 0
+            ? [
+                ...reorderedFilteredItems
+                    .map(itemName => base.find(item => item.name === itemName))
+                    .filter((item): item is (typeof base)[number] => Boolean(item)),
+                ...base.filter(item => !reorderedFilteredItems.includes(item.name)),
+            ]
+            : base;
+
+        // Then apply exclusions
+        return ordered.filter(i => !excludedItems.includes(i.name));
+    }, [filteredItems, excludedItems, reorderedFilteredItems]);
 
 
     return (
@@ -104,10 +120,17 @@ export default function () {
             }
 
           
+            {finalFilteredItems.length === 0 && (
+                <p className="m-5" >
+                    No items found
+                </p>
+            )}
 
-            <Button className="m-5" as="span" color="light" pill onClick={() => setIsItemsDrawerOpen(true)}>
-                { (selectedChords.length > 0 || selectedTags.length > 0 || selectedDifficultyLevels.length > 0) ? `${finalFilteredItems.length} items found` : `${WORKOUT_TRAKCS.length} items found` }
-            </Button>
+            {finalFilteredItems.length > 0 && (
+                        <Button className="m-5" as="span" color="light" pill onClick={() => setIsItemsDrawerOpen(true)}>
+                            {`${finalFilteredItems.length} items found`}
+                        </Button>
+            )}
 
             <Button className="m-5" as="span" color="teal" pill onClick={() => console.log(finalFilteredItems.map(i => i.name))}>Start Workout</Button>
 
@@ -116,7 +139,18 @@ export default function () {
             <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
 
             <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
-            <FilteredItemsDrawer isOpen={isItemsDrawerOpen} handleClose={() => setIsItemsDrawerOpen(false)} selected={finalFilteredItems.map(i => i.name)} handleApply={(value) => { setExcludedItems(value); setIsItemsDrawerOpen(false); }} />
+            <FilteredItemsDrawer 
+                isOpen={isItemsDrawerOpen} 
+                handleClose={() => setIsItemsDrawerOpen(false)} 
+                items={filteredItems.map(i => i.name)}
+                excluded={excludedItems}
+                handleApply={(excluded, reorderedItems) => { 
+                    setExcludedItems(excluded); 
+                    setReorderedFilteredItems(reorderedItems);
+                    setIsItemsDrawerOpen(false); 
+                }} 
+                orderedItems={reorderedFilteredItems}
+            />
         </div>
     );
 }
