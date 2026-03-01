@@ -8,8 +8,9 @@ import DifficultyDrawer, { difficultyLevels } from "./Jam/DifficultyDrawer";
 import TagsDrawer from "./Jam/TagsDrawer";
 import ChordsDrawer from "./Jam/ChordsDrawer";
 import FilteredItemsDrawer from "./Jam/FIlteredItemsDrawer";
-import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
+import { WORKOUT_TRAKCS, type WorkOutTrack } from '~/data/workOutTracks';
 import { useMemo } from 'react';
+import { Link } from 'react-router';
 
 export default function () {
 
@@ -20,27 +21,27 @@ export default function () {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [selectedDifficultyLevels, setSelectedDifficultyLevels] = useState<string[]>([]);
     const [isItemsDrawerOpen, setIsItemsDrawerOpen] = useState(false);
-    const [excludedItems, setExcludedItems] = useState<string[]>([]);
-    const [reorderedFilteredItems, setReorderedFilteredItems] = useState<string[]>([]);
+    const [excludedItems, setExcludedItems] = useState<number[]>([]);
+    const [reorderedFilteredItems, setReorderedFilteredItems] = useState<number[]>([]);
 
 
     const RemoveFilterItem = (value: string, setStateAction: Dispatch<SetStateAction<string[]>>) => {
         setStateAction((prev) =>
-            prev.includes(value)? prev.filter(i => i !== value) : [...prev, value]
+            prev.includes(value) ? prev.filter(i => i !== value) : [...prev, value]
         );
     }
 
     const selectedDifficultyNumbers = useMemo(() => {
         // map selected difficulty level labels back to numeric keys
-        const map = Object.entries(difficultyLevels).reduce<Record<string,string>>((acc, [k, v]) => {
+        const map = Object.entries(difficultyLevels).reduce<Record<string, string>>((acc, [k, v]) => {
             acc[v] = k;
             return acc;
-        }, {} as Record<string,string>);
+        }, {} as Record<string, string>);
 
         return selectedDifficultyLevels.map(l => Number(map[l])).filter(n => !Number.isNaN(n));
     }, [selectedDifficultyLevels]);
 
-    const filteredItems = useMemo(() => {
+    const filteredItems = useMemo<WorkOutTrack[]>(() => {
         return WORKOUT_TRAKCS.filter(item => {
             // chords: item must contain ALL selectedChords (AND)
             if (selectedChords.length > 0) {
@@ -63,21 +64,21 @@ export default function () {
         });
     }, [selectedChords, selectedTags, selectedDifficultyNumbers]);
 
-    const finalFilteredItems = useMemo(() => {
-        const base = filteredItems;
+    const finalFilteredItems = useMemo<WorkOutTrack[]>(() => {
+        const base: WorkOutTrack[] = filteredItems;
 
         // Apply ordering first (order is tracked over the full filtered list)
-        const ordered = reorderedFilteredItems.length > 0
+        const ordered: WorkOutTrack[] = reorderedFilteredItems.length > 0
             ? [
                 ...reorderedFilteredItems
-                    .map(itemName => base.find(item => item.name === itemName))
+                    .map(itemId => base.find(item => item.id === itemId))
                     .filter((item): item is (typeof base)[number] => Boolean(item)),
-                ...base.filter(item => !reorderedFilteredItems.includes(item.name)),
+                ...base.filter(item => !reorderedFilteredItems.includes(item.id)),
             ]
             : base;
 
         // Then apply exclusions
-        return ordered.filter(i => !excludedItems.includes(i.name));
+        return ordered.filter(i => !excludedItems.includes(i.id));
     }, [filteredItems, excludedItems, reorderedFilteredItems]);
 
 
@@ -119,7 +120,7 @@ export default function () {
                 <div className="flex gap-2"> <Button className="m-2" as="span" color="alternative" pill>Any</Button></ div>
             }
 
-          
+
             {finalFilteredItems.length === 0 && (
                 <p className="m-5" >
                     No items found
@@ -127,28 +128,30 @@ export default function () {
             )}
 
             {finalFilteredItems.length > 0 && (
-                        <Button className="m-5" as="span" color="light" pill onClick={() => setIsItemsDrawerOpen(true)}>
-                            {`${finalFilteredItems.length} items found`}
-                        </Button>
+                <Button className="m-5" as="span" color="light" pill onClick={() => setIsItemsDrawerOpen(true)}>
+                    {`${finalFilteredItems.length} items found`}
+                </Button>
             )}
 
-            <Button className="m-5" as="span" color="teal" pill onClick={() => console.log(finalFilteredItems.map(i => i.name))}>Start Workout</Button>
+            <Link to="/quick-jam/start" state={{ WorkOutTracks: finalFilteredItems }}>
+                <Button className="m-5" as="span" color="teal" pill onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
+            </Link>
 
             <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
 
             <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
 
             <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
-            <FilteredItemsDrawer 
-                isOpen={isItemsDrawerOpen} 
-                handleClose={() => setIsItemsDrawerOpen(false)} 
-                items={filteredItems.map(i => i.name)}
+            <FilteredItemsDrawer
+                isOpen={isItemsDrawerOpen}
+                handleClose={() => setIsItemsDrawerOpen(false)}
+                items={filteredItems.map(i => i.id)}
                 excluded={excludedItems}
-                handleApply={(excluded, reorderedItems) => { 
-                    setExcludedItems(excluded); 
+                handleApply={(excluded, reorderedItems) => {
+                    setExcludedItems(excluded);
                     setReorderedFilteredItems(reorderedItems);
-                    setIsItemsDrawerOpen(false); 
-                }} 
+                    setIsItemsDrawerOpen(false);
+                }}
                 orderedItems={reorderedFilteredItems}
             />
         </div>

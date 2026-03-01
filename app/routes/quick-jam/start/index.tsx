@@ -4,21 +4,27 @@ import AudioAnalyzer from '~/components/AudioAnalyzer';
 import { ChordProvider } from '~/features/audio/ChordContext';
 import { Button } from "flowbite-react";
 import { Link, useSearchParams } from "react-router";
+import WorkOutTrackPlayer from '~/components/Jam/WorkOutTrackPlayer';
+import { useLocation } from 'react-router';
+import type { WorkOutTrack } from '~/data/workOutTracks';
 
+interface WorkOutTracksState {
+  WorkOutTracks: WorkOutTrack[];
+}
 
 export default function PlayTrack() {
 
- const [searchParams] = useSearchParams();
+const location = useLocation();
+const locationState = location.state as WorkOutTracksState;
 
-const instrument = searchParams.get("instrument") ?? "";
-const difficulty = searchParams.get("difficulty") ?? "";
+console.log(locationState.WorkOutTracks)
 
   return (
       <>
-          <Link key="back" className="m-5" to={`/quick-jam?instrument=${instrument}&difficulty=${difficulty}`}> <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button></Link> 
+       <Link key="back" className="m-5" to={`/quick-jam`}> <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button></Link> 
 
         <ChordProvider>
-        
+          <WorkOutTrackPlayer WorkOutTracks={locationState.WorkOutTracks} />
           <AudioAnalyzer />
         </ChordProvider>
       </>

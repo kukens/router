@@ -1,5 +1,5 @@
-
 export interface WorkOutTrack {
+  id: number;
   difficulty: number;
   name:string;
   chords: string[];
@@ -7,10 +7,9 @@ export interface WorkOutTrack {
   tags: string[];
 }
 
-
 export const WORKOUT_TRAKCS: WorkOutTrack[] = [
-
     {
+        "id": 1,
         "difficulty": 1,
         "name": "The Four Chords",
         "chords": [
@@ -27,6 +26,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 2,
         "difficulty": 1,
         "name": "Simple Rock/Pop",
         "chords": [
@@ -42,6 +42,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 3,
         "difficulty": 1,
         "name": "Waltz Pattern (I-IV-V)",
         "chords": [
@@ -58,6 +59,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 4,
         "difficulty": 1,
         "name": "Minor-Key Lament",
         "chords": [
@@ -74,6 +76,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 5,
         "difficulty": 1,
         "name": "March/Shanty",
         "chords": [
@@ -89,6 +92,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
         {
+            "id": 6,
             "difficulty": 2,
         "name": "Basic Blues in F",
         "chords": [
@@ -105,6 +109,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 7,
         "difficulty": 2,
         "name": "V-I Resolution",
         "chords": [
@@ -121,6 +126,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 8,
         "difficulty": 2,
         "name": "Musette Valse",
         "chords": [
@@ -136,6 +142,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 9,
         "difficulty": 2,
         "name": "Tango Feel",
         "chords": [
@@ -152,6 +159,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 10,
         "difficulty": 2,
         "name": "Secondary Dominant (V/vi)",
         "chords": [
@@ -163,9 +171,11 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         "description": "The A7 (V/vi) briefly pulls the ear toward A minor before the G7 brings it back to C.",
         "tags": [
           "Popular Songwriting",
-          "Classic Pop"]
- },
+          "Classic Pop"
+        ]
+      },
     {
+        "id": 11,
         "difficulty": 3,
         "name": "Tonicization of V",
         "chords": [
@@ -181,6 +191,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 12,
         "difficulty": 3,
         "name": "Minor 2-5-1 (Simplified)",
         "chords": [
@@ -196,6 +207,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 13,
         "difficulty": 3,
         "name": "Chromatic Bass Walk",
         "chords": [
@@ -211,6 +223,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 14,
         "difficulty": 3,
         "name": "Cannonball's Changes",
         "chords": [
@@ -226,6 +239,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 15,
         "difficulty": 3,
         "name": "Minor Key 2-5-1",
         "chords": [
@@ -239,9 +253,9 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
           "Bossa Nova",
           "Flamenco"
         ]
-      }
-,
-{
+      },
+    {
+    "id": 16,
     "difficulty": 4,
         "name": "Descending 7ths (Chromatic)",
         "chords": [
@@ -258,6 +272,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 17,
         "difficulty": 4,
         "name": "Diminished as V/vi",
         "chords": [
@@ -273,6 +288,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 18,
         "difficulty": 4,
         "name": "Modulating Sequence",
         "chords": [
@@ -289,6 +305,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 19,
         "difficulty": 4,
         "name": "Extended 2-5-1",
         "chords": [
@@ -304,6 +321,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 20,
         "difficulty": 4,
         "name": "Harmonic Minor Feel",
         "chords": [
@@ -320,6 +338,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
       },
 
     {
+        "id": 21,
         "difficulty": 5,
         "name": "Tritone Sub (2-subV-I)",
         "chords": [
@@ -335,6 +354,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 22,
         "difficulty": 5,
         "name": "Backdoor Progression",
         "chords": [
@@ -350,6 +370,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 23,
         "difficulty": 5,
         "name": "Chromatic Mediant Skip",
         "chords": [
@@ -366,6 +387,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 24,
         "difficulty": 5,
         "name": "Diminished Chain",
         "chords": [
@@ -381,6 +403,7 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
         ]
       },
     {
+        "id": 25,
         "difficulty": 5,
         "name": "Vamp with Tonal Ambiguity",
         "chords": [
@@ -395,4 +418,4 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
           "Impressionism"
         ]
       }
-    ]
+    ];

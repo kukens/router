@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "flowbite-react";
-import Challenge from "~/components/Jam"
+import Jam from "~/components/Jam"
 import { Link } from "react-router";
 import { useSearchParams } from "react-router";
 
@@ -17,7 +17,7 @@ export default function StartChallenge() {
         <main className="">
             <Link className="m-5" to="/"><Button className="m-5 mb-10" as="span" color="teal" pill> ← Go Back</Button></Link>
 
-            <Challenge />
+            <Jam />
         </main>
     );
 }

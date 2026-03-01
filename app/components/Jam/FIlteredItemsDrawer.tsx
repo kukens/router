@@ -9,22 +9,22 @@ import { DotsVertical } from "flowbite-react-icons/outline";
 
 interface FilteredItemsDrawerProps {
     isOpen: boolean
-    items: string[] // all item names in the drawer (including excluded)
-    excluded: string[] // currently excluded item names
+    items: number[] // all item ids in the drawer (including excluded)
+    excluded: number[] // currently excluded item ids
     handleClose: () => void;
     // on apply we return array of excluded item names and the new order
-    handleApply: (excludedNames: string[], newOrder: string[]) => void;
-    orderedItems: string[] // the current order of items
+    handleApply: (excludedIds: number[], newOrder: number[]) => void;
+    orderedItems: number[] // the current order of items
 }
 
 export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
-    const [visibleItems, setVisibleItems] = useState<string[]>(props.items);
-    const [orderedItems, setOrderedItems] = useState<string[]>(props.items);
-    const [draggedItem, setDraggedItem] = useState<string | null>(null);
+    const [visibleItems, setVisibleItems] = useState<number[]>(props.items);
+    const [orderedItems, setOrderedItems] = useState<number[]>(props.items);
+    const [draggedItem, setDraggedItem] = useState<number | null>(null);
     const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(null);
 
     const listContainerRef = useRef<HTMLDivElement | null>(null);
-    const dragStateRef = useRef<{ itemName: string; pointerId: number } | null>(null);
+    const dragStateRef = useRef<{ itemId: number; pointerId: number } | null>(null);
     const placeholderIndexRef = useRef<number | null>(null);
 
     const lastClientYRef = useRef<number | null>(null);
@@ -40,29 +40,30 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
         setOrderedItems([...pruned, ...missing]);
     }, [props.isOpen, props.items, props.excluded, props.orderedItems]);
 
-    const toggleItem = (name: string) => {
-        setVisibleItems(prev => prev.includes(name) ? prev.filter(i => i !== name) : [...prev, name]);
+    const toggleItem = (id: number) => {
+        setVisibleItems(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
     }
 
     const onApply = () => {
-        const excluded = props.items.filter(name => !visibleItems.includes(name));
+        const excluded = props.items.filter(id => !visibleItems.includes(id));
         props.handleApply(excluded, orderedItems);
     }
 
-    const computePlaceholderIndex = (clientY: number, draggingName: string) => {
+    const computePlaceholderIndex = (clientY: number, draggingId: number) => {
         const container = listContainerRef.current;
         if (!container) return;
 
-        const itemElements = Array.from(container.querySelectorAll<HTMLElement>('[data-track-name]'));
-        const visibleItemElements = itemElements.filter(el => el.getAttribute('data-track-name') !== draggingName);
+        const itemElements = Array.from(container.querySelectorAll<HTMLElement>('[data-track-id]'));
+        const visibleItemElements = itemElements.filter(el => Number(el.getAttribute('data-track-id')) !== draggingId);
 
         for (let i = 0; i < visibleItemElements.length; i++) {
             const rect = visibleItemElements[i].getBoundingClientRect();
             const midY = rect.top + rect.height / 2;
             if (clientY < midY) {
-                const name = visibleItemElements[i].getAttribute('data-track-name');
-                if (!name) return;
-                const idx = orderedItems.indexOf(name);
+                const idAttr = visibleItemElements[i].getAttribute('data-track-id');
+                if (!idAttr) return;
+                const id = Number(idAttr);
+                const idx = orderedItems.indexOf(id);
                 const nextIndex = idx === -1 ? null : idx;
                 placeholderIndexRef.current = nextIndex;
                 setPlaceholderIndex(nextIndex);
@@ -74,15 +75,15 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
         setPlaceholderIndex(orderedItems.length);
     };
 
-    const finalizeReorder = (draggingName: string, insertIndex: number | null) => {
+    const finalizeReorder = (draggingId: number, insertIndex: number | null) => {
         if (insertIndex === null) return;
-        const from = orderedItems.indexOf(draggingName);
+        const from = orderedItems.indexOf(draggingId);
         if (from === -1) return;
 
         const next = [...orderedItems];
         next.splice(from, 1);
         const adjusted = from < insertIndex ? insertIndex - 1 : insertIndex;
-        next.splice(adjusted, 0, draggingName);
+        next.splice(adjusted, 0, draggingId);
         setOrderedItems(next);
     };
 
@@ -110,7 +111,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
             const speed = autoScrollSpeedRef.current;
             if (speed !== 0) {
                 container.scrollTop += speed;
-                computePlaceholderIndex(clientY, dragState.itemName);
+                computePlaceholderIndex(clientY, dragState.itemId);
             }
 
             autoScrollRafRef.current = requestAnimationFrame(tick);
@@ -147,15 +148,15 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
         }
     };
 
-    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, itemName: string) => {
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, itemId: number) => {
         if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
         e.preventDefault();
         e.currentTarget.setPointerCapture(e.pointerId);
 
-        dragStateRef.current = { itemName, pointerId: e.pointerId };
-        setDraggedItem(itemName);
+        dragStateRef.current = { itemId, pointerId: e.pointerId };
+        setDraggedItem(itemId);
         lastClientYRef.current = e.clientY;
-        computePlaceholderIndex(e.clientY, itemName);
+        computePlaceholderIndex(e.clientY, itemId);
         updateAutoScrollSpeed(e.clientY);
 
         const onMove = (ev: PointerEvent) => {
@@ -163,7 +164,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
             if (ev.pointerId !== dragStateRef.current.pointerId) return;
             ev.preventDefault();
             lastClientYRef.current = ev.clientY;
-            computePlaceholderIndex(ev.clientY, dragStateRef.current.itemName);
+            computePlaceholderIndex(ev.clientY, dragStateRef.current.itemId);
             updateAutoScrollSpeed(ev.clientY);
         };
 
@@ -171,8 +172,8 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
             if (!dragStateRef.current) return;
             if (ev.pointerId !== dragStateRef.current.pointerId) return;
 
-            const { itemName: draggingName } = dragStateRef.current;
-            finalizeReorder(draggingName, placeholderIndexRef.current);
+            const { itemId: draggingId } = dragStateRef.current;
+            finalizeReorder(draggingId, placeholderIndexRef.current);
 
             dragStateRef.current = null;
             setDraggedItem(null);
@@ -191,16 +192,13 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
         window.addEventListener('pointercancel', onUp);
     };
 
-    const handleDragOver = undefined;
-    const handleDrop = undefined;
-
-    const onClear = () => {
+    const resetOrder = () => {
         // exclude none (keep all)
         props.handleApply([], orderedItems);
     }
 
-    const getTrackData = (trackName: string) => {
-        return WORKOUT_TRAKCS.find(track => track.name === trackName);
+    const getTrackData = (trackId: number) => {
+        return WORKOUT_TRAKCS.find(track => track.id === trackId);
     }
 
     return (
@@ -213,29 +211,29 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                         className="space-y-2 overflow-y-auto max-h-[calc(60vh-120px)]"
                         style={draggedItem ? { touchAction: 'none' } : undefined}
                     >
-                        {orderedItems.map((trackName, index) => {
-                            const trackData = getTrackData(trackName);
-                            const isVisible = visibleItems.includes(trackName);
-                            const isDragged = draggedItem === trackName;
+                        {orderedItems.map((trackId, index) => {
+                            const trackData = getTrackData(trackId);
+                            const isVisible = visibleItems.includes(trackId);
+                            const isDragged = draggedItem === trackId;
 
                             return (
-                                <div key={trackName}>
+                                <div key={trackId}>
                                     {placeholderIndex === index && (
                                         <div className="h-2 bg-teal-500 rounded-full mx-3 my-1 opacity-75 animate-pulse"></div>
                                     )}
                                     <div 
-                                        data-track-name={trackName} 
+                                        data-track-id={trackId} 
                                         className={`flex justify-center items-center border-1 border-gray-700 rounded-2xl p-3 transition-all duration-200 ${
                                             isDragged ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
                                         }`}
                                     >
-                                        <div onPointerDown={(e) => handlePointerDown(e, trackName)} style={{ touchAction: 'none' }}>
+                                        <div onPointerDown={(e) => handlePointerDown(e, trackId)} style={{ touchAction: 'none' }}>
                                             <DotsVertical size={35} />
                                         </div>
                                         <div className="grow mx-2">
                                             <Label htmlFor={`select-${index}`}>
                                                 <span className="text-gray-200 p-2">
-                                                    {trackName}
+                                                    {trackData?.name ?? String(trackId)}
                                                 </span>
                                                   {trackData && (
                                                 <div >
@@ -249,7 +247,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                         </div>
                                         <div className="">
                                             <Checkbox color="teal" className="h-6 w-6" id={`select-${index}`} defaultChecked checked={isVisible}
-                                                onChange={(e) => { e.stopPropagation(); toggleItem(trackName); }} />
+                                                onChange={(e) => { e.stopPropagation(); toggleItem(trackId); }} />
                                         </div>
 
                                     </div>
@@ -266,7 +264,8 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
             <HR />
 
             <div className="flex m-5 flex-wrap gap-2">
-                <Button color="teal" pill onClick={onApply}>Close</Button>
+                <Button color="teal" pill onClick={resetOrder}>Reset order</Button>
+                <Button color="teal" pill onClick={onApply}>Apply</Button>
             </div>
         </Drawer>
     );

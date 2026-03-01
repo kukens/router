@@ -8,11 +8,11 @@ import styles from '~/components/Bars.module.css';
 import { EmptyTrackData } from '~/types/TrackData';
 import type { Bar, TrackData } from '~/types/TrackData';
 
-interface BarProps {
-    id: string
+interface TrackPlayerProps {
+    TrackData: TrackData | null
 }
 
-export default function TrackPlayer(props: BarProps) {
+export default function TrackPlayer(props: TrackPlayerProps) {
 
     const { evaluatedChord, isAnalyzing } = useChord();
 
@@ -40,9 +40,10 @@ export default function TrackPlayer(props: BarProps) {
     const beatsToSkip = useRef(0);
 
     useEffect(() => {
-        const trackDataFromLocalStorage = JSON.parse(localStorage.getItem(`trackData-${props.id}`) ?? "") as TrackData;
-        setTrackData(trackDataFromLocalStorage)
-    }, []);
+        if (props.TrackData) {
+            setTrackData(props.TrackData)
+        }
+    }, [props.TrackData]);
 
     useEffect(() => {
         if (isAnalyzing && trackData.bars.length > 0) {
