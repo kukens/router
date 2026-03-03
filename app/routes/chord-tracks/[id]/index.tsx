@@ -5,7 +5,7 @@ import { useParams, Link } from "react-router";
 
 import type { TrackData } from '~/types/TrackData';
 import { Button } from "flowbite-react";
-import TrackDetails from '~/components/TrackDetails';
+import TrackDetails from '~/components/chordTracks/TrackDetails';
 
 export default function Tracks() {
 

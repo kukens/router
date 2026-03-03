@@ -4,10 +4,10 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Button } from "flowbite-react";
 import { HR } from "flowbite-react";
 import { useState, useEffect } from 'react';
-import DifficultyDrawer, { difficultyLevels } from "./Jam/DifficultyDrawer";
-import TagsDrawer from "./Jam/TagsDrawer";
-import ChordsDrawer from "./Jam/ChordsDrawer";
-import FilteredItemsDrawer from "./Jam/FIlteredItemsDrawer";
+import DifficultyDrawer, { difficultyLevels } from "./DifficultyDrawer";
+import TagsDrawer from "./TagsDrawer";
+import ChordsDrawer from "./ChordsDrawer";
+import FilteredItemsDrawer from "./FIlteredItemsDrawer";
 import { WORKOUT_TRAKCS, type WorkOutTrack } from '~/data/workOutTracks';
 import { useMemo } from 'react';
 import { Link } from 'react-router';
@@ -133,7 +133,7 @@ export default function () {
                 </Button>
             )}
 
-            <Link to="/quick-jam/start" state={{ WorkOutTracks: finalFilteredItems }}>
+            <Link to="/workout/start" state={{ WorkOutTracks: finalFilteredItems }}>
                 <Button className="m-5" as="span" color="teal" pill onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
             </Link>
 

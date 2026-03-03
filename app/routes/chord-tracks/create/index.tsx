@@ -1,6 +1,6 @@
 'use client'
 
-import TrackEditor from '~/components/TrackEditor';
+import TrackEditor from '~/components/chordTracks/TrackEditor';
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
 

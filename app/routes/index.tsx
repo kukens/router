@@ -6,7 +6,7 @@ import { Button, Card } from "flowbite-react";
 export default function Home() {
     return (
         <main className="">
-            <Link to="/quick-jam">
+            <Link to="/workout">
                 <Card className="max-w-sm">
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Workout

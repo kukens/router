@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "flowbite-react";
-import Jam from "~/components/Jam"
+import Jam from "~/components/workOut/WorkOut"
 import { Link } from "react-router";
 import { useSearchParams } from "react-router";
 

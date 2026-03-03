@@ -2,8 +2,8 @@ import { type RouteConfig, route, index, layout, prefix } from "@react-router/de
 
 export default [
     index("routes/index.tsx"),
-    route("quick-jam", "routes/quick-jam/index.tsx"),
-    route("quick-jam/start", "routes/quick-jam/start/index.tsx"),
+    route("workout", "routes/workout/index.tsx"),
+    route("workout/start", "routes/workout/start/index.tsx"),
     route("chord-tracks", "routes/chord-tracks/index.tsx"),
     route("chord-tracks/create", "routes/chord-tracks/create/index.tsx"),
     route("chord-tracks/:id/", "routes/chord-tracks/[id]/index.tsx"),

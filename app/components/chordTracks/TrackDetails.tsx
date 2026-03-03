@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
-import styles from './Bars.module.css';
+import styles from '~/components/Bars.module.css';
 import { Link, useNavigate } from "react-router";
 import { Button } from 'flowbite-react';
 import { HR } from "flowbite-react";

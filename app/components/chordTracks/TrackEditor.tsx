@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { TrackData, Bar } from "~/types/TrackData";
 import { Button, TextInput, CloseIcon } from "flowbite-react";
-import TagSelectorDrawer from "~/components/TagSelectorDrawer"
-import ChordSelectorDrawer from "~/components/ChordSelectorDrawer"
+import TagSelectorDrawer from "~/components/chordTracks/TagSelectorDrawer"
+import ChordSelectorDrawer from "~/components/chordTracks/ChordSelectorDrawer"
 import { useNavigate } from "react-router";
 import { HR } from "flowbite-react";
 

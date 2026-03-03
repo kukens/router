@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { TrackData } from "../types/TrackData";
+import type { TrackData } from "../../types/TrackData";
 import { Button, HR, CloseIcon } from "flowbite-react";
 import { Link } from "react-router";
 import OrderingDrawer from "./OrderingDrawer";

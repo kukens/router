@@ -2,7 +2,7 @@
 
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
-import { default as TrackList } from "~/components/TrackList"
+import { default as TrackList } from "~/components/chordTracks/TrackList"
 import { HR } from "flowbite-react";
 
 export default function StartChallenge() {

@@ -1,7 +1,7 @@
 'use client'
 
 import AudioAnalyzer from '~/components/AudioAnalyzer';
-import TrackPlayer from '~/components/TrackPlayer';
+import ChordTracksPlayer from '~/components/chordTracks/ChordTracksPlayer';
 import { ChordProvider } from '~/features/audio/ChordContext';
 import { Button } from "flowbite-react";
 import { Link, useParams} from "react-router";
@@ -25,7 +25,7 @@ export default function PlayTrack() {
        <Link key="back" className="m-5" to={`/chord-tracks/${id}`}> <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button></Link> 
 
         <ChordProvider>
-          <TrackPlayer TrackData={trackData} />
+          <ChordTracksPlayer TrackData={trackData} />
           <AudioAnalyzer />
         </ChordProvider>
       </>
