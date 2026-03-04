@@ -13,6 +13,8 @@ export interface ChordContextValue {
 export interface ChordValue {
   value: string;
   version: string;
+  windowStart: number;
+  windowEnd: number;
 }
 
 

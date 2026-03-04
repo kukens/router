@@ -33,6 +33,8 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     const evaluatedChordRef = useRef(evaluatedChord);
     const evaluatedChordVerionsRef = useRef(evaluatedChord?.version);
 
+    const startTime = useRef<number>(0);
+
     const iteration = useRef(0);
     const currentBeatIndexRef = useRef(0);
     const currentBarIndexRef = useRef(0);
@@ -85,6 +87,9 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             animationContainerRef.current.className = "animate-dynamic-step";
             animationContainerRef.current.style.animationDuration = `${timePerBeat * trackData.beatsPerBar * barsCount}ms`;
 
+            startTime.current = Date.now();
+            console.log('start: ' + startTime.current)
+            
             tick(timePerBeat * trackData.beatsPerBar)
 
             const id = setInterval(() => {
@@ -99,6 +104,11 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         console.log('chord changed')
         evaluatedChordRef.current = evaluatedChord;
 
+        console.log(evaluatedChordRef.current?.windowStart);
+        console.log(evaluatedChordRef.current?.windowEnd);
+        console.log(evaluatedChordRef.current?.value);
+        console.log(evaluatedChordRef.current?.version);
+        
         const currentIndex = currentBeatIndexRef.current - 1 < 0 ? beatsElementsRef.current.length - 1 : currentBeatIndexRef.current - 1;
 
         if (evaluatedChordVerionsRef.current != evaluatedChordRef.current?.version) {
@@ -124,7 +134,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     };
 
     function tick(timePerBar: number) {
-
+        
         if (beatsToSkip.current > 0 && dividerRef.current ) {
             barsElementsRef.current[currentBarIndexRef.current].classList.remove(styles.active);
 
@@ -134,6 +144,8 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             beatsToSkip.current = beatsToSkip.current - 1
             return;
         }
+
+        console.log(`started ${currentBeatIndexRef.current}: ${Date.now()}`)
 
         if (currentBeatIndexRef.current == 0) {
             iteration.current = iteration.current + 1;

@@ -77,21 +77,29 @@ self.onmessage = (e: MessageEvent<AudioAnalyzerWorkerIn>) => {
         pushSamples(samples);
 
         while (availableSamples >= windowSize) {
-            const window = readWindow();
+                const window = readWindow();
 
-            Meyda.sampleRate = sampleRate;
-            Meyda.bufferSize = windowSize;
+                Meyda.sampleRate = sampleRate;
+                Meyda.bufferSize = windowSize;
 
-            const spectrum = Meyda.extract(["amplitudeSpectrum"], window) as MeydaFeaturesObject;
+                const spectrum = Meyda.extract(["amplitudeSpectrum"], window) as MeydaFeaturesObject;
 
-            const analysisResult = analyzer.anylyzeAudio(spectrum.amplitudeSpectrum, sampleRate);
+                const analysisResult = analyzer.anylyzeAudio(spectrum.amplitudeSpectrum, sampleRate);
 
-            self.postMessage({
-                type: "spectrum",
-                analysisResult,
-            } satisfies AudioAnalyzerWorkerOut);
+                // attach simple absolute timestamps (ms) for the analyzed window
+                const now = Date.now();
+                const windowEndMs = now;
+                const windowStartMs = Math.round(now - (windowSize / sampleRate) * 1000);
 
-            availableSamples -= hopSize;
+                analysisResult.windowStart = windowStartMs;
+                analysisResult.windowEnd = windowEndMs;
+
+                self.postMessage({
+                    type: "spectrum",
+                    analysisResult,
+                } satisfies AudioAnalyzerWorkerOut);
+
+                availableSamples -= hopSize;
         }
     }
 };

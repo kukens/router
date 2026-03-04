@@ -21,7 +21,7 @@ export default function AudioAnalyzer() {
     const streamRef = useRef<MediaStream | null>(null);
     const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
     const processorRef = useRef<ScriptProcessorNode | null>(null);
-
+    
     const windowSize = 4096 * 2;
 
     const [isRecording, setIsRecording] = useState(true);
@@ -95,10 +95,12 @@ export default function AudioAnalyzer() {
                         }
                     }
                     if (analyzisResult.evaluatedChords.length > 0) {
-                        setEvaluatedChord({
-                            value: analyzisResult.evaluatedChords[0].chordName,
-                            version: crypto.randomUUID(),
-                        });
+                                setEvaluatedChord({
+                                    value: analyzisResult.evaluatedChords[0].chordName,
+                                    version: crypto.randomUUID(),
+                                    windowStart: analyzisResult.windowStart ?? Date.now(),
+                                    windowEnd: analyzisResult.windowEnd ?? Date.now()
+                                });
                     }
                 }
             };
