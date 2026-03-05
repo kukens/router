@@ -101,13 +101,9 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     }, [isReadyToPlay]);
 
     useEffect(() => {
-        console.log('chord changed')
         evaluatedChordRef.current = evaluatedChord;
 
-        console.log(evaluatedChordRef.current?.windowStart);
-        console.log(evaluatedChordRef.current?.windowEnd);
-        console.log(evaluatedChordRef.current?.value);
-        console.log(evaluatedChordRef.current?.version);
+        console.log(`${evaluatedChordRef.current?.value} ${evaluatedChordRef.current?.version} - windowStart: ${evaluatedChordRef.current?.windowStart} windowEnd: ${evaluatedChordRef.current?.windowEnd}`);
         
         const currentIndex = currentBeatIndexRef.current - 1 < 0 ? beatsElementsRef.current.length - 1 : currentBeatIndexRef.current - 1;
 
@@ -145,7 +141,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             return;
         }
 
-        console.log(`started ${currentBeatIndexRef.current}: ${Date.now()}`)
+        console.log(`started ${currentBeatIndexRef.current} ${beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord}: ${Date.now()}`)
 
         if (currentBeatIndexRef.current == 0) {
             iteration.current = iteration.current + 1;
