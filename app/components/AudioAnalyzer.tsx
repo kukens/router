@@ -22,7 +22,7 @@ export default function AudioAnalyzer() {
     const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
     const processorRef = useRef<ScriptProcessorNode | null>(null);
     
-    const windowSize = 4096 * 2;
+    const hopSize = 4096;
 
     const [isRecording, setIsRecording] = useState(true);
     const [diagnosticsEnabled, setDiagnosticsEnabled] = useState(false);
@@ -52,7 +52,7 @@ export default function AudioAnalyzer() {
             workerRef.current?.postMessage(
                 {
                     type: "init",
-                    windowSize: windowSize,
+                    hopSize: hopSize,
                 } as AudioAnalyzerWorkerIn
             );
 
@@ -61,7 +61,7 @@ export default function AudioAnalyzer() {
             audioCtxRef.current = new AudioContext();
 
             sourceRef.current = audioCtxRef.current.createMediaStreamSource(streamRef.current);
-            processorRef.current = audioCtxRef.current.createScriptProcessor(windowSize, 1, 1);
+            processorRef.current = audioCtxRef.current.createScriptProcessor(hopSize, 1, 1);
 
             sourceRef.current.connect(processorRef.current);
             processorRef.current.connect(audioCtxRef.current.destination);
@@ -98,8 +98,8 @@ export default function AudioAnalyzer() {
                                 setEvaluatedChord({
                                     value: analyzisResult.evaluatedChords[0].chordName,
                                     version: crypto.randomUUID(),
-                                    windowStart: analyzisResult.windowStart ?? Date.now(),
-                                    windowEnd: analyzisResult.windowEnd ?? Date.now()
+                                    windowStart: analyzisResult.windowStart,
+                                    windowEnd: analyzisResult.windowEnd
                                 });
                     }
                 }

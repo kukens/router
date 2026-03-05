@@ -7,7 +7,7 @@ import type { AnalysisResult } from '~/features/audio/AudioAnalyzerService.types
 export type AudioAnalyzerWorkerIn =
     {
         type: "init";
-        windowSize: number
+        hopSize?: number;
     }
     | {
         type: "push";
@@ -23,15 +23,12 @@ export type AudioAnalyzerWorkerOut = {
 
 const analyzer = new AudioAnalyzerService()
 
-let windowSize = 4096;
-let hopSize = 1024; 
-let ringBufferSize = windowSize * 4;
-
-let ringBuffer = new Float32Array(ringBufferSize);
+let windowSize = null;
+let hopSize = null; 
+let ringBufferSize = null;
+let ringBuffer = null;
 let writeIndex = 0;
 let availableSamples = 0;
-
-console.log('setting default window size:' + windowSize)
 
 function pushSamples(input: Float32Array) {
     for (let i = 0; i < input.length; i++) {
@@ -59,11 +56,12 @@ function readWindow(): Float32Array {
 
 
 self.onmessage = (e: MessageEvent<AudioAnalyzerWorkerIn>) => {
+    //console.log('AudioAnalyzerWorkerIn: ' + Date.now())
 
-    if (e.data.type === "init" && windowSize) {
-        windowSize = e.data.windowSize;
-        hopSize = windowSize / 4
-        ringBufferSize = windowSize * 4;
+    if (e.data.type === "init") {
+        hopSize = e.data.hopSize;
+        windowSize = hopSize * 2
+        ringBufferSize = windowSize * 2;
 
         ringBuffer = new Float32Array(ringBufferSize);
         writeIndex = 0;
@@ -76,6 +74,8 @@ self.onmessage = (e: MessageEvent<AudioAnalyzerWorkerIn>) => {
 
         pushSamples(samples);
 
+        const now = Date.now();
+
         while (availableSamples >= windowSize) {
                 const window = readWindow();
 
@@ -84,15 +84,20 @@ self.onmessage = (e: MessageEvent<AudioAnalyzerWorkerIn>) => {
 
                 const spectrum = Meyda.extract(["amplitudeSpectrum"], window) as MeydaFeaturesObject;
 
+
                 const analysisResult = analyzer.anylyzeAudio(spectrum.amplitudeSpectrum, sampleRate);
 
-                // attach simple absolute timestamps (ms) for the analyzed window
-                const now = Date.now();
-                const windowEndMs = now;
-                const windowStartMs = Math.round(now - (windowSize / sampleRate) * 1000);
+                const windowEndMs = Math.round(
+                    now - ((availableSamples - windowSize) / sampleRate) * 1000
+                );
+                const windowStartMs = Math.round(
+                    windowEndMs - (windowSize / sampleRate) * 1000
+                );
 
                 analysisResult.windowStart = windowStartMs;
                 analysisResult.windowEnd = windowEndMs;
+                
+                console.log('window analyzed: ' + windowStartMs + ' - ' + windowEndMs + '. Meyda extraction time:' + (Date.now() - windowEndMs) )
 
                 self.postMessage({
                     type: "spectrum",
