@@ -7,8 +7,8 @@ export interface AnalysisResult {
   audioData: CurrentAudioData;
   hitsData: HitsData | null;
   evaluatedChords: EvaluatedChord[]
-  windowStart?: number;
-  windowEnd?: number;
+  windowStart: number;
+  windowEnd: number;
 }
 
 export interface CurrentAudioData {

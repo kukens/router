@@ -2,7 +2,7 @@
 
 import { Spinner } from "flowbite-react";
 import { useEffect, useRef, useState } from 'react';
-import { useChord } from '~/features/audio/ChordContext';
+import { useChord, type ChordValue } from '~/features/audio/ChordContext';
 import styles from '~/components/Bars.module.css';
 
 import { EmptyTrackData } from '~/types/TrackData';
@@ -10,6 +10,16 @@ import type { Bar, TrackData } from '~/types/TrackData';
 
 interface TrackPlayerProps {
     TrackData: TrackData | null
+}
+
+
+interface BeatHistory {
+    index: number;
+    startTime: number;
+    endTime: number | null;
+    chord: string;
+    evaluations: ChordValue[];
+    isMatched: boolean;
 }
 
 export default function TrackPlayer(props: TrackPlayerProps) {
@@ -24,6 +34,10 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     const [isReadyToPlay, setIsReadyToPlay] = useState(false);
 
+    // accuracy tracking: correct / total for current iteration
+    const [correctCount, setCorrectCount] = useState(0);
+    const [totalCount, setTotalCount] = useState(0);
+    const accuracy = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
     const dividerRef = useRef<HTMLDivElement>(null);
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
@@ -32,6 +46,8 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     const evaluatedChordRef = useRef(evaluatedChord);
     const evaluatedChordVerionsRef = useRef(evaluatedChord?.version);
+
+    const beatsHistory = useRef<Record<number, BeatHistory[]>>({});
 
     const startTime = useRef<number>(0);
 
@@ -100,20 +116,71 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         }
     }, [isReadyToPlay]);
 
-    useEffect(() => {
-        evaluatedChordRef.current = evaluatedChord;
+    const findMatchingBeatHistory = (chord: ChordValue) => {
+        const iterationEntries = Object.entries(beatsHistory.current).sort(([a], [b]) => Number(b) - Number(a));
 
-        console.log(`${evaluatedChordRef.current?.value} ${evaluatedChordRef.current?.version} - windowStart: ${evaluatedChordRef.current?.windowStart} windowEnd: ${evaluatedChordRef.current?.windowEnd}`);
-        
-        const currentIndex = currentBeatIndexRef.current - 1 < 0 ? beatsElementsRef.current.length - 1 : currentBeatIndexRef.current - 1;
+        for (const [iterationKey, beatRecords] of iterationEntries) {
+            for (let i = 0; i < beatRecords.length; i++) {
+                const beatStart = beatRecords[i].startTime;
+                const beatEnd = beatRecords[i].endTime ?? beatRecords[i + 1]?.startTime ?? Number.POSITIVE_INFINITY;
 
-        if (evaluatedChordVerionsRef.current != evaluatedChordRef.current?.version) {
-            if (beatsElementsRef.current[currentIndex].dataset.chord == evaluatedChordRef.current?.value) {
-                beatsElementsRef.current[currentIndex].classList.add("bg-green-800")
+                const hasOverlap = chord.windowStart < beatEnd && chord.windowEnd >= beatStart;
+                if (hasOverlap) {
+                    return {
+                        iteration: Number(iterationKey),
+                        beat: beatRecords[i]
+                    };
+                }
             }
         }
 
-        evaluatedChordVerionsRef.current = evaluatedChordRef.current?.version;
+        return null;
+    }
+
+    useEffect(() => {
+        evaluatedChordRef.current = evaluatedChord;
+
+        if (!evaluatedChordRef.current) {
+            return;
+        }
+
+        if (evaluatedChordVerionsRef.current == evaluatedChordRef.current.version) {
+            return;
+        }
+
+        const matchedBeatHistory = findMatchingBeatHistory(evaluatedChordRef.current);
+
+        
+        console.log('evaluatedChord: ' + evaluatedChord?.value + ' ' + evaluatedChord?.windowStart + ' - ' + evaluatedChord?.windowEnd)
+       // console.log('matchedBeatHistory beat: ' + matchedBeatHistory?.beat + matchedBeatHistory?.beat.startTime + ' - ' + matchedBeatHistory?.beat.endTime)
+
+        if (!matchedBeatHistory) {
+            evaluatedChordVerionsRef.current = evaluatedChordRef.current.version;
+            return;
+        }
+
+        const { beat, iteration: iter } = matchedBeatHistory;
+
+        beat.evaluations.push(evaluatedChordRef.current);
+        beat.isMatched = beat.isMatched || beat.chord === evaluatedChordRef.current.value;
+
+        const matchedBeatElement = beatsElementsRef.current[beat.index];
+        if (beat.isMatched && matchedBeatElement) {
+            matchedBeatElement.classList.add("bg-green-800");
+        }
+
+      //  if (matchedBeatHistory.beat.chord !== beatsHistory.current[iter][(matchedBeatHistory.beat.index-1)].chord) {
+          //  console.log(` ${matchedBeatHistory.beat.chord} with ${matchedBeatHistory.beat.chord} at iteration ${iter}, beat index ${matchedBeatHistory.beat.index}, time: ${Date.now() - startTime.current}ms`)
+      //  }
+
+        // update accuracy counts only if this is the current iteration
+        if (iter === iteration.current) {
+            const records = beatsHistory.current[iter] || [];
+            const matchedCount = records.filter(r => r.isMatched).length;
+            setCorrectCount(matchedCount);
+        }
+
+        evaluatedChordVerionsRef.current = evaluatedChordRef.current.version;
 
     }, [evaluatedChord]);
 
@@ -130,8 +197,8 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     };
 
     function tick(timePerBar: number) {
-        
-        if (beatsToSkip.current > 0 && dividerRef.current ) {
+
+        if (beatsToSkip.current > 0 && dividerRef.current) {
             barsElementsRef.current[currentBarIndexRef.current].classList.remove(styles.active);
 
             dividerRef.current.classList.add(styles.active);
@@ -141,11 +208,34 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             return;
         }
 
-        console.log(`started ${currentBeatIndexRef.current} ${beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord}: ${Date.now()}`)
+        const tickStart = Date.now();
+      //  console.log(`started ${currentBeatIndexRef.current} ${beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord}: ${tickStart}`)
+
+        const previousIterationRecords = beatsHistory.current[iteration.current];
+        if (previousIterationRecords && previousIterationRecords.length > 0) {
+            previousIterationRecords[previousIterationRecords.length - 1].endTime = tickStart;
+        }
 
         if (currentBeatIndexRef.current == 0) {
             iteration.current = iteration.current + 1;
+            beatsHistory.current[iteration.current] = [];
+
+            // new iteration begins, reset accuracy stats
+            setCorrectCount(0);
+            setTotalCount(0);
         }
+
+        beatsHistory.current[iteration.current].push({
+            startTime: tickStart,
+            endTime: null,
+            chord: beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord || "",
+            index: currentBeatIndexRef.current,
+            evaluations: [],
+            isMatched: false
+        })
+
+        // increment total beats for this iteration
+        setTotalCount(prev => prev + 1);
 
         const overallBeatsCount = beatsElementsRef.current.length;
 
@@ -225,7 +315,14 @@ export default function TrackPlayer(props: TrackPlayerProps) {
                     {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
                 </div>
                 <div className="absolute bottom-0 inset-x-0 h-18 w-full bg-gradient-to-b to-gray-900 pointer-events-none z-10"></div>
+
             </div>
+
+                            <div className="">
+                                <p>Accuracy: {correctCount}/{totalCount} ({accuracy}%)</p>
+                                <p>Reaction:</p>
+                                <p>Fill:</p>
+                                </div>
         </div>
     )
 }

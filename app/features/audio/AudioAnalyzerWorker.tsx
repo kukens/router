@@ -23,10 +23,10 @@ export type AudioAnalyzerWorkerOut = {
 
 const analyzer = new AudioAnalyzerService()
 
-let windowSize = null;
-let hopSize = null; 
-let ringBufferSize = null;
-let ringBuffer = null;
+let windowSize: number;
+let hopSize: number; 
+let ringBufferSize: number;
+let ringBuffer: Float32Array;
 let writeIndex = 0;
 let availableSamples = 0;
 
@@ -39,7 +39,7 @@ function pushSamples(input: Float32Array) {
     availableSamples += input.length;
 }
 
-function readWindow(readOffset: number): Float32Array {
+function readWindow(): Float32Array {
     const window = new Float32Array(windowSize);
     const startIdx = (writeIndex - availableSamples + ringBufferSize) % ringBufferSize;
 

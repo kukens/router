@@ -38,7 +38,9 @@ export class AudioAnalyzerService {
             const analyzedAudio: AnalysisResult = {
                 audioData: { rms: rms, mean: mean, peaks: peaks },
                 hitsData: null,
-                evaluatedChords: []
+                evaluatedChords: [],
+                windowStart: 0,
+                windowEnd: 0
             };
     
             if (!aboveMean.some(x => x.magnitude > 10)) {
