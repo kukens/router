@@ -11,6 +11,31 @@
     --animate-dynamic-step: dynamic-step  infinite;
 }
 
+@utility btn-light-shadow {
+   box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+    border: none;
+}
+
+@utility btn-dark-shadow {
+   box-shadow: rgb(57 72 93) 0px -1px 2px 0px, rgb(22 28 37) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+    border: none;
+}
+
+@utility btn-alt-shadow {
+   box-shadow: rgb(57 72 93) 0px -1px 2px 0px, rgb(22 28 37) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+    border: none;
+}
+
+@utility btn-teal-shadow {
+   box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+    border: none;
+}
+
+@utility bg-gradient-dark {
+   background: radial-gradient(ellipse at top, #1d2c4d, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #000000);
+}
+
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
@@ -18,4 +43,6 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+
+  background: radial-gradient(ellipse at top, #1d2c4d, #100a0ab8), radial-gradient(ellipse at bottom, #342257, #000000);
 }

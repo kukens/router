@@ -12,8 +12,8 @@ export default function AudioAnalyzer() {
 
     const [hitsData, sethitsData] = useState<HitsData | null>(null);
     const [audioData, setAudioData] = useState<CurrentAudioData | null>(null);
-    const [evaluatedChords, setEvaluatedChords] = useState<EvaluatedChord[]>([]);
-    const { setEvaluatedChord } = useChord();
+    const [evaluatedChordsDiagnostics, setEvaluatedChordsDiagnostics] = useState<EvaluatedChord[]>([]);
+    const { setEvaluatedChord: setEvaluatedChords } = useChord();
     const { isAnalyzing, setIsAnalyzing } = useChord();
 
     const workerRef = useRef<Worker>(null);
@@ -21,7 +21,7 @@ export default function AudioAnalyzer() {
     const streamRef = useRef<MediaStream | null>(null);
     const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
     const processorRef = useRef<ScriptProcessorNode | null>(null);
-    
+
     const hopSize = 4096;
 
     const [isRecording, setIsRecording] = useState(true);
@@ -91,16 +91,15 @@ export default function AudioAnalyzer() {
                         if (analyzisResult.audioData) setAudioData(analyzisResult.audioData);
                         if (analyzisResult.hitsData) sethitsData(analyzisResult.hitsData);
                         if (analyzisResult.evaluatedChords.length > 0) {
-                            setEvaluatedChords(analyzisResult.evaluatedChords);
+                            setEvaluatedChordsDiagnostics(analyzisResult.evaluatedChords);
                         }
                     }
                     if (analyzisResult.evaluatedChords.length > 0) {
-                                setEvaluatedChord({
-                                    value: analyzisResult.evaluatedChords[0].chordName,
-                                    version: crypto.randomUUID(),
-                                    windowStart: analyzisResult.windowStart,
-                                    windowEnd: analyzisResult.windowEnd
-                                });
+                        setEvaluatedChords({
+                            chords: analyzisResult.evaluatedChords.map(chord => chord.chordName).slice(0, 3),
+                            windowStart: analyzisResult.windowStart,
+                            windowEnd: analyzisResult.windowEnd
+                        });
                     }
                 }
             };
@@ -131,10 +130,10 @@ export default function AudioAnalyzer() {
         };
 
         if (isRecording) {
-            startRecording();          
+            startRecording();
         }
         else {
-            cleanup();    
+            cleanup();
         }
 
         return () => {
@@ -175,7 +174,7 @@ export default function AudioAnalyzer() {
 
                 <h3>Chords:</h3>
                 <ul>
-                    {evaluatedChords.slice(0, 5).map(x => (
+                    {evaluatedChordsDiagnostics.slice(0, 5).map(x => (
                         <li key={x.chordName}>{x.chordName} - {x.score.toFixed(1)}</li>
                     ))}
                 </ul>

@@ -22,7 +22,9 @@ export default function PlayTrack() {
 
   return (
       <>
-       <Link key="back" className="m-5" to={`/chord-tracks/${id}`}> <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button></Link> 
+       <Link key="back" className="m-5" to={`/chord-tracks/${id}`}> 
+         <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button>
+       </Link> 
 
         <ChordProvider>
           <ChordTracksPlayer TrackData={trackData} />

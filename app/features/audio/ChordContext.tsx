@@ -11,8 +11,7 @@ export interface ChordContextValue {
 }
 
 export interface ChordValue {
-  value: string;
-  version: string;
+  chords: string[];
   windowStart: number;
   windowEnd: number;
 }
@@ -25,8 +24,8 @@ interface ChordProviderProps {
 }
 
 export const ChordProvider: React.FC<ChordProviderProps> = ({ children }) => {
-    const [evaluatedChord, setEvaluatedChord] = useState<ChordValue | null>(null);
-    const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [evaluatedChord, setEvaluatedChord] = useState<ChordValue | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
 
   const value: ChordContextValue = {
     evaluatedChord,

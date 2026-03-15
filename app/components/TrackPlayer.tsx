@@ -13,13 +13,14 @@ interface TrackPlayerProps {
 }
 
 
-interface BeatHistory {
+interface BeatData {
     index: number;
     startTime: number;
     endTime: number | null;
     chord: string;
     evaluations: ChordValue[];
     isMatched: boolean;
+    chordSwitchReactionTime?: number;
 }
 
 export default function TrackPlayer(props: TrackPlayerProps) {
@@ -34,28 +35,36 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     const [isReadyToPlay, setIsReadyToPlay] = useState(false);
 
-    // accuracy tracking: correct / total for current iteration
     const [correctCount, setCorrectCount] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
+
+    const [avgReactionTime, setAvgReactionTime] = useState<number | null>(null);
+
     const accuracy = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+
+    const reactionPositionPercent = (() => {
+        const range = 1000; // -500 .. 500 ms
+        const min = -500;
+        if (avgReactionTime == null) return 50;
+        const clamped = Math.max(min, Math.min(500, avgReactionTime));
+        return ((clamped - min) / range) * 100;
+    })();
+
     const dividerRef = useRef<HTMLDivElement>(null);
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
     const barsElementsRef = useRef<HTMLDivElement[]>([]);
     const animationContainerRef = useRef<HTMLDivElement>(null);
     const animationKeyFramesStyleRef = useRef<HTMLStyleElement>(null)
 
-    const evaluatedChordRef = useRef(evaluatedChord);
-    const evaluatedChordVerionsRef = useRef(evaluatedChord?.version);
+    const beatsHistory = useRef<Record<number, BeatData[]>>({});
 
-    const beatsHistory = useRef<Record<number, BeatHistory[]>>({});
+    const startTimeRef = useRef<number>(0);
 
-    const startTime = useRef<number>(0);
-
-    const iteration = useRef(0);
+    const iterationRef = useRef(0);
     const currentBeatIndexRef = useRef(0);
     const currentBarIndexRef = useRef(0);
 
-    const beatsToSkip = useRef(0);
+    const beatsToSkipRef = useRef(0);
 
     useEffect(() => {
         if (props.TrackData) {
@@ -103,9 +112,9 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             animationContainerRef.current.className = "animate-dynamic-step";
             animationContainerRef.current.style.animationDuration = `${timePerBeat * trackData.beatsPerBar * barsCount}ms`;
 
-            startTime.current = Date.now();
-            console.log('start: ' + startTime.current)
-            
+            startTimeRef.current = Date.now();
+            console.log('start: ' + startTimeRef.current)
+
             tick(timePerBeat * trackData.beatsPerBar)
 
             const id = setInterval(() => {
@@ -116,7 +125,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         }
     }, [isReadyToPlay]);
 
-    const findMatchingBeatHistory = (chord: ChordValue) => {
+    const findMatchingBeatFromBeatsHistory = (chord: ChordValue) => {
         const iterationEntries = Object.entries(beatsHistory.current).sort(([a], [b]) => Number(b) - Number(a));
 
         for (const [iterationKey, beatRecords] of iterationEntries) {
@@ -128,7 +137,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
                 if (hasOverlap) {
                     return {
                         iteration: Number(iterationKey),
-                        beat: beatRecords[i]
+                        matchingBeatData: beatRecords[i]
                     };
                 }
             }
@@ -137,50 +146,87 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         return null;
     }
 
+    const computeAverageReaction = (iteration?: number) => {
+        const iterNum = iteration ?? iterationRef.current;
+        const records = beatsHistory.current[iterNum] || [];
+
+        let sum = 0;
+        let count = 0;
+
+        for (const b of records) {
+            if (b.chordSwitchReactionTime != null) {
+                sum += b.chordSwitchReactionTime;
+                count++;
+            }
+        }
+
+        if (count === 0) {
+            setAvgReactionTime(null);
+        } else {
+            setAvgReactionTime(Math.round(sum / count));
+        }
+    }
+
     useEffect(() => {
-        evaluatedChordRef.current = evaluatedChord;
 
-        if (!evaluatedChordRef.current) {
+        if (!evaluatedChord) {
             return;
         }
 
-        if (evaluatedChordVerionsRef.current == evaluatedChordRef.current.version) {
+        console.log('evaluatedChords: ' + evaluatedChord?.chords + ' ' + evaluatedChord?.windowStart + ' - ' + evaluatedChord?.windowEnd)
+
+        const matchingBeatRecord = findMatchingBeatFromBeatsHistory(evaluatedChord);
+
+        if (!matchingBeatRecord) {
             return;
         }
 
-        const matchedBeatHistory = findMatchingBeatHistory(evaluatedChordRef.current);
+        const { matchingBeatData: beatData, iteration } = matchingBeatRecord;
 
-        
-        console.log('evaluatedChord: ' + evaluatedChord?.value + ' ' + evaluatedChord?.windowStart + ' - ' + evaluatedChord?.windowEnd)
-       // console.log('matchedBeatHistory beat: ' + matchedBeatHistory?.beat + matchedBeatHistory?.beat.startTime + ' - ' + matchedBeatHistory?.beat.endTime)
+        beatData.evaluations.push(evaluatedChord);
+        beatData.isMatched = beatData.isMatched || evaluatedChord.chords.includes(beatData.chord);
 
-        if (!matchedBeatHistory) {
-            evaluatedChordVerionsRef.current = evaluatedChordRef.current.version;
-            return;
+        const chordSwitched = matchingBeatRecord.matchingBeatData.chord !== beatsHistory.current[iteration][(matchingBeatRecord.matchingBeatData.index - 1)]?.chord;
+
+        if (chordSwitched && matchingBeatRecord.matchingBeatData.chordSwitchReactionTime == null && beatData.isMatched) {
+
+            const prevBeat = beatsHistory.current[iteration][(matchingBeatRecord.matchingBeatData.index - 1)];
+
+            if (prevBeat) {
+                const last3 = prevBeat.evaluations.slice(- (Math.round(prevBeat.evaluations.length / 2)));
+                const firstRecognized = last3.find(evaluation => evaluation.chords.includes(matchingBeatRecord.matchingBeatData.chord));
+
+                if (firstRecognized) {
+                    matchingBeatRecord.matchingBeatData.chordSwitchReactionTime = firstRecognized.windowStart - beatData.startTime;
+                    console.log(`negative chord switch reaction time: ${matchingBeatRecord.matchingBeatData.chordSwitchReactionTime}ms for beat index ${beatData.index} at iteration ${iteration}`)
+                }
+            }
+
+            matchingBeatRecord.matchingBeatData.chordSwitchReactionTime ??= evaluatedChord.windowStart - beatData.startTime;
+            console.log(`chord switch reaction time: ${matchingBeatRecord.matchingBeatData.chordSwitchReactionTime}ms for beat index ${beatData.index} at iteration ${iteration}`)
+
         }
 
-        const { beat, iteration: iter } = matchedBeatHistory;
+        const matchedBeatElement = beatsElementsRef.current[beatData.index];
 
-        beat.evaluations.push(evaluatedChordRef.current);
-        beat.isMatched = beat.isMatched || beat.chord === evaluatedChordRef.current.value;
-
-        const matchedBeatElement = beatsElementsRef.current[beat.index];
-        if (beat.isMatched && matchedBeatElement) {
-            matchedBeatElement.classList.add("bg-green-800");
+        if (beatData.isMatched && matchedBeatElement) {
+            let reactionClass = "bg-green-800";
+            if (beatData.chordSwitchReactionTime != null) {
+                if (beatData.chordSwitchReactionTime < 100 && beatData.chordSwitchReactionTime > -100) reactionClass = "bg-green-800";
+                else if (beatData.chordSwitchReactionTime < 200 && beatData.chordSwitchReactionTime > -200) reactionClass = "bg-green-700";
+                else if (beatData.chordSwitchReactionTime < 300 && beatData.chordSwitchReactionTime > -300) reactionClass = "bg-green-600";
+                else if (beatData.chordSwitchReactionTime < 400 && beatData.chordSwitchReactionTime > -400) reactionClass = "bg-green-500";
+            }
+            matchedBeatElement.classList.add(reactionClass);
         }
-
-      //  if (matchedBeatHistory.beat.chord !== beatsHistory.current[iter][(matchedBeatHistory.beat.index-1)].chord) {
-          //  console.log(` ${matchedBeatHistory.beat.chord} with ${matchedBeatHistory.beat.chord} at iteration ${iter}, beat index ${matchedBeatHistory.beat.index}, time: ${Date.now() - startTime.current}ms`)
-      //  }
 
         // update accuracy counts only if this is the current iteration
-        if (iter === iteration.current) {
-            const records = beatsHistory.current[iter] || [];
+        if (iteration === iterationRef.current) {
+            const records = beatsHistory.current[iteration] || [];
             const matchedCount = records.filter(r => r.isMatched).length;
             setCorrectCount(matchedCount);
+            computeAverageReaction(iteration);
         }
-
-        evaluatedChordVerionsRef.current = evaluatedChordRef.current.version;
 
     }, [evaluatedChord]);
 
@@ -196,36 +242,51 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         }
     };
 
+    const clearBeatReactionClasses = () => {
+        const toRemovePrefix = 'bg-green-';
+        for (const el of beatsElementsRef.current) {
+            if (!el) continue;
+            const classes = Array.from(el.classList);
+            for (const c of classes) {
+                if (c.startsWith(toRemovePrefix)) {
+                    el.classList.remove(c);
+                }
+            }
+        }
+    };
+
     function tick(timePerBar: number) {
 
-        if (beatsToSkip.current > 0 && dividerRef.current) {
+        if (beatsToSkipRef.current > 0 && dividerRef.current) {
             barsElementsRef.current[currentBarIndexRef.current].classList.remove(styles.active);
 
             dividerRef.current.classList.add(styles.active);
             dividerRef.current.style.animationDuration = `${timePerBar}ms`;
 
-            beatsToSkip.current = beatsToSkip.current - 1
+            beatsToSkipRef.current = beatsToSkipRef.current - 1
             return;
         }
 
         const tickStart = Date.now();
-      //  console.log(`started ${currentBeatIndexRef.current} ${beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord}: ${tickStart}`)
+        //  console.log(`started ${currentBeatIndexRef.current} ${beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord}: ${tickStart}`)
 
-        const previousIterationRecords = beatsHistory.current[iteration.current];
+        const previousIterationRecords = beatsHistory.current[iterationRef.current];
         if (previousIterationRecords && previousIterationRecords.length > 0) {
             previousIterationRecords[previousIterationRecords.length - 1].endTime = tickStart;
         }
 
         if (currentBeatIndexRef.current == 0) {
-            iteration.current = iteration.current + 1;
-            beatsHistory.current[iteration.current] = [];
+            iterationRef.current = iterationRef.current + 1;
+            beatsHistory.current[iterationRef.current] = [];
 
-            // new iteration begins, reset accuracy stats
+            // new iteration begins, reset accuracy stats and reaction counter
             setCorrectCount(0);
             setTotalCount(0);
+            setAvgReactionTime(null);
+            clearBeatReactionClasses();
         }
 
-        beatsHistory.current[iteration.current].push({
+        beatsHistory.current[iterationRef.current].push({
             startTime: tickStart,
             endTime: null,
             chord: beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord || "",
@@ -259,7 +320,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         currentBeatIndexRef.current = (currentBeatIndexRef.current + 1) % overallBeatsCount
 
         if (currentBeatIndexRef.current == 0) {
-            beatsToSkip.current = trackData.beatsPerBar;
+            beatsToSkipRef.current = trackData.beatsPerBar;
         }
     }
 
@@ -311,18 +372,27 @@ export default function TrackPlayer(props: TrackPlayerProps) {
                 <div ref={animationContainerRef}>
                     {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}
                     {generateBarsHtml(trackData.bars, false, false)}
-                    {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}            
+                    {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}
                     {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
                 </div>
                 <div className="absolute bottom-0 inset-x-0 h-18 w-full bg-gradient-to-b to-gray-900 pointer-events-none z-10"></div>
 
             </div>
 
-                            <div className="">
-                                <p>Accuracy: {correctCount}/{totalCount} ({accuracy}%)</p>
-                                <p>Reaction:</p>
-                                <p>Fill:</p>
-                                </div>
+            <div className="">
+                <div className="mb-2">
+                    <p className="mb-1">Accuracy: ({accuracy}%)</p>
+                    <div className="relative w-full max-w-xl h-4 rounded overflow-hidden" style={{background: 'linear-gradient(90deg, #e53e3e 0%, #16a34a 100%)'}}>
+                        <div className="absolute top-0 h-4" style={{width: '6px', background: 'white', left: `calc(${accuracy}% - 3px)`}} />
+                    </div>
+                </div>
+                <div className="mt-2">
+                    <p className="mb-1">Reaction: {avgReactionTime !== null ? `${avgReactionTime} ms` : '-'}</p>
+                    <div className="relative w-full max-w-xl h-4 rounded overflow-hidden" style={{background: 'linear-gradient(90deg, #e53e3e 0%, #16a34a 50%, #e53e3e 100%)'}}>
+                        <div className="absolute top-0 h-4 w-0.5 bg-white" style={{left: `calc(${reactionPositionPercent}% - 1px)`}} />
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
