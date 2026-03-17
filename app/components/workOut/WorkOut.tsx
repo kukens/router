@@ -1,8 +1,7 @@
 "use client";
 
+import styles from './WorkOut.module.css';
 import type { Dispatch, SetStateAction } from 'react';
-import { Button } from "flowbite-react";
-import { HR } from "flowbite-react";
 import { useState, useEffect } from 'react';
 import DifficultyDrawer, { difficultyLevels } from "./DifficultyDrawer";
 import TagsDrawer from "./TagsDrawer";
@@ -11,6 +10,9 @@ import FilteredItemsDrawer from "./FIlteredItemsDrawer";
 import { WORKOUT_TRAKCS, type WorkOutTrack } from '~/data/workOutTracks';
 import { useMemo } from 'react';
 import { Link } from 'react-router';
+import { Button } from '@base-ui/react/button';
+
+import { ArrowLeft, X } from 'lucide-react';
 
 export default function () {
 
@@ -83,77 +85,94 @@ export default function () {
 
 
     return (
-        <div>
-            <Button className="m-5" as="span" color="light" pill onClick={() => setIsChordsDrawerOpen(true)}>Select chords  {selectedChords.length > 0 && selectedChords.length}  </Button>
+        <>
+            <div className={styles.container}>
 
-            {selectedChords.length > 0 &&
-                <div className="flex flex-wrap">
-                    {selectedChords.map(selectedChord => <Button className="m-2" as="span" color="alternative" pill onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}</Button>)}
-                </ div>
-            }
+                <div className={styles['filter-group']}>
+                    <div className={styles['filter']}>
+                        <Button className="btn-action-alt" onClick={() => setIsChordsDrawerOpen(true)}>Select chords</Button>
 
-            {selectedChords.length === 0 &&
-                <div className="flex gap-2"> <Button as="span" color="alternative" pill>Any</Button></ div>
-            }
+                        {selectedChords.length > 0 &&
+                            <div className={styles['active-filters']}>
+                                {selectedChords.map(selectedChord => <Button className="btn-active" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15} color='#999' /></Button>)}
+                            </ div>
+                        }
 
-            <Button className="m-5" as="span" color="light" pill onClick={() => setIsTagsDrawerOpen(true)}>Select tags</Button>
-
-            {selectedTags.length > 0 &&
-                <div className="flex flex-wrap">
-                    {selectedTags.map(tag => <Button className="m-2" as="span" color="alternative" pill onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag}</Button>)}
-                </ div>
-            }
-
-            {selectedTags.length === 0 &&
-                <div className="flex gap-2"> <Button className="m-2" as="span" color="alternative" pill>Any</Button></ div>
-            }
-
-            <Button className="m-5" as="span" color="light" pill onClick={() => setIsDifficultyDrawerOpen(true)} >Select difficulty</Button>
-
-            {selectedDifficultyLevels.length > 0 &&
-                <div className="flex flex-wrap">
-                    {selectedDifficultyLevels.map(difficultyLevel => <Button className="m-2" as="span" color="alternative" pill onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel}</Button>)}
-                </ div>
-            }
-
-            {selectedDifficultyLevels.length === 0 &&
-                <div className="flex gap-2"> <Button className="m-2" as="span" color="alternative" pill>Any</Button></ div>
-            }
+                        {selectedChords.length === 0 &&
+                            <div className="flex gap-2"> <Button className="btn-inactive">Any</Button></ div>
+                        }
+                    </div>
 
 
-            {finalFilteredItems.length === 0 && (
-                <p className="m-5" >
-                    No items found
-                </p>
-            )}
+                    <div className={styles['filter']}>
+                        <Button className="btn-action-alt" onClick={() => setIsTagsDrawerOpen(true)}>Select tags</Button>
 
-            {finalFilteredItems.length > 0 && (
-                <Button className="m-5" as="span" color="light" pill onClick={() => setIsItemsDrawerOpen(true)}>
-                    {`${finalFilteredItems.length} items found`}
-                </Button>
-            )}
+                        {selectedTags.length > 0 &&
+                            <div className="">
+                                {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag}</Button>)}
+                            </ div>
+                        }
 
-            <Link to="/workout/start" state={{ WorkOutTracks: finalFilteredItems }}>
-                <Button className="m-5" as="span" color="teal" pill onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
-            </Link>
+                        {selectedTags.length === 0 &&
+                            <div className=""> <Button className="btn-inactive">Any</Button></ div>
+                        }
+                    </div>
 
-            <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
+                    <div className={styles['filter']}>
+                        <Button className="btn-action-alt" onClick={() => setIsDifficultyDrawerOpen(true)} >Select difficulty</Button>
 
-            <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
+                        {selectedDifficultyLevels.length > 0 &&
+                            <div className="">
+                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel}</Button>)}
+                            </ div>
+                        }
 
-            <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
-            <FilteredItemsDrawer
-                isOpen={isItemsDrawerOpen}
-                handleClose={() => setIsItemsDrawerOpen(false)}
-                items={filteredItems.map(i => i.id)}
-                excluded={excludedItems}
-                handleApply={(excluded, reorderedItems) => {
-                    setExcludedItems(excluded);
-                    setReorderedFilteredItems(reorderedItems);
-                    setIsItemsDrawerOpen(false);
-                }}
-                orderedItems={reorderedFilteredItems}
-            />
-        </div>
+                        {selectedDifficultyLevels.length === 0 &&
+                            <div className=""> <Button className="btn-inactive">Any</Button></ div>
+                        }
+                    </div>
+                </div>
+
+                <div className={styles['start-workout']}>
+                    {
+                        finalFilteredItems.length === 0 && (<p>No items found </p>)
+                    }
+
+                    {
+                        finalFilteredItems.length > 0 && (
+                            <Button className="btn-action-alt" onClick={() => setIsItemsDrawerOpen(true)}>
+                                {`${finalFilteredItems.length} items found`}
+                            </Button>
+                        )
+                    }
+
+                    <Link to="/workout/start" state={{ WorkOutTracks: finalFilteredItems }}>
+                        <Button className="btn-action" onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
+                    </Link>
+                </div>
+            </div >
+
+
+            <div style={{ display: 'none' }}>
+                <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
+
+                <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
+
+                <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
+                <FilteredItemsDrawer
+                    isOpen={isItemsDrawerOpen}
+                    handleClose={() => setIsItemsDrawerOpen(false)}
+                    items={filteredItems.map(i => i.id)}
+                    excluded={excludedItems}
+                    handleApply={(excluded, reorderedItems) => {
+                        setExcludedItems(excluded);
+                        setReorderedFilteredItems(reorderedItems);
+                        setIsItemsDrawerOpen(false);
+                    }}
+                    orderedItems={reorderedFilteredItems}
+                />
+            </div>
+
+        </>
     );
 }

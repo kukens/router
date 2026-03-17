@@ -1,0 +1,45 @@
+ @layer components{
+    button {
+        padding: 0.5rem 2rem; 
+        margin: 1rem;
+        border-radius: 25px;
+        border: none;
+        display: inline-flex;
+        position:relative;
+        
+        &.btn-active{
+            background: #1f2937;
+            box-shadow: rgb(161 161 161) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+            .lucide-x {
+                    position: absolute;
+                    top: 5px;
+                    left: 10px;
+                }
+        }
+
+        &.btn-inactive {
+            background: #171e29;
+            box-shadow: rgb(59, 60, 61) 0px -1px 2px 0px, rgb(22 28 37) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+        }
+
+        &.btn-action-alt {
+            background: #1e324e;
+            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+        }
+        &.btn-action {
+            background: #2b4f62;
+            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+            padding: 0.6rem 5rem;
+            font-size: 1.1rem;
+        }
+
+        &.btn-action-back {
+            background: #2b4f62;
+            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+            padding: 0.6rem 2rem;
+            font-size: 1.1rem;
+            position: absolute;
+            left: 0;
+        }
+    }
+ }

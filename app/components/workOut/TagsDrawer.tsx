@@ -1,10 +1,14 @@
 
 "use client";
 
-import { Drawer, DrawerHeader, DrawerItems, HR, Button, TextInput } from "flowbite-react";
+import { Drawer } from '@base-ui/react/drawer';
+import { HR, TextInput } from "flowbite-react";
 import { useState, useEffect, useRef } from "react";
 
+import { Button } from '@base-ui/react/button';
+
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
+import { p } from 'node_modules/@react-router/dev/dist/routes-CZR-bKRt';
 
 
 interface TagsDrawerProps {
@@ -76,8 +80,7 @@ export default function TagsDrawer(props: TagsDrawerProps) {
 
     return (
         <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom">
-            <DrawerHeader title="Select Tags" />
-            <DrawerItems>
+            <p title="Select Tags" />
                 <div className="p-4">
                     <TextInput
                         type="text"
@@ -87,13 +90,12 @@ export default function TagsDrawer(props: TagsDrawerProps) {
                         className="w-full"
                     />
                 </div>
-            </DrawerItems>
             <HR />
                   <p>Select tags</p>
             <div className="m-5" style={{ height: '40vh', overflowY: 'auto' }}>
-                <div className="flex flex-wrap gap-2">
+                <div>
                     {filteredTags.map((value) => (
-                        <Button key={value} color={selected.includes(value) ? "teal" : "light"} pill onClick={() => filterItemToggle(value)}>
+                        <Button key={value} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => filterItemToggle(value)}>
                             {value}
                         </Button>
                     ))}
@@ -102,11 +104,11 @@ export default function TagsDrawer(props: TagsDrawerProps) {
 
             <HR />
 
-            <div className="flex m-5 flex-wrap gap-2">
-                <Button color="teal" pill onClick={() => props.handleApply([])}>
+            <div>
+                <Button className="btn-action" onClick={() => props.handleApply([])}>
                     Clear
                 </Button>
-                <Button color="teal" pill onClick={() => props.handleApply(selected)}>
+                <Button className="btn-action" onClick={() => props.handleApply(selected)}>
                     Apply
                 </Button>
             </ div>

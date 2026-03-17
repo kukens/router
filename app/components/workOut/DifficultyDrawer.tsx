@@ -1,8 +1,9 @@
 "use client";
 
-import { Drawer, DrawerHeader, DrawerItems, HR, Button } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, HR } from "flowbite-react";
 import { useState, useEffect } from "react";
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
+import { Button } from '@base-ui/react/button';
 
 export const difficultyLevels: Record<string, string> = {
     1: "Begginer",
@@ -68,9 +69,9 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
 
             </DrawerItems>
             <HR />
-            <div className="flex m-5 flex-wrap gap-2">
+            <div>
                 {Object.entries(difficultyLevels).filter(([key, value]) => availableDifficulties.includes(value)).map(([key, value]) => (
-                    <Button key={key} color={selected.includes(value) ? "teal" : "light"} pill onClick={() => difficultyLevelToggle(value)}>
+                    <Button key={key} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => difficultyLevelToggle(value)}>
                         {value}
                     </Button>
                 ))}
@@ -81,11 +82,11 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
 
             <HR />
 
-                <div className="flex m-5 flex-wrap gap-2">
-                    <Button color="teal" pill onClick={() => props.handleApply([])}>
+                <div>
+                    <Button className="btn-action" onClick={() => props.handleApply([])}>
                         Clear
                     </Button>
-                    <Button color="teal" pill onClick={() => props.handleApply(selected)}>
+                    <Button className="btn-action" onClick={() => props.handleApply(selected)}>
                         Apply
                     </Button>
                 </ div>

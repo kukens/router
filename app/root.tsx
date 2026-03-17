@@ -6,11 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { ThemeProvider } from "flowbite-react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { appFlowbiteTheme } from "~/theme/flowbite-theme";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -35,12 +33,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>   
-          <main className="flex min-h-screen flex-col items-center justify-center bg-white px-4 py-24 dark:bg-gradient-dark">
-          <div className="absolute inset-0 size-full">
-            <div className="relative h-full w-full select-none">
-            </div>
-          </div>
-          <div className="relative flex w-full max-w-5xl flex-col items-center justify-center gap-12"> {children}</div>
+          <main>
+             {children}
         </main>
         <ScrollRestoration />
         <Scripts />
@@ -51,9 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <ThemeProvider theme={appFlowbiteTheme}>
       <Outlet />
-    </ThemeProvider>
   );
 }
 

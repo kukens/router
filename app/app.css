@@ -1,48 +1,82 @@
-@import "tailwindcss";
-@import "flowbite-react/plugin/tailwindcss";
-@source "../.flowbite-react/class-list.json";
+@import "~/theme/Button.css";
 
-@source inline("grid-cols-{1..5}");
+@layer reset, components, overrides;
 
-
-@theme {
-    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-    --animate-dynamic-step: dynamic-step  infinite;
-}
-
-@utility btn-light-shadow {
-   box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-    border: none;
-}
-
-@utility btn-dark-shadow {
-   box-shadow: rgb(57 72 93) 0px -1px 2px 0px, rgb(22 28 37) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-    border: none;
-}
-
-@utility btn-alt-shadow {
-   box-shadow: rgb(57 72 93) 0px -1px 2px 0px, rgb(22 28 37) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-    border: none;
-}
-
-@utility btn-teal-shadow {
-   box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-    border: none;
-}
-
-@utility bg-gradient-dark {
-   background: radial-gradient(ellipse at top, #1d2c4d, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #000000);
-}
-
-
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+@layer reset {
+  /* 1. Reset Box Model & Spacing */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
-  background: radial-gradient(ellipse at top, #1d2c4d, #100a0ab8), radial-gradient(ellipse at bottom, #342257, #000000);
+  /* 2. Allow height animations to 'auto' */
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  /* 3. Smooth, accessible body defaults */
+  body {
+    min-height: 100dvh; /* Dynamic viewport height */
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-family: system-ui, sans-serif;
+  }
+
+  /* 4. Balanced headings */
+  :where(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+    line-height: 1.1;
+  }
+
+  /* 5. Responsive Media */
+  :where(img, svg, video, canvas) {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  /* 6. Form elements inherit global styles */
+  :where(input, button, textarea, select) {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* 7. Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+body {
+   background: linear-gradient(180deg, rgb(0 0 0 / 50%) 0%, rgba(47, 54, 92, 0) 8%, rgba(47, 54, 92, 0) 92%, rgb(0 0 0 / 50%) 100%), 
+   radial-gradient(ellipse at top, #1d2c4d, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #000000);
+   background-attachment: fixed;
+   background-size: cover;
+   min-height: 100dvh;
+}
+
+
+main{
+  padding: 0 2rem;
+}
+
+*{
+  color: #ececec;
+  text-align: center;
+}
+
+
+p{
+  color:  #9ca3af;
+}
+
+a{
+  text-decoration: none;
 }

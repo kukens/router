@@ -1,21 +1,16 @@
 'use client'
 
-import { Button } from "flowbite-react";
-import Jam from "~/components/workOut/WorkOut"
+import { Button } from '@base-ui/react/button';
 import { Link } from "react-router";
-import { useSearchParams } from "react-router";
+import { ArrowLeft } from 'lucide-react';
+import Jam from "~/components/workOut/WorkOut"
 
 
 export default function StartChallenge() {
 
-    const [searchParams] = useSearchParams();
-
-    const instrument = searchParams.get("instrument") ?? "";
-    const difficulty = searchParams.get("difficulty") ?? "";
-
     return (
         <main className="">
-            <Link className="m-5" to="/"><Button className="m-5 mb-10" as="span" color="teal" pill> ← Go Back</Button></Link>
+            <Link to="/"><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
 
             <Jam />
         </main>

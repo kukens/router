@@ -1,9 +1,10 @@
 'use client';
 
-import { Button, Drawer, DrawerHeader, DrawerItems, ToggleSwitch, HR } from "flowbite-react";
+import { Drawer, DrawerHeader, DrawerItems, ToggleSwitch, HR } from "flowbite-react";
 import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
+import { Button } from '@base-ui/react/button';
 
 interface ChordsDrawerProps {
     isOpen: boolean
@@ -32,14 +33,14 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
     const getChordTypeButtonColor = (chordType: string) => {
 
         if (activeChordType == chordType) {
-            return "teal"
+            return "btn-active"
         }
 
         if (selectedChordType == chordType) {
-            return "alternative"
+            return "btn-action"
         }
 
-        return "light"
+        return "btn-inactive"
     }
 
     useEffect(() => {
@@ -85,10 +86,10 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
             <DrawerHeader title="Select chord" titleIcon={() => <></>} />
             <DrawerItems>
                 <p>Select scale</p>
-                <div className="flex m-5 flex-wrap gap-2">
+                <div>
 
                     {CHORDS_DATA.map((chordType) => (
-                        <Button key={chordType.name} color={getChordTypeButtonColor(chordType.name)} pill onClick={() => handleChordTypeSelect(chordType.name)}>
+                        <Button key={chordType.name} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
                             {chordType.name}
                         </Button>
                     ))}
@@ -97,10 +98,10 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
                 <HR />
 
                 <p>Select chords</p>
-                <div className="flex m-5 flex-wrap gap-2">
+                <div>
                     {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
                         chordType.chords.filter(chord => availableChords.includes(chord.name)).map(chord => (
-                            <Button key={chord.name} color={selectedChords.some(x => x === chord.name) ? "teal" : "light"} pill onClick={() => ChordToggle(chord.name)}>
+                            <Button key={chord.name} className={selectedChords.some(x => x === chord.name) ? "btn-active" : "btn-inactive"} onClick={() => ChordToggle(chord.name)}>
                                 {chord.name}
                             </Button>
                         ))
@@ -109,11 +110,11 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
             </DrawerItems>
 
             <HR />
-            <div className="flex m-5 flex-wrap gap-2">
-                <Button color="teal" pill onClick={() => props.handleApply([])}>
+            <div>
+                <Button className="btn-action" onClick={() => props.handleApply([])}>
                     Clear
                 </Button>
-                <Button color="teal" pill onClick={() => props.handleApply(selectedChords)}>
+                <Button className="btn-action" onClick={() => props.handleApply(selectedChords)}>
                     Apply
                 </Button>
             </ div>

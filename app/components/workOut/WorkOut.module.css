@@ -1,0 +1,30 @@
+.container{
+    text-align: center;
+    min-height: 100dvh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+.filter-group{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.filter{
+
+}
+
+.active-filters{
+    button{
+        margin: 0.6rem;
+    }
+}
+
+.start-workout{
+
+
+}
