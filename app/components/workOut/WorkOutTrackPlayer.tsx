@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { Button } from '@base-ui/react/button';
 
-import styles from '~/components/WorkOut/WorkOutTrackPlayer.module.css'
+import styles from '~/components/workOut/WorkOutTrackPlayer.module.css'
 import { EmptyTrackData } from '~/types/TrackData';
 import type { TrackData } from '~/types/TrackData';
 import type { WorkOutTrack } from "~/data/workOutTracks";
