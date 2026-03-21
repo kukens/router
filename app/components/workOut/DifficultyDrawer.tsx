@@ -1,9 +1,10 @@
 "use client";
 
-import { Drawer, DrawerHeader, DrawerItems, HR } from "flowbite-react";
+import { Drawer } from "@base-ui/react";
 import { useState, useEffect } from "react";
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
 import { Button } from '@base-ui/react/button';
+import { ArrowUpRight, PictureInPicture2 } from "lucide-react";
 
 export const difficultyLevels: Record<string, string> = {
     1: "Begginer",
@@ -63,34 +64,37 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
     }, [props.isOpen]);
 
     return (
-        <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom">
-            <DrawerHeader title="Filter tracks" />
-            <DrawerItems>
 
-            </DrawerItems>
-            <HR />
-            <div>
-                {Object.entries(difficultyLevels).filter(([key, value]) => availableDifficulties.includes(value)).map(([key, value]) => (
-                    <Button key={key} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => difficultyLevelToggle(value)}>
-                        {value}
-                    </Button>
-                ))}
+  <Drawer.Root>
+            <Drawer.Trigger className="btn-action-alt">Select difficulty</Drawer.Trigger>
+            <Drawer.Portal>
+                <Drawer.Backdrop className="Backdrop" />
+                <Drawer.Viewport className="Viewport">
+                    <Drawer.Popup className="Popup">
+                        <div className="Handle" />
+                        <Drawer.Content className="Content">
+                            <Drawer.Description className="Description">
 
-            </ div>
+                                <p>Select chords</p>
+                        
+                    {Object.entries(difficultyLevels).filter(([key, value]) => availableDifficulties.includes(value)).map(([key, value]) => (
+                            <Button key={key} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => difficultyLevelToggle(value)}>
+                                {value}
+                            </Button>
+                        ))}
+                           
+                                <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
+                                    Clear
+                                </Button>
+                                <Drawer.Close className="btn-action-alt" onClick={() => props.handleApply(selected)}>Apply</Drawer.Close>
+                            </Drawer.Description>
+                        </Drawer.Content>
+                    </Drawer.Popup>
+                </Drawer.Viewport>
+            </Drawer.Portal>
+
+        </Drawer.Root>
 
 
-
-            <HR />
-
-                <div>
-                    <Button className="btn-action" onClick={() => props.handleApply([])}>
-                        Clear
-                    </Button>
-                    <Button className="btn-action" onClick={() => props.handleApply(selected)}>
-                        Apply
-                    </Button>
-                </ div>
-            
-        </Drawer>
     );
 }

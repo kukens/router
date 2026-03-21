@@ -6,6 +6,7 @@ import { Button, HR, CloseIcon } from "flowbite-react";
 import { Link } from "react-router";
 import OrderingDrawer from "./OrderingDrawer";
 import FilterDrawer from "./FilterDrawer";
+import styles from "./TrackList.module.css";
 
 export const orderBy: Record<string, string> = {
     1: "Recently played",
@@ -119,23 +120,23 @@ export default function TrackList() {
 
     return (
         <div>
-            <h2 className="dark:text-white text-center">My tracks:</h2>
+            <h2 className={styles.title}>My tracks:</h2>
             <HR />
 
-            <div className="grid grid-cols-2 gap-2">
-                <Button className="m-2" as="span" color="alternative" pill onClick={() => setIsOrderingOpen(true)}>
+            <div className={styles.controlGrid}>
+                <Button className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setIsOrderingOpen(true)}>
                     Ordering
                 </Button>
-                <Button className="m-2" as="span" color="alternative" pill onClick={() => setIsFilterOpen(true)}>
+                <Button className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setIsFilterOpen(true)}>
                     {`Filters ${filterText || selectedTags.length > 0 ? selectedTags.length + isFilterTextApplied() : ""}`}
                 </Button>
             </div>
-            <div className="flex gap-2">
+            <div className={styles.filterChips}>
                 {filterText &&
-                    <Button className="m-2" as="span" color="alternative" pill onClick={() => setFilterText("")}>Text: {filterText}  <CloseIcon /></Button>}
+                    <Button className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setFilterText("")}>Text: {filterText}  <CloseIcon /></Button>}
 
                 {selectedTags.length > 0 &&
-                    selectedTags.map(tag => <Button className="m-2" as="span" color="alternative" pill onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}  <CloseIcon /></Button>)
+                    selectedTags.map(tag => <Button key={tag} className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}  <CloseIcon /></Button>)
                 }
             </div>
 
@@ -158,19 +159,19 @@ export default function TrackList() {
                 onChangeTags={(ts: string[]) => setSelectedTags(ts)}
             />
 
-            {tracks.length === 0 && <p className="m-5 dark:text-white">No tracks found.</p>}
+            {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
 
             {tracks.slice(0, visibleCount).map((track) => (
-                <Link key={track.id} className="m-5" to={`/chord-tracks/${track.id}`}>
+                <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
                     <Button as="span" color="dark" pill>
                         {track.name}
                     </Button>
                 </Link>
             ))}
 
-            <div className="m-5">
+            <div className={styles.footerActions}>
                 <Button
-                    className="m-2"
+                    className={styles.buttonSpacing}
                     as="span"
                     color="alternative"
                     pill
@@ -180,7 +181,7 @@ export default function TrackList() {
                     {allLoaded ? "All loaded" : "Load more"}
                 </Button>
 
-                <Link className="m-2" to="/chord-tracks/create">
+                <Link className={styles.createLink} to="/chord-tracks/create">
                     <Button as="span" color="teal" pill>
                         Create track
                     </Button>

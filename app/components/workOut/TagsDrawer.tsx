@@ -2,14 +2,12 @@
 "use client";
 
 import { Drawer } from '@base-ui/react/drawer';
-import { HR, TextInput } from "flowbite-react";
 import { useState, useEffect, useRef } from "react";
-
+import { Input } from '@base-ui/react/input';
 import { Button } from '@base-ui/react/button';
 
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
-import { p } from 'node_modules/@react-router/dev/dist/routes-CZR-bKRt';
-
+import styles from './TagsDrawer.module.css';
 
 interface TagsDrawerProps {
     isOpen: boolean
@@ -35,14 +33,14 @@ export default function TagsDrawer(props: TagsDrawerProps) {
 
     useEffect(() => {
         let baseTracks = WORKOUT_TRAKCS;
-        
+
         // Filter tracks based on selected chords
         if (props.selectedChords && props.selectedChords.length > 0) {
-            baseTracks = baseTracks.filter(track => 
+            baseTracks = baseTracks.filter(track =>
                 props.selectedChords!.every(chord => track.chords.includes(chord))
             );
         }
-        
+
         // Filter tracks based on selected difficulty levels
         if (props.selectedDifficultyLevels && props.selectedDifficultyLevels.length > 0) {
             const difficultyMap: Record<string, number> = {
@@ -55,12 +53,12 @@ export default function TagsDrawer(props: TagsDrawerProps) {
             const selectedNumbers = props.selectedDifficultyLevels
                 .map(level => difficultyMap[level])
                 .filter(n => !isNaN(n));
-            
-            baseTracks = baseTracks.filter(track => 
+
+            baseTracks = baseTracks.filter(track =>
                 selectedNumbers.includes(track.difficulty)
             );
         }
-        
+
         // Get unique tags from filtered tracks
         const availableTags = [...new Set(baseTracks.flatMap(item => item.tags))];
         allTags.current = availableTags;
@@ -68,7 +66,7 @@ export default function TagsDrawer(props: TagsDrawerProps) {
     }, [props.selectedChords, props.selectedDifficultyLevels]);
 
     useEffect(() => {
-        const filtered = allTags.current.filter(tag => 
+        const filtered = allTags.current.filter(tag =>
             tag.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredTags(filtered);
@@ -79,40 +77,48 @@ export default function TagsDrawer(props: TagsDrawerProps) {
     }, [props.isOpen]);
 
     return (
-        <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom">
-            <p title="Select Tags" />
-                <div className="p-4">
-                    <TextInput
-                        type="text"
-                        placeholder="Search tags..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full"
-                    />
-                </div>
-            <HR />
-                  <p>Select tags</p>
-            <div className="m-5" style={{ height: '40vh', overflowY: 'auto' }}>
-                <div>
-                    {filteredTags.map((value) => (
-                        <Button key={value} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => filterItemToggle(value)}>
-                            {value}
-                        </Button>
-                    ))}
-                </div>
-            </div>
 
-            <HR />
+        <Drawer.Root>
+            <Drawer.Trigger className="btn-action-alt">Select tags</Drawer.Trigger>
+            <Drawer.Portal>
+                <Drawer.Backdrop className="Backdrop" />
+                <Drawer.Viewport className="Viewport">
+                    <Drawer.Popup className="Popup">
+                        <div className="Handle" />
+                        <Drawer.Content className="Content">
+                          
+                            
+                            <Drawer.Description className="Description">
 
-            <div>
-                <Button className="btn-action" onClick={() => props.handleApply([])}>
-                    Clear
-                </Button>
-                <Button className="btn-action" onClick={() => props.handleApply(selected)}>
-                    Apply
-                </Button>
-            </ div>
+                                <Input
+                                    placeholder="Search tags..."
+                                    value={searchTerm}                
+                                    onValueChange={(value) => setSearchTerm(value)}
+                                />
 
-        </Drawer>
+                                
+                          
+                                <div className={styles.scrollable}>
+                                    <div>
+                                        {filteredTags.map((value) => (
+                                            <Button key={value} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => filterItemToggle(value)}>
+                                                {value}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
+                                    Clear
+                                </Button>
+                                <Drawer.Close className="btn-action-alt" onClick={() => props.handleApply(selected)}>Apply</Drawer.Close>
+                            </Drawer.Description>
+                        </Drawer.Content>
+                    </Drawer.Popup>
+                </Drawer.Viewport>
+            </Drawer.Portal>
+
+        </Drawer.Root>
+
     );
 }

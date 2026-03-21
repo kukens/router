@@ -1,0 +1,27 @@
+.content {
+    margin: 1rem;
+}
+
+.fieldLabel {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #f3f4f6;
+}
+
+.tagSection {
+    margin-top: 1rem;
+}
+
+.tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-top: 1px solid #4b5563;
+}

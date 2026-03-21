@@ -1,10 +1,11 @@
 'use client';
 
-import { Drawer, DrawerHeader, DrawerItems, ToggleSwitch, HR } from "flowbite-react";
+import { Drawer } from '@base-ui/react/drawer';
 import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
 import { Button } from '@base-ui/react/button';
+import styles from './ChordsDrawer.module.css'
 
 interface ChordsDrawerProps {
     isOpen: boolean
@@ -82,43 +83,53 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
 
 
     return (
-        <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom" >
-            <DrawerHeader title="Select chord" titleIcon={() => <></>} />
-            <DrawerItems>
-                <p>Select scale</p>
-                <div>
 
-                    {CHORDS_DATA.map((chordType) => (
-                        <Button key={chordType.name} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
-                            {chordType.name}
-                        </Button>
-                    ))}
-                </ div>
+        <Drawer.Root>
+            <Drawer.Trigger className="btn-action-alt">Choose chords</Drawer.Trigger>
+            <Drawer.Portal>
+                <Drawer.Backdrop className="Backdrop" />
+                <Drawer.Viewport className="Viewport">
+                    <Drawer.Popup className="Popup">
+                        <div className="Handle" />
+                        <Drawer.Content className="Content">
+                            <div className={styles.container}>
+                                <h2>Select scale</h2>
 
-                <HR />
+                                <div className={styles.scale}>
+                                    {CHORDS_DATA.map((chordType) => (
+                                        <Button key={chordType.name} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
+                                            {chordType.name}
+                                        </Button>
+                                    ))}
+                                </div>
 
-                <p>Select chords</p>
-                <div>
-                    {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
-                        chordType.chords.filter(chord => availableChords.includes(chord.name)).map(chord => (
-                            <Button key={chord.name} className={selectedChords.some(x => x === chord.name) ? "btn-active" : "btn-inactive"} onClick={() => ChordToggle(chord.name)}>
-                                {chord.name}
-                            </Button>
-                        ))
-                    ))}
-                </ div>
-            </DrawerItems>
+                                <div className={styles.chords}>
 
-            <HR />
-            <div>
-                <Button className="btn-action" onClick={() => props.handleApply([])}>
-                    Clear
-                </Button>
-                <Button className="btn-action" onClick={() => props.handleApply(selectedChords)}>
-                    Apply
-                </Button>
-            </ div>
-        </Drawer>
+                                    <h2>Select chords</h2>
+
+                                    {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
+                                        chordType.chords.filter(chord => availableChords.includes(chord.name)).map(chord => (
+                                            <Button key={chord.name} className={selectedChords.some(x => x === chord.name) ? "btn-active" : "btn-inactive"} onClick={() => ChordToggle(chord.name)}>
+                                                {chord.name}
+                                            </Button>
+                                        ))
+                                    ))}
+                                </div></div>
+                            <div className="drawer-footer">
+                                <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
+                                    Clear
+                                </Button>
+                                <Drawer.Close className="btn-action-alt" onClick={() => props.handleApply(selectedChords)}>Apply</Drawer.Close>
+                            </div>
+
+                        </Drawer.Content>
+                    </Drawer.Popup>
+                </Drawer.Viewport>
+            </Drawer.Portal>
+
+        </Drawer.Root >
+
+
     );
 }
 

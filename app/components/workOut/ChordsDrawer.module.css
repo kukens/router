@@ -1,0 +1,17 @@
+.chords{
+
+margin:1rem;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 34rem;
+}
+.scale{
+margin:1rem;
+}
+
+button{
+    margin:0.7rem;
+}

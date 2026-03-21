@@ -1,0 +1,21 @@
+﻿.header {
+    margin:0 -2rem;
+    padding: 4rem;
+    border-bottom: 1px solid #3c3c3c;
+    box-shadow: #000 0px 0px 10px;
+}
+
+.footer {
+    margin:0 -2rem;
+    padding: 4rem;
+    border-top: 1px solid #3c3c3c;
+    box-shadow: #000 0px 0px 10px;
+    flex-grow: 1;
+}
+
+.container{
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}

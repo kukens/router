@@ -151,7 +151,9 @@ export default function AudioAnalyzer() {
         setDiagnosticsEnabled(!diagnosticsEnabled);
     };
 
-    return <>
+    return <div style={{ display: 'none' }}>
+
+
 
         <Button color="teal" pill onClick={handleToggle}>
             {isRecording ? 'STOP' : 'START'} RECORDING
@@ -198,5 +200,5 @@ export default function AudioAnalyzer() {
             </div>
 
         }
-    </>
+    </div>
 }

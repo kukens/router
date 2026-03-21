@@ -1,11 +1,14 @@
 
 
 "use client";
-
-import { Drawer, DrawerHeader, DrawerItems, HR, Button, Checkbox, Label } from "flowbite-react";
+import { Checkbox } from '@base-ui/react/checkbox';
+import { Button } from "@base-ui/react";
+import { Drawer } from "@base-ui/react";
 import { useState, useEffect, useRef } from "react";
 import { WORKOUT_TRAKCS } from "../../data/workOutTracks";
 import { DotsVertical } from "flowbite-react-icons/outline";
+import styles from './FIlteredItemsDrawer.module.css'
+import { Check, Grip } from "lucide-react";
 
 interface FilteredItemsDrawerProps {
     isOpen: boolean
@@ -14,7 +17,8 @@ interface FilteredItemsDrawerProps {
     handleClose: () => void;
     // on apply we return array of excluded item names and the new order
     handleApply: (excludedIds: number[], newOrder: number[]) => void;
-    orderedItems: number[] // the current order of items
+    orderedItems: number[] // the current order of items,
+    selectedCounter: number; // number of currently selected items (after exclusion)
 }
 
 export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
@@ -202,72 +206,88 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
     }
 
     return (
-        <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom" className="h-[70vh]">
-            <DrawerHeader title="Filtered tracks" />
-            <DrawerItems>
-                <div className="p-2 h-full">
-                    <div
-                        ref={listContainerRef}
-                        className="space-y-2 overflow-y-auto max-h-[calc(60vh-120px)]"
-                        style={draggedItem ? { touchAction: 'none' } : undefined}
-                    >
-                        {orderedItems.map((trackId, index) => {
-                            const trackData = getTrackData(trackId);
-                            const isVisible = visibleItems.includes(trackId);
-                            const isDragged = draggedItem === trackId;
 
-                            return (
-                                <div key={trackId}>
-                                    {placeholderIndex === index && (
-                                        <div className="h-2 bg-teal-500 rounded-full mx-3 my-1 opacity-75 animate-pulse"></div>
-                                    )}
-                                    <div 
-                                        data-track-id={trackId} 
-                                        className={`flex justify-center items-center border-1 border-gray-700 rounded-2xl p-3 transition-all duration-200 ${
-                                            isDragged ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-                                        }`}
-                                    >
-                                        <div onPointerDown={(e) => handlePointerDown(e, trackId)} style={{ touchAction: 'none' }}>
-                                            <DotsVertical size={35} />
-                                        </div>
-                                        <div className="grow mx-2">
-                                            <Label htmlFor={`select-${index}`}>
-                                                <span className="text-gray-200 p-2">
-                                                    {trackData?.name ?? String(trackId)}
-                                                </span>
-                                                  {trackData && (
-                                                <div >
-                                                    {trackData.chords.map((chord, index) => (
-                                                        <span className="p-2 text-gray-400" key={index}>{chord}</span>
-                                                    ))}
-                                                </div>
+        <Drawer.Root>
+            <Drawer.Trigger className="btn-action-alt">{props.selectedCounter} items selected</Drawer.Trigger>
+            <Drawer.Portal>
+                <Drawer.Backdrop className="Backdrop" />
+                <Drawer.Viewport className="Viewport">
+
+                    <Drawer.Popup className="Popup">
+                        <div className="Handle" />
+                        <Drawer.Content className="Content">
+                            <div className="drawer-header"><h2>Adjust Workout</h2></div>
+                            <div data-base-ui-swipe-ignore
+                                ref={listContainerRef}
+                                className={styles.scrollable}
+                                style={draggedItem ? { touchAction: 'none' } : undefined}
+                            >
+                                {orderedItems.map((trackId, index) => {
+                                    const trackData = getTrackData(trackId);
+                                    const isVisible = visibleItems.includes(trackId);
+                                    const isDragged = draggedItem === trackId;
+
+                                    return (
+                                        <div key={trackId} className={`${isVisible ? '' : styles.deselected}`}>
+                                            {placeholderIndex === index && (
+                                                <div className={styles.placeholderBar}></div>
                                             )}
-                                            </Label>
-                                          
+                                            <div data-track-id={trackId}
+                                                className={styles.result}
+                                                style={isDragged ? { opacity: 0.5, transform: 'scale(0.95)' } : { opacity: 1, transform: 'scale(1)' }}>
+
+
+                                                <div className={styles.dragger} onPointerDown={(e) => handlePointerDown(e, trackId)}>
+                                                    <Grip />
+                                                </div>
+
+                                                <label htmlFor={`select-${index}`} className={styles.resultLabel}>
+                                                    <div className={styles[`result-content`]}>
+                                                        <span className={styles[`result-name`]}>
+                                                            {trackData?.name ?? String(trackId)}
+                                                        </span>
+                                                        {trackData && (
+                                                            <div className={styles.chords}>
+                                                                {trackData.chords.map((chord, index) => (
+                                                                    <span className={styles.chord} key={index}>{chord}</span>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <div className={`${styles.checkboxWrapper}`}>
+                                                        <Checkbox.Root id={`select-${index}`} defaultChecked checked={isVisible} onCheckedChange={(e) => toggleItem(trackId)} className="Checkbox">
+                                                            <Checkbox.Indicator className="Indicator">
+                                                                <Check />
+                                                            </Checkbox.Indicator>
+                                                        </Checkbox.Root>
+                                                    </div>
+                                                </label>
+
+                                            </div>
+
                                         </div>
-                                        <div className="">
-                                            <Checkbox color="teal" className="h-6 w-6" id={`select-${index}`} defaultChecked checked={isVisible}
-                                                onChange={(e) => { e.stopPropagation(); toggleItem(trackId); }} />
-                                        </div>
 
-                                    </div>
-                                </div>
-                            );
-                        })}
-                        {placeholderIndex === orderedItems.length && (
-                            <div className="h-2 bg-teal-500 rounded-full mx-3 my-1 opacity-75 animate-pulse"></div>
-                        )}
-                    </div>
-                </div>
-            </DrawerItems>
+                                    );
+                                })}
+                                {placeholderIndex === orderedItems.length && (
+                                    <div className={styles.placeholderBar}></div>
+                                )}
+                            </div>
+                            <div className="drawer-footer">
+                                <Button className="btn-action-alt" onClick={resetOrder}>Reset order</Button>
+                                <Drawer.Close className="btn-action-alt" onClick={onApply}>Apply</Drawer.Close>
+                            </div>
 
-            <HR />
+                        </Drawer.Content>
+                    </Drawer.Popup>
 
-            <div className="flex m-5 flex-wrap gap-2">
-                <Button color="teal" pill onClick={resetOrder}>Reset order</Button>
-                <Button color="teal" pill onClick={onApply}>Apply</Button>
-            </div>
-        </Drawer>
+                </Drawer.Viewport>
+            </Drawer.Portal>
+
+        </Drawer.Root>
+
+
     );
 }
 

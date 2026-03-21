@@ -8,12 +8,13 @@
         position:relative;
         
         &.btn-active{
-            background: #1f2937;
-            box-shadow: rgb(161 161 161) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-            .lucide-x {
+            background: #1e324e;
+            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+
+                .lucide-x {
                     position: absolute;
-                    top: 5px;
-                    left: 10px;
+                    top: 13px;
+                    right: 10px;
                 }
         }
 
@@ -23,9 +24,9 @@
         }
 
         &.btn-action-alt {
-            background: #1e324e;
-            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-        }
+            background: #1f2937;
+            box-shadow: rgb(161 161 161) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+         }
         &.btn-action {
             background: #2b4f62;
             box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;

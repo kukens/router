@@ -90,7 +90,7 @@ export default function () {
 
                 <div className={styles['filter-group']}>
                     <div className={styles['filter']}>
-                        <Button className="btn-action-alt" onClick={() => setIsChordsDrawerOpen(true)}>Select chords</Button>
+                        <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
 
                         {selectedChords.length > 0 &&
                             <div className={styles['active-filters']}>
@@ -103,13 +103,13 @@ export default function () {
                         }
                     </div>
 
-
                     <div className={styles['filter']}>
-                        <Button className="btn-action-alt" onClick={() => setIsTagsDrawerOpen(true)}>Select tags</Button>
+
+                        <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
 
                         {selectedTags.length > 0 &&
                             <div className="">
-                                {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag}</Button>)}
+                                {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15} color='#999' /></Button>)}
                             </ div>
                         }
 
@@ -119,11 +119,12 @@ export default function () {
                     </div>
 
                     <div className={styles['filter']}>
-                        <Button className="btn-action-alt" onClick={() => setIsDifficultyDrawerOpen(true)} >Select difficulty</Button>
+
+                        <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
 
                         {selectedDifficultyLevels.length > 0 &&
                             <div className="">
-                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel}</Button>)}
+                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel} <X size={15} color='#999' /></Button>)}
                             </ div>
                         }
 
@@ -134,45 +135,33 @@ export default function () {
                 </div>
 
                 <div className={styles['start-workout']}>
-                    {
-                        finalFilteredItems.length === 0 && (<p>No items found </p>)
+                    {finalFilteredItems.length === 0 && 
+                    <p>No items found </p>
                     }
 
-                    {
-                        finalFilteredItems.length > 0 && (
-                            <Button className="btn-action-alt" onClick={() => setIsItemsDrawerOpen(true)}>
-                                {`${finalFilteredItems.length} items found`}
-                            </Button>
-                        )
+                    {finalFilteredItems.length > 0 && 
+                                            <FilteredItemsDrawer
+                        isOpen={isItemsDrawerOpen}
+                        handleClose={() => setIsItemsDrawerOpen(false)}
+                        items={filteredItems.map(i => i.id)}
+                        excluded={excludedItems}
+                        handleApply={(excluded, reorderedItems) => {
+                            setExcludedItems(excluded);
+                            setReorderedFilteredItems(reorderedItems);
+                            setIsItemsDrawerOpen(false);
+                        }}
+                        orderedItems={reorderedFilteredItems}
+                        selectedCounter={finalFilteredItems.length}
+                    />
                     }
+
+   
 
                     <Link to="/workout/start" state={{ WorkOutTracks: finalFilteredItems }}>
                         <Button className="btn-action" onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
                     </Link>
                 </div>
             </div >
-
-
-            <div style={{ display: 'none' }}>
-                <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
-
-                <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
-
-                <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
-                <FilteredItemsDrawer
-                    isOpen={isItemsDrawerOpen}
-                    handleClose={() => setIsItemsDrawerOpen(false)}
-                    items={filteredItems.map(i => i.id)}
-                    excluded={excludedItems}
-                    handleApply={(excluded, reorderedItems) => {
-                        setExcludedItems(excluded);
-                        setReorderedFilteredItems(reorderedItems);
-                        setIsItemsDrawerOpen(false);
-                    }}
-                    orderedItems={reorderedFilteredItems}
-                />
-            </div>
-
         </>
     );
 }

@@ -3,7 +3,7 @@
 import { Spinner } from "flowbite-react";
 import { useEffect, useRef, useState } from 'react';
 import { useChord, type ChordValue } from '~/features/audio/ChordContext';
-import styles from '~/components/Bars.module.css';
+import styles from '~/components/TrackPlayer.module.css';
 
 import { EmptyTrackData } from '~/types/TrackData';
 import type { Bar, TrackData } from '~/types/TrackData';
@@ -22,6 +22,16 @@ interface BeatData {
     isMatched: boolean;
     chordSwitchReactionTime?: number;
 }
+
+const REACTION_CLASS_NAMES = ['reactionStrong', 'reactionFast', 'reactionMedium', 'reactionSlow'] as const;
+
+const getReactionClassName = (reactionTime: number | undefined) => {
+    if (reactionTime == null) return 'reactionStrong' as const;
+    if (reactionTime < 100 && reactionTime > -100) return 'reactionStrong' as const;
+    if (reactionTime < 200 && reactionTime > -200) return 'reactionFast' as const;
+    if (reactionTime < 300 && reactionTime > -300) return 'reactionMedium' as const;
+    return 'reactionSlow' as const;
+};
 
 export default function TrackPlayer(props: TrackPlayerProps) {
 
@@ -49,6 +59,10 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         const clamped = Math.max(min, Math.min(500, avgReactionTime));
         return ((clamped - min) / range) * 100;
     })();
+
+    const animationDuration = trackData.tempo > 0
+        ? `${(60 / trackData.tempo) * 1000 * trackData.beatsPerBar * (trackData.bars.length + 1)}ms`
+        : undefined;
 
     const dividerRef = useRef<HTMLDivElement>(null);
     const beatsElementsRef = useRef<HTMLDivElement[]>([]);
@@ -105,12 +119,9 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             for (let i = 0; i <= barsCount; i++) {
                 const keyFrameStep = i == barsCount ? "100%" : `${animationSplit * i}%, ${animationSplit * (i + 1) - (timePerBeat * trackData.beatsPerBar / 1000 / barsCount * 6)}%`
                 keyframes += `
-                ${keyFrameStep} { transform: translateY(${-i * 76}px); }`;
+                ${keyFrameStep} { transform: translateY(${-i * 115}px); }`;
             }
             animationKeyFramesStyleRef.current.innerHTML = `@keyframes dynamic-step { ${keyframes} }`
-
-            animationContainerRef.current.className = "animate-dynamic-step";
-            animationContainerRef.current.style.animationDuration = `${timePerBeat * trackData.beatsPerBar * barsCount}ms`;
 
             startTimeRef.current = Date.now();
             console.log('start: ' + startTimeRef.current)
@@ -210,14 +221,11 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         const matchedBeatElement = beatsElementsRef.current[beatData.index];
 
         if (beatData.isMatched && matchedBeatElement) {
-            let reactionClass = "bg-green-800";
-            if (beatData.chordSwitchReactionTime != null) {
-                if (beatData.chordSwitchReactionTime < 100 && beatData.chordSwitchReactionTime > -100) reactionClass = "bg-green-800";
-                else if (beatData.chordSwitchReactionTime < 200 && beatData.chordSwitchReactionTime > -200) reactionClass = "bg-green-700";
-                else if (beatData.chordSwitchReactionTime < 300 && beatData.chordSwitchReactionTime > -300) reactionClass = "bg-green-600";
-                else if (beatData.chordSwitchReactionTime < 400 && beatData.chordSwitchReactionTime > -400) reactionClass = "bg-green-500";
+            for (const className of REACTION_CLASS_NAMES) {
+                matchedBeatElement.classList.remove(styles[className]);
             }
-            matchedBeatElement.classList.add(reactionClass);
+
+            matchedBeatElement.classList.add(styles[getReactionClassName(beatData.chordSwitchReactionTime)]);
         }
 
         // update accuracy counts only if this is the current iteration
@@ -243,14 +251,10 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     };
 
     const clearBeatReactionClasses = () => {
-        const toRemovePrefix = 'bg-green-';
         for (const el of beatsElementsRef.current) {
             if (!el) continue;
-            const classes = Array.from(el.classList);
-            for (const c of classes) {
-                if (c.startsWith(toRemovePrefix)) {
-                    el.classList.remove(c);
-                }
+            for (const className of REACTION_CLASS_NAMES) {
+                el.classList.remove(styles[className]);
             }
         }
     };
@@ -266,9 +270,13 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             beatsToSkipRef.current = beatsToSkipRef.current - 1
             return;
         }
+        
+        if (beatsToSkipRef.current === 0 && dividerRef.current) {
+            dividerRef.current.classList.remove(styles.active);
+            dividerRef.current.style.animationDuration = ``;
+        }
 
         const tickStart = Date.now();
-        //  console.log(`started ${currentBeatIndexRef.current} ${beatsElementsRef.current[currentBeatIndexRef.current].dataset.chord}: ${tickStart}`)
 
         const previousIterationRecords = beatsHistory.current[iterationRef.current];
         if (previousIterationRecords && previousIterationRecords.length > 0) {
@@ -314,7 +322,9 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         const previousBeatIndex = currentBeatIndexRef.current == 0 ? overallBeatsCount - 1 : currentBeatIndexRef.current - 1;
 
         beatsElementsRef.current[currentBeatIndexRef.current].classList.add(styles.active);
-        beatsElementsRef.current[currentBeatIndexRef.current].classList.remove("bg-green-800");
+        for (const className of REACTION_CLASS_NAMES) {
+            beatsElementsRef.current[currentBeatIndexRef.current].classList.remove(styles[className]);
+        }
         beatsElementsRef.current[previousBeatIndex].classList.remove(styles.active);
 
         currentBeatIndexRef.current = (currentBeatIndexRef.current + 1) % overallBeatsCount
@@ -345,14 +355,24 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
         return (
             bars.map((bar, barIndex) => (
-                <div key={barIndex} className={`${usePlaceholder ? "opacity-25" : ""} bar-wrapper flex items-center`}>
-                    <div ref={getRef(useFakeBars, usePlaceholder)} className={`${styles['bar']} grid grid-cols-${trackData.beatsPerBar} gap-0 w-full p-1`}>
+                <div key={barIndex} className={`${styles.barWrapper} ${usePlaceholder ? styles.barWrapperPlaceholder : ''}`}>
+                    <div
+                        ref={getRef(useFakeBars, usePlaceholder)}
+                        className={`${barIndex == 0 ? '' : ''} ${styles.bar}`}
+
+                    >
                         {bar.chords.map((beat, beatIndex) => (
-                            <div key={beatIndex} ref={useFakeBars ? null : registerBeats} className={`${styles['beat']} ${barIndex == 0 ? "border-t-4 border-gray-400" : ""} ${beatIndex == 0 ? "rounded-l-sm" : ""} ${beatIndex == trackData.beatsPerBar - 1 ? "rounded-r-sm" : ""} h-16 bg-gray-500 p-5 m-px text-center`} data-chord={useFakeBars ? null : beat}>
+                            <div
+                                key={beatIndex}
+                                ref={useFakeBars ? null : registerBeats}
+                                className={`${styles.beat} ${beatIndex == 0 ? styles.beatFirstInBar : ''} ${beatIndex == trackData.beatsPerBar - 1 ? styles.beatLastInBar : ''}`}
+                                data-chord={useFakeBars ? null : beat}
+                            >
                                 {(beatIndex == 0 || bar.chords[beatIndex - 1] != bar.chords[beatIndex]) && beat.replace("b", "♭").replace("#", "♯")}
                             </div>
                         ))}
                     </div>
+                    <div className={styles.barOverlay} />
                 </div>
             ))
         )
@@ -360,39 +380,42 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     return (
         <div>
-            <div className="bars relative overflow-hidden h-57 ">
+            <div className={styles.trackWindow}>
 
-                <div className="absolute top-5 left-0 right-0 flex justify-center z-20 text-teal">
+                <div className={styles.countdownOverlay}>
                     {!countDownStarted &&
                         <Spinner aria-label="Default status example" />
                     }
                     {countDownStarted && countDownToStart > 0 ? <p>{countDownToStart}</p> : ""} </div>
-                <div className="absolute top-0 inset-x-0 h-18 w-full bg-gradient-to-b from-gray-900 pointer-events-none z-10"></div>
+            
                 <style ref={animationKeyFramesStyleRef} />
-                <div ref={animationContainerRef}>
+                <div
+                    ref={animationContainerRef}
+                    className={styles.animationContainer}
+                    style={isReadyToPlay ? { animationName: 'dynamic-step', animationDuration } : undefined}
+                >
                     {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}
                     {generateBarsHtml(trackData.bars, false, false)}
                     {generateBarsHtml([{ chords: new Array(trackData.bars[0].chords.length).fill("") }], true, true)}
                     {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
                 </div>
-                <div className="absolute bottom-0 inset-x-0 h-18 w-full bg-gradient-to-b to-gray-900 pointer-events-none z-10"></div>
-
+          
             </div>
 
-            <div className="">
-                <div className="mb-2">
-                    <p className="mb-1">Accuracy: ({accuracy}%)</p>
-                    <div className="relative w-full max-w-xl h-4 rounded overflow-hidden" style={{background: 'linear-gradient(90deg, #e53e3e 0%, #16a34a 100%)'}}>
-                        <div className="absolute top-0 h-4" style={{width: '6px', background: 'white', left: `calc(${accuracy}% - 3px)`}} />
+            {/* <div className={styles.metrics}>
+                <div className={styles.metricGroup}>
+                    <p className={styles.metricLabel}>Accuracy: ({accuracy}%)</p>
+                    <div className={styles.meter} style={{background: 'linear-gradient(90deg, #e53e3e 0%, #16a34a 100%)'}}>
+                        <div className={`${styles.meterMarker} ${styles.accuracyMarker}`} style={{left: `calc(${accuracy}% - 3px)`}} />
                     </div>
                 </div>
-                <div className="mt-2">
-                    <p className="mb-1">Reaction: {avgReactionTime !== null ? `${avgReactionTime} ms` : '-'}</p>
-                    <div className="relative w-full max-w-xl h-4 rounded overflow-hidden" style={{background: 'linear-gradient(90deg, #e53e3e 0%, #16a34a 50%, #e53e3e 100%)'}}>
-                        <div className="absolute top-0 h-4 w-0.5 bg-white" style={{left: `calc(${reactionPositionPercent}% - 1px)`}} />
+                <div className={styles.metricGroup}>
+                    <p className={styles.metricLabel}>Reaction: {avgReactionTime !== null ? `${avgReactionTime} ms` : '-'}</p>
+                    <div className={styles.meter} style={{background: 'linear-gradient(90deg, #e53e3e 0%, #16a34a 50%, #e53e3e 100%)'}}>
+                        <div className={`${styles.meterMarker} ${styles.reactionMarker}`} style={{left: `calc(${reactionPositionPercent}% - 1px)`}} />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

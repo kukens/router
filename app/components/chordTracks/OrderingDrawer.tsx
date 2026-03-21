@@ -1,6 +1,7 @@
 "use client";
 
 import { Drawer, DrawerHeader, DrawerItems, Radio, Button } from "flowbite-react";
+import styles from "./OrderingDrawer.module.css";
 
 interface OrderingDrawerProps {
   open: boolean;
@@ -21,9 +22,9 @@ export default function OrderingDrawer(props: OrderingDrawerProps) {
     <Drawer open={open} onClose={onClose} position="bottom">
       <DrawerHeader title="Ordering" />
       <DrawerItems>
-        <div className="m-4 space-y-3">
+        <div className={styles.options}>
           {Object.entries(options).map(([key, label]) => (
-            <div key={key} className="flex items-center gap-2">
+            <div key={key} className={styles.optionRow}>
               <Radio
                 id={`order-${key}`}
                 name="ordering"
@@ -31,7 +32,7 @@ export default function OrderingDrawer(props: OrderingDrawerProps) {
                 checked={selectedOrder === key}
                 onChange={() => onChangeOrder(key)}
               />
-              <label htmlFor={`order-${key}`} className="dark:text-white">
+              <label htmlFor={`order-${key}`} className={styles.optionLabel}>
                 {label}
               </label>
             </div>
@@ -39,7 +40,7 @@ export default function OrderingDrawer(props: OrderingDrawerProps) {
         </div>
       </DrawerItems>
 
-      <div className="border-t p-4 flex justify-end">
+      <div className={styles.actions}>
         <Button color="teal" pill onClick={onClose}>
           Apply
         </Button>

@@ -1,0 +1,39 @@
+.title {
+    text-align: center;
+    color: #f3f4f6;
+}
+
+.controlGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.buttonSpacing {
+    margin: 0.5rem;
+}
+
+.filterChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.emptyState {
+    margin: 1.25rem;
+    color: #f3f4f6;
+}
+
+.trackLink {
+    display: inline-block;
+    margin: 1.25rem;
+}
+
+.footerActions {
+    margin: 1.25rem;
+}
+
+.createLink {
+    display: inline-block;
+    margin: 0.5rem;
+}

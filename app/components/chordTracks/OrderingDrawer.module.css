@@ -1,0 +1,24 @@
+.options {
+    margin: 1rem;
+}
+
+.options > * + * {
+    margin-top: 0.75rem;
+}
+
+.optionRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.optionLabel {
+    color: #f3f4f6;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #4b5563;
+}

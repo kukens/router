@@ -2,6 +2,7 @@
 
 import { Drawer, DrawerHeader, DrawerItems, TextInput, Button } from "flowbite-react";
 import React from "react";
+import styles from "./FilterDrawer.module.css";
 
 interface FilterDrawerProps {
   open: boolean;
@@ -58,8 +59,8 @@ export default function FilterDrawer(props: FilterDrawerProps) {
     <Drawer open={open} onClose={onClose} position="bottom">
       <DrawerHeader title="Filter tracks" />
       <DrawerItems>
-        <div className="m-4">
-          <label className="block mb-2 dark:text-white">Track name contains</label>
+        <div className={styles.content}>
+          <label className={styles.fieldLabel}>Track name contains</label>
           <TextInput
             id="filter-name"
             placeholder="Enter part of a track name"
@@ -67,9 +68,9 @@ export default function FilterDrawer(props: FilterDrawerProps) {
             onChange={(e) => onChangeFilter((e.target as HTMLInputElement).value)}
           />
 
-          <div className="mt-4">
-            <label className="block mb-2 dark:text-white">Tags</label>
-            <div className="flex flex-wrap gap-2">
+          <div className={styles.tagSection}>
+            <label className={styles.fieldLabel}>Tags</label>
+            <div className={styles.tagList}>
               {allTags.map((tag, tagIndex) => (
                   <Button key={tagIndex} color="dark" outline={localTags.includes(tag)} pill onClick={() => toggleTag(tag)}>
                   {tag}
@@ -80,7 +81,7 @@ export default function FilterDrawer(props: FilterDrawerProps) {
         </div>
       </DrawerItems>
 
-      <div className="border-t p-4 flex gap-2 justify-end">
+      <div className={styles.actions}>
         <Button color="gray" pill onClick={handleClear}>
           Clear
         </Button>

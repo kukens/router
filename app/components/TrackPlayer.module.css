@@ -1,0 +1,151 @@
+﻿
+.trackWindow {
+    position: relative;
+    overflow: hidden;
+    height: 345px;
+}
+
+.countdownOverlay {
+    position: absolute;
+    top: 1.25rem;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    color: #5eead4;
+}
+
+
+
+.animationContainer {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    will-change: transform;
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+    padding:1rem 0;
+}
+
+.barWrapper {
+       
+}
+
+.barWrapperPlaceholder {
+    opacity: 0.25;
+}
+
+.bar {
+    display: flex;
+    border-radius:15px;
+    opacity:0.5;
+    box-shadow:rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+}
+
+.bar.active {
+    background-image: linear-gradient(to right, #52585fff, #52585fff);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: top left;
+    animation: fillFromTopLeft linear forwards;
+    animation-iteration-count: infinite;
+    opacity:1;
+}
+
+.beat {
+        font-size: 1.4rem;
+    flex:1;
+    height: 5rem;
+    margin: 1px;
+    padding: 1.25rem;
+    text-align: center;
+            background: rgba(64, 110, 174, 0.49);
+        box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+}
+
+.beat.active {
+  
+}
+
+.beatFirstBar {
+
+}
+
+.beatFirstInBar {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.beatLastInBar {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.reactionStrong {
+    background: rgba(22, 101, 52, 0.57);
+}
+
+.reactionFast {
+    background: rgba(21, 128, 60, 0.61);
+}
+
+.reactionMedium {
+    background: hsla(142, 76%, 36%, 0.52);
+}
+
+.reactionSlow {
+    background: rgba(34, 197, 94, 0.59);
+}
+
+.metrics {
+    width: 100%;
+}
+
+.metricGroup {
+    margin-bottom: 0.5rem;
+}
+
+.metricGroup + .metricGroup {
+    margin-top: 0.5rem;
+}
+
+.metricLabel {
+    margin-bottom: 0.25rem;
+}
+
+.meter {
+    position: relative;
+    width: 100%;
+    max-width: 36rem;
+    height: 1rem;
+    overflow: hidden;
+    border-radius: 0.25rem;
+}
+
+.meterMarker {
+    position: absolute;
+    top: 0;
+    height: 1rem;
+    background: white;
+}
+
+.accuracyMarker {
+    width: 6px;
+}
+
+.reactionMarker {
+    width: 2px;
+}
+
+
+@keyframes fillFromTopLeft {
+    from {
+        background-size: 0% 100%;
+    }
+
+    to {
+        background-size: 100% 100%;
+    }
+}
