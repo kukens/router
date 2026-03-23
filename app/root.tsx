@@ -10,6 +10,18 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+import type { MetaFunction } from "react-router";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Chords Trainer" },
+    { name: "description", content: "Chords trainer meta desc" },
+    { name: "apple-mobile-web-app-capable", content: "yes" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+    { name: "apple-mobile-web-app-title", content: "Nazwa na Pulpicie" }
+  ];
+};
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -21,9 +33,11 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
-  { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "manifest", href: "/manifest.json" },
   { rel: "apple-touch-icon", href: "https://via.placeholder.com/180" }
 ];
+
+
 
 
 export function Layout({ children }: { children: React.ReactNode }) {
