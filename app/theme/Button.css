@@ -1,46 +1,47 @@
- @layer components{
+ @layer theme{
     button {
-        padding: 0.5rem 2rem; 
-        margin: 1rem;
+        font-size:clamp(0.7rem, 1.8vh, 1.1rem);
+        padding-inline: clamp(2rem, 8.5vw, 2.5rem);
+        padding-block: clamp(0.4rem, 1vh, 0.5rem);
+        margin: clamp(0.5rem, 1.7vh, 1rem);
         border-radius: 25px;
         border: none;
         display: inline-flex;
         position:relative;
+    }
+
+            .lucide {
+            margin-right: -10px;
+            margin-left: 5px;
+        }
         
-        &.btn-active{
+        .btn-active{
             background: #1e324e;
-            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-
-                .lucide-x {
-                    position: absolute;
-                    top: 13px;
-                    right: 10px;
-                }
+            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px,  rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
         }
 
-        &.btn-inactive {
-            background: #171e29;
-            box-shadow: rgb(59, 60, 61) 0px -1px 2px 0px, rgb(22 28 37) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-        }
+        .btn-inactive {
+             color: #bebebe;
+             background: #13181f;
+                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
+                       }
 
-        &.btn-action-alt {
+        .btn-action-alt {
             background: #1f2937;
-            box-shadow: rgb(161 161 161) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+            box-shadow: rgb(113 113 113) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
          }
-        &.btn-action {
-            background: #2b4f62;
-            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
-            padding: 0.6rem 5rem;
-            font-size: 1.1rem;
+        .btn-action {
+            background: #24404e;
+            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
+            padding: 0.6rem 4rem;
+            font-size:clamp(0.9rem, 2.2vh, 1.3rem);;
         }
 
-        &.btn-action-back {
-            background: #2b4f62;
-            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+        .btn-action-back {
+        background: #1f2937;
+        box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
             padding: 0.6rem 2rem;
             font-size: 1.1rem;
-            position: absolute;
-            left: 0;
+            margin-left: 0;
         }
-    }
  }

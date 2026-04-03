@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from "react-router";
 
 import type { TrackData } from '~/types/TrackData';
-import { Button } from "flowbite-react";
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@base-ui/react/button';
 import TrackDetails from '~/components/chordTracks/TrackDetails';
+import pageStyles from "~/theme/Page.module.css";
 
 export default function Tracks() {
 
@@ -21,9 +23,12 @@ export default function Tracks() {
 
     return (
         <>
-            <Link key="back" className="m-5" to={`/chord-tracks`}> <Button as="span" color="teal" pill> ← Go Back</Button></Link>
+        <div className={pageStyles.pageHeader}>
+            <Link to={`/chord-tracks`}><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
+            <h1>{trackData?.name}</h1>
+        </div>
 
-            <TrackDetails TrackData={trackData} />
+        <TrackDetails TrackData={trackData} />
         </>
     );
 }

@@ -417,5 +417,22 @@ export const WORKOUT_TRAKCS: WorkOutTrack[] = [
           "Experimental",
           "Impressionism"
         ]
+      },
+          {
+        "id": 26,
+        "difficulty": 5,
+        "name": "Spectrum 1",
+        "chords": [
+          "F#",
+          "Ab",
+          "B",
+          "B7"
+        ],
+        "description": "A loop that avoids resting on a clear tonic, keeping the harmony open and evolving.",
+        "tags": [
+          "Experimental",
+          "Impressionism"
+        ]
       }
+
     ];

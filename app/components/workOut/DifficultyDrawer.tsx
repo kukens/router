@@ -4,7 +4,8 @@ import { Drawer } from "@base-ui/react";
 import { useState, useEffect } from "react";
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
 import { Button } from '@base-ui/react/button';
-import { ArrowUpRight, PictureInPicture2 } from "lucide-react";
+import styles from './DifficultyDrawer.module.css';
+
 
 export const difficultyLevels: Record<string, string> = {
     1: "Begginer",
@@ -61,7 +62,7 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
 
     useEffect(() => {
         setSelected(props.selected)
-    }, [props.isOpen]);
+    }, [props.selected]);
 
     return (
 
@@ -73,21 +74,22 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
                     <Drawer.Popup className="Popup">
                         <div className="Handle" />
                         <Drawer.Content className="Content">
-                            <Drawer.Description className="Description">
 
-                                <p>Select chords</p>
-                        
+                                    <h2>Select difficulty</h2>
+                         <div className={styles.difficultyButtons}>
                     {Object.entries(difficultyLevels).filter(([key, value]) => availableDifficulties.includes(value)).map(([key, value]) => (
                             <Button key={key} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => difficultyLevelToggle(value)}>
                                 {value}
                             </Button>
                         ))}
-                           
+
+                        </div>
+                            <div className="drawer-footer">
                                 <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
                                     Clear
                                 </Button>
                                 <Drawer.Close className="btn-action-alt" onClick={() => props.handleApply(selected)}>Apply</Drawer.Close>
-                            </Drawer.Description>
+                    </div>
                         </Drawer.Content>
                     </Drawer.Popup>
                 </Drawer.Viewport>

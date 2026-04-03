@@ -1,3 +1,4 @@
+@layer components{
 .content {
     margin: 1rem;
 }
@@ -13,9 +14,7 @@
 }
 
 .tagList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+margin-bottom:2rem;
 }
 
 .actions {
@@ -24,4 +23,6 @@
     gap: 0.5rem;
     padding: 1rem;
     border-top: 1px solid #4b5563;
+}
+
 }

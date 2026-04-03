@@ -1,10 +1,12 @@
 'use client'
 
 import TrackEditor from '~/components/chordTracks/TrackEditor';
-import { Button } from "flowbite-react";
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@base-ui/react/button';
 import { Link, useParams } from "react-router";
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
+import pageStyles from "~/theme/Page.module.css";
 
 export default function EditTrack() {
 
@@ -20,7 +22,11 @@ export default function EditTrack() {
 
   return (
     <>
-          <Link key="back" className="m-5" to={`/chord-tracks/${id}`}> <Button as="span" color="teal" pill> ← Go Back</Button></Link>
+        <div className={pageStyles.pageHeader}>
+            <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
+            <h1>Edit Chord Track</h1>
+        </div>
+
           <TrackEditor TrackData={trackData} Id={id as string} />
     </>
   );

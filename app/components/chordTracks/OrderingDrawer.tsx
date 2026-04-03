@@ -1,7 +1,12 @@
 "use client";
 
-import { Drawer, DrawerHeader, DrawerItems, Radio, Button } from "flowbite-react";
+import { Drawer } from '@base-ui/react/drawer';
+import { Radio } from '@base-ui/react/radio';
+import { Button } from '@base-ui/react/button';
 import styles from "./OrderingDrawer.module.css";
+import { RadioGroup } from '@base-ui/react';
+import radioStyles from "~/theme/Radio.module.css";
+import { ArrowDownUp } from 'lucide-react';
 
 interface OrderingDrawerProps {
   open: boolean;
@@ -11,40 +16,45 @@ interface OrderingDrawerProps {
   options: Record<string, string>;
 }
 
-/**
- * Lightweight ordering drawer — renders radio options passed in `options`.
- * Calls `onChangeOrder` when selection changes. `Apply` closes the drawer via `onClose`.
- */
 export default function OrderingDrawer(props: OrderingDrawerProps) {
   const { open, onClose, selectedOrder, onChangeOrder, options } = props;
 
   return (
-    <Drawer open={open} onClose={onClose} position="bottom">
-      <DrawerHeader title="Ordering" />
-      <DrawerItems>
-        <div className={styles.options}>
-          {Object.entries(options).map(([key, label]) => (
-            <div key={key} className={styles.optionRow}>
-              <Radio
-                id={`order-${key}`}
-                name="ordering"
-                value={key}
-                checked={selectedOrder === key}
-                onChange={() => onChangeOrder(key)}
-              />
-              <label htmlFor={`order-${key}`} className={styles.optionLabel}>
-                {label}
-              </label>
-            </div>
-          ))}
-        </div>
-      </DrawerItems>
+    <Drawer.Root>
+      <Drawer.Trigger className="btn-action-alt">Ordering <ArrowDownUp  size={15} color='#999' /></Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Backdrop className="Backdrop" />
+        <Drawer.Viewport className="Viewport">
+          <Drawer.Popup className="Popup">
+            <div className="Handle" />
+            <Drawer.Content className="Content">
+              <div className={styles.container}>
+                <h2 id="storage-type-label">Ordering</h2>
+                <div className={styles.options}>
 
-      <div className={styles.actions}>
-        <Button color="teal" pill onClick={onClose}>
-          Apply
-        </Button>
-      </div>
-    </Drawer>
+                  <RadioGroup aria-labelledby="storage-type-label" defaultValue={selectedOrder} className={radioStyles.RadioGroup} onValueChange={(v) => onChangeOrder(v)}>
+                    {Object.entries(options).map(([key, label]) => (
+                      <label key={key} className={radioStyles.Item} data-key={selectedOrder}>
+                        <Radio.Root className={radioStyles.Radio} id={`order-${key}`} value={key}>
+                          <Radio.Indicator className={radioStyles.Indicator} />
+                        </Radio.Root>
+                        {label}
+                      </label>
+                    ))}
+
+                  </RadioGroup>
+                </div>
+              </div>
+              <div className="drawer-footer">
+                <Drawer.Close className="btn-action-alt" onClick={onClose}>Apply</Drawer.Close>
+              </div>
+
+            </Drawer.Content>
+          </Drawer.Popup>
+        </Drawer.Viewport>
+      </Drawer.Portal>
+
+    </Drawer.Root >
+
   );
 }

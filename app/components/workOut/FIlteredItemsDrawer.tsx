@@ -236,12 +236,16 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                                 className={styles.result}
                                                 style={isDragged ? { opacity: 0.5, transform: 'scale(0.95)' } : { opacity: 1, transform: 'scale(1)' }}>
 
-
-                                                <div className={styles.dragger} onPointerDown={(e) => handlePointerDown(e, trackId)}>
-                                                    <Grip />
-                                                </div>
-
                                                 <label htmlFor={`select-${index}`} className={styles.resultLabel}>
+
+                                                    <div className={`${styles.checkboxWrapper}`}>
+                                                        <Checkbox.Root id={`select-${index}`} defaultChecked checked={isVisible} onCheckedChange={(e) => toggleItem(trackId)} className="Checkbox">
+                                                            <Checkbox.Indicator className="Indicator">
+                                                                <Check />
+                                                            </Checkbox.Indicator>
+                                                        </Checkbox.Root>
+                                                    </div>
+
                                                     <div className={styles[`result-content`]}>
                                                         <span className={styles[`result-name`]}>
                                                             {trackData?.name ?? String(trackId)}
@@ -253,16 +257,13 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                                                 ))}
                                                             </div>
                                                         )}
-                                                    </div>
 
-                                                    <div className={`${styles.checkboxWrapper}`}>
-                                                        <Checkbox.Root id={`select-${index}`} defaultChecked checked={isVisible} onCheckedChange={(e) => toggleItem(trackId)} className="Checkbox">
-                                                            <Checkbox.Indicator className="Indicator">
-                                                                <Check />
-                                                            </Checkbox.Indicator>
-                                                        </Checkbox.Root>
                                                     </div>
                                                 </label>
+
+                                                <div className={styles.dragger} onPointerDown={(e) => handlePointerDown(e, trackId)}>
+                                                    <Grip />
+                                                </div>
 
                                             </div>
 

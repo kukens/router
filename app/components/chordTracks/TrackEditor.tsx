@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { TrackData, Bar } from "~/types/TrackData";
-import { Button, TextInput, CloseIcon } from "flowbite-react";
+import { Button } from '@base-ui/react/button';
+import { Input } from '@base-ui/react/input';
+import { Trash2, X, Trash } from 'lucide-react';
 import TagSelectorDrawer from "~/components/chordTracks/TagSelectorDrawer"
 import ChordSelectorDrawer from "~/components/chordTracks/ChordSelectorDrawer"
 import { useNavigate } from "react-router";
-import { HR } from "flowbite-react";
+import styles from "./TrackEditor.module.css";
 
 interface TrackEditorProps {
     TrackData: TrackData | null
@@ -42,8 +44,16 @@ export default function TrackEditor(props: TrackEditorProps) {
     }, [props.TrackData]);
 
     const updateBeats = (value: number) => {
+        if (![3, 4].includes(value)) return;
+
+        setBars((prev) => prev.map((bar) => ({
+            ...bar,
+            chords: value < bar.chords.length
+                ? bar.chords.slice(0, value)
+                : [...bar.chords, ...new Array(value - bar.chords.length).fill('')],
+        })));
+        setSelectedBeatIndex((prev) => Math.min(prev, value - 1));
         setBeatsPerBar(value);
-        setBars((prev) => prev.map((x) => { return { chords: x.chords.slice(0, value) } }));
     };
 
     const addBar = () => {
@@ -66,7 +76,10 @@ export default function TrackEditor(props: TrackEditorProps) {
             name: trackName,
             beatsPerBar: beatsPerBar,
             tempo: tempo,
-            bars: bars,
+            bars: bars.map((bar) => ({
+                ...bar,
+                chords: bar.chords.map((chord) => chord || "-"),
+            })),
             tags: tags,
             loop: false,
             createdAt: props.TrackData?.createdAt ?? now,
@@ -99,75 +112,64 @@ export default function TrackEditor(props: TrackEditorProps) {
 
 
     return (
-        <div className="p-6 max-w-xl mx-auto space-y-6">
-            <div className="grid grid-cols-1 gap-4">
-                <div>
-                    <label className="dark:text-white">Track name</label>
-                    <TextInput id="trackName" value={trackName} type="text" placeholder="Track name" required onChange={(e) => setTrackName(e.target.value)} />
-                </div>
+                <div className={styles.container}>
+          
+                    <label>Track name <Input value={trackName} type="text" placeholder="Track name" required onChange={(e) => setTrackName(e.target.value)} /></label>
+             
+                    <label>Beats per Bar <Input value={beatsPerBar} min={3} max={4} type="number" required onChange={(e) => updateBeats(Number.parseInt(e.target.value))} /></label>
+             
+                    <label>Tempo (BPM)  <Input value={tempo} type="number" min={20} max={300} required onChange={(e) => setTempo(Number.parseInt(e.target.value))} /></label>
 
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <div>
-                    <label className="dark:text-white">Beats per Bar</label>
-                    <TextInput id="beatsPerBar" value={beatsPerBar} type="number" required onChange={(e) => updateBeats(Number.parseInt(e.target.value))} />
-                </div>
-
-                <div>
-                    <label className="dark:text-white">Tempo (BPM)</label>
-                    <TextInput id="tempo" value={tempo} type="number" min={20} max={300} required onChange={(e) => setTempo(Number.parseInt(e.target.value))} />
-                </div>
-            </div>
-
-            <HR />
-
-
-            <div className="space-y-6">
+    
                 {bars?.map((bar, barIndex) => (
-                    <div key={barIndex} className="space-y-2">
-                        <div className={`grid grid-cols-${beatsPerBar + 1} gap-2`}>
+                        <div className={styles.bar}>
                             {Array.from({ length: beatsPerBar }).map((_, beatIndex) => (
-                                <Button key={beatIndex} color="light"
-                                    onFocus={() => {
-                                        setSelectedBarIndex(barIndex)
-                                        setSelectedBeatIndex(beatIndex)
-                                        setIsDrawerOpen(true)
-                                        setSelectedChord(bars[barIndex].chords[beatIndex])
-                                    }
-                                    }
-                                >{bars[barIndex].chords[beatIndex] || ""}</Button>
+                                 
+                                 <Button key={beatIndex} className={`btn-action-alt ${styles.beat} ${beatIndex === 0 ? styles.firstBeat : ""} ${beatIndex === beatsPerBar-1 ? styles.lastBeat : ""}`}
+                                    onClick={() => {
+                                         setSelectedBarIndex(barIndex)
+                                         setSelectedBeatIndex(beatIndex)
+                                         setIsDrawerOpen(true)
+                                         setSelectedChord(bars[barIndex].chords[beatIndex])
+                                     }
+                                     }
+                                     
+                                 >{bars[barIndex].chords[beatIndex]?.replace("b", "♭").replace("#", "♯") || ""}</Button>
                             ))}
 
-                            <Button key={barIndex} color="red" outline onClick={() => removeBar(barIndex)}>
-                                <CloseIcon className="h-4 w-4" />
+                             <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
+
+                            <Button key={barIndex} className={`btn-action-alt ${styles.removeBar}`} onClick={() => removeBar(barIndex)}>
+                                <Trash2 size={18} />
                             </Button>
                         </div>
-                    </div>
                 ))}
-            </div>
-
-            <Button color="alternative" pill onClick={addBar}>Add Bar</Button>
 
 
-            <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
+            <Button className="btn-action-alt" onClick={addBar}>Add Bar</Button>
 
-            <HR />
-            <p>Tags</p>
-            <div className="flex flex-wrap gap-2 mb-4">
+
+          
+
+         
+
+            <div className={styles.tags}>
+                <h3>Tags</h3>
+                
+                <TagSelectorDrawer isOpen={isTagsDrawerOpen} selectedTags={tags} handleClose={() => setIsTagsDrawerOpen(false)} handleSave={(newTags) => { setTags(newTags); setIsTagsDrawerOpen(false); }} />
+
+          
+              <div className={styles.selectedTags}>
                 {tags?.map((tag, tagIndex) => (
-                    <Button key={tagIndex} color="dark" outline pill onClick={() => removeTag(tag)}>
+                    <Button key={tagIndex} className={`btn-active`} onClick={() => removeTag(tag)}>
                         {tag}
-                        <CloseIcon />
+                         <X size={15} color='#999' />
                     </Button>
                 ))}
+                </div>
             </div>
 
-            <Button color="alternative" pill onClick={() => setIsTagsDrawerOpen(true)}>Add tags</Button>
-
-            <TagSelectorDrawer isOpen={isTagsDrawerOpen} selectedTags={tags} handleClose={() => setIsTagsDrawerOpen(false)} handleSave={(newTags) => { setTags(newTags); setIsTagsDrawerOpen(false); }} />
-
-            <HR />
-            <Button onClick={saveTrack} color="teal" pill>Save</Button>
+            <Button onClick={saveTrack} className="btn-action">Save</Button>
 
         </div>
     );

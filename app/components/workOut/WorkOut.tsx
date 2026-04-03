@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router';
 import { Button } from '@base-ui/react/button';
 
-import { ArrowLeft, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 export default function () {
 
@@ -86,7 +86,7 @@ export default function () {
 
     return (
         <>
-            <div className={styles.container}>
+            
 
                 <div className={styles['filter-group']}>
                     <div className={styles['filter']}>
@@ -99,7 +99,7 @@ export default function () {
                         }
 
                         {selectedChords.length === 0 &&
-                            <div className="flex gap-2"> <Button className="btn-inactive">Any</Button></ div>
+                            <div> <Button className="btn-inactive">Any</Button></ div>
                         }
                     </div>
 
@@ -161,7 +161,7 @@ export default function () {
                         <Button className="btn-action" onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
                     </Link>
                 </div>
-            </div >
+      
         </>
     );
 }

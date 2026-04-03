@@ -3,16 +3,18 @@
 import { Button } from '@base-ui/react/button';
 import { Link } from "react-router";
 import { ArrowLeft } from 'lucide-react';
-import Jam from "~/components/workOut/WorkOut"
-
+import WorkOut from "~/components/workOut/WorkOut"
+import pageStyles from "~/theme/Page.module.css";
 
 export default function StartChallenge() {
 
     return (
-        <main className="">
+        <>
+        <div className={pageStyles.pageHeader}>
             <Link to="/"><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
-
-            <Jam />
-        </main>
+            <h1>Workout</h1>
+        </div>
+            <WorkOut />
+        </>
     );
 }

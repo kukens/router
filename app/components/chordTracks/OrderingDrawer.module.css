@@ -1,24 +1,14 @@
+@layer components{
+
 .options {
-    margin: 1rem;
+    display:flex;
+    justify-content:center;
+    margin-bottom:2rem;
 }
 
-.options > * + * {
-    margin-top: 0.75rem;
+
+.container {
+
 }
 
-.optionRow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.optionLabel {
-    color: #f3f4f6;
-}
-
-.actions {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
-    border-top: 1px solid #4b5563;
 }

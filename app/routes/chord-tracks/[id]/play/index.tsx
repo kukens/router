@@ -3,10 +3,13 @@
 import AudioAnalyzer from '~/components/AudioAnalyzer';
 import ChordTracksPlayer from '~/components/chordTracks/ChordTracksPlayer';
 import { ChordProvider } from '~/features/audio/ChordContext';
-import { Button } from "flowbite-react";
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@base-ui/react/button';
 import { Link, useParams} from "react-router";
 import type { TrackData } from '~/types/TrackData';
 import { useEffect, useState } from 'react';
+import pageStyles from "~/theme/Page.module.css";
+
 
 export default function PlayTrack() {
 
@@ -22,9 +25,12 @@ export default function PlayTrack() {
 
   return (
       <>
-       <Link key="back" className="m-5" to={`/chord-tracks/${id}`}> 
-         <Button className="m-2" as="span" color="teal" pill> ← Go Back</Button>
-       </Link> 
+
+
+        <div className={pageStyles.pageHeader}>
+            <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
+             <h1>{trackData?.name}</h1>
+        </div>
 
         <ChordProvider>
           <ChordTracksPlayer TrackData={trackData} />
