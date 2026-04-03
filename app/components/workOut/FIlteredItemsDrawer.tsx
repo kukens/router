@@ -6,7 +6,6 @@ import { Button } from "@base-ui/react";
 import { Drawer } from "@base-ui/react";
 import { useState, useEffect, useRef } from "react";
 import { WORKOUT_TRAKCS } from "../../data/workOutTracks";
-import { DotsVertical } from "flowbite-react-icons/outline";
 import styles from './FIlteredItemsDrawer.module.css'
 import { Check, Grip } from "lucide-react";
 

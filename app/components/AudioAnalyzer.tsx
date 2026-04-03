@@ -6,7 +6,7 @@ import type { HitsData, CurrentAudioData, EvaluatedChord } from '~/features/audi
 import { getTolerance } from '~/features/audio/AudioAnalyzerUtilities';
 import { useChord } from "~/features/audio/ChordContext";
 import type { AudioAnalyzerWorkerIn, AudioAnalyzerWorkerOut } from "~/features/audio/AudioAnalyzerWorker";
-import { Button } from "flowbite-react";
+import { Button } from '@base-ui/react/button';
 
 export default function AudioAnalyzer() {
 
@@ -155,11 +155,11 @@ export default function AudioAnalyzer() {
 
 
 
-        <Button color="teal" pill onClick={handleToggle}>
+        <Button className="btn-action" onClick={handleToggle}>
             {isRecording ? 'STOP' : 'START'} RECORDING
         </Button>
 
-        <Button color="teal" pill onClick={enableDiagnostics}>
+        <Button className="btn-action" onClick={enableDiagnostics}>
             {diagnosticsEnabled ? 'DISABLE' : 'ENABLE'} DIAGNOSTICS
         </Button>
 

@@ -1,9 +1,7 @@
 import { reactRouter } from "@react-router/dev/vite";
-import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from 'path';
-import flowbiteReact from "flowbite-react/plugin/vite";
 import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
@@ -13,5 +11,5 @@ resolve: {
       "~": path.resolve(__dirname, "./app"), 
     },
   },
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), flowbiteReact(), devtoolsJson()],
+  plugins: [reactRouter(), tsconfigPaths(), devtoolsJson()],
 });

@@ -1,6 +1,5 @@
 ﻿'use client';
 
-import { Spinner } from "flowbite-react";
 import { useEffect, useRef, useState } from 'react';
 import { useChord, type ChordValue } from '~/features/audio/ChordContext';
 import styles from '~/components/TrackPlayer.module.css';
@@ -11,7 +10,6 @@ import type { Bar, TrackData } from '~/types/TrackData';
 interface TrackPlayerProps {
     TrackData: TrackData | null
 }
-
 
 interface BeatData {
     index: number;
@@ -386,7 +384,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
                 <div className={styles.countdownOverlay}>
                     
                     {!countDownStarted &&
-                        <Spinner aria-label="Default status example" />
+                        <div className={styles.spinner} aria-label="Loading" />
                     }
                     {countDownStarted && countDownToStart > 0 ? <div className={styles.pie}><span>{countDownToStart}</span></div> : ""} </div>
             

@@ -7,8 +7,7 @@ import { Link } from "react-router";
 import OrderingDrawer from "./OrderingDrawer";
 import FilterDrawer from "./FilterDrawer";
 import styles from "./TrackList.module.css";
-import { X } from 'lucide-react';
-import { ChevronRight } from "flowbite-react-icons/outline";
+import { ChevronRight, X } from 'lucide-react';
 
 export const orderBy: Record<string, string> = {
     1: "Recently played",
