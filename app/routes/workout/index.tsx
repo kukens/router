@@ -11,7 +11,7 @@ export default function StartChallenge() {
     return (
         <>
         <div className={pageStyles.pageHeader}>
-            <Link to="/"><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
+            <Link to="/"><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
             <h1>Workout</h1>
         </div>
             <WorkOut />

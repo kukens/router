@@ -159,7 +159,7 @@ export default function TrackList() {
                     <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
                         <div className={styles.chordTrackCard}>
                             <span className={styles.trackName}>{track.name} <ChevronRight color='#8ab8ba'/></span>   
-                            <p className={styles.trackDetails}>Tags: Latino, Dupa, Sraka</p>
+                            <p className={styles.trackDetails}>Tags: {track.tags?.join(', ')}</p>
                         </div>
                     </Link>
                 ))}

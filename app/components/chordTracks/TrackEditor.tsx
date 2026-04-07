@@ -140,7 +140,7 @@ export default function TrackEditor(props: TrackEditorProps) {
                              <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
 
                             <Button key={barIndex} className={`btn-action-alt ${styles.removeBar}`} onClick={() => removeBar(barIndex)}>
-                                <Trash2 size={18} />
+                                <Trash2 size={18} strokeWidth={1.5} />
                             </Button>
                         </div>
                 ))}

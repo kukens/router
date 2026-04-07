@@ -28,7 +28,7 @@ export default function PlayTrack() {
 
 
         <div className={pageStyles.pageHeader}>
-            <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={25} /> </Button></Link>
+            <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
              <h1>{trackData?.name}</h1>
         </div>
 
