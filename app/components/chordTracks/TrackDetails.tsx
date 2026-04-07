@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
-import styles from '~/components/Bars.module.css';
 import { Link, useNavigate } from "react-router";
-import { Button } from 'flowbite-react';
-import { HR } from "flowbite-react";
+import { Button } from '@base-ui/react/button';
+import styles from "./TrackDetails.module.css"
 
 interface TrackDetailsProps {
     TrackData: TrackData | null
@@ -38,42 +37,49 @@ export default function TrackDetails(props: TrackDetailsProps) {
     };
 
     return (
-        <div>
-            <h2 className="dark:text-white text-center">{props.TrackData?.name}</h2>
-            <p className="dark:text-white text-center">Tempo: {props.TrackData?.tempo} </p>
+        <div className={styles.container}>
+            <Link to={`/chord-tracks/${props.TrackData?.id}/play`}><Button className="btn-action" nativeButton={false}>Play</Button></Link>
+            
+            <div className={styles.actionButtons}>
+            <Link to={`/chord-tracks/${props.TrackData?.id}/edit`}><Button className="btn-action-alt" nativeButton={false}>Edit</Button></Link>
+            <Button className="btn-action-alt" onClick={deleteTrack}>Delete</Button>
 
-            <Link className="m-5" to={`/chord-tracks/${props.TrackData?.id}/play`}><Button as="span" color="teal" pill >Play</Button></Link>
-            <Link className="m-5" to={`/chord-tracks/${props.TrackData?.id}/edit`}><Button as="span" color="teal" pill >Edit</Button></Link>
-            <Button onClick={deleteTrack} as="span" color="teal" pill>Delete</Button>
-
-            <HR />
-
-            <div className="my-4">
-                <p className="dark:text-white">Tags</p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                    {props.TrackData?.tags?.map((t, i) => (
-                        <Button key={i} color="dark" pill>
-                            {t}
-                        </Button>
-                    ))}
-                </div>
+    
             </div>
 
-            <div className="bars relative overflow-hidden h-96">
-                <div className="slider-verticalx">
-                    {props.TrackData?.bars.map((bar, i) => (
-                        <div key={i} className="bar-wrapper flex items-center">
-                            <div className={`${styles['bar']} grid grid-cols-${props.TrackData?.beatsPerBar} gap-1 w-full p-1`}>
-                                {bar.chords.map((chord, j) => (
-                                    <div key={j} className={`${styles['beat']} rounded-sm bg-gray-500 p-5 text-center`} data-chord={chord}>
-                                        {chord.replace("b", "♭").replace("#", "♯")}
-                                    </div>
-                                ))}
-                            </div>
+            <p>Tempo: {props.TrackData?.tempo} </p>
+
+            <div className={styles.bars}>
+                      {props.TrackData?.bars?.map((bar, barIndex) => (
+                        <div className={styles.bar}>
+                            {Array.from({ length: props.TrackData?.beatsPerBar || 4 }).map((_, beatIndex) => (
+                                 
+                                 <Button key={beatIndex} className={`btn-inactive ${styles.beat} ${beatIndex === 0 ? styles.firstBeat : ""} ${beatIndex === (props.TrackData?.beatsPerBar || 4)-1 ? styles.lastBeat : ""}`}>
+                                    {props.TrackData?.bars[barIndex].chords[beatIndex]?.replace("b", "♭").replace("#", "♯") || ""}</Button>
+                            ))}
                         </div>
+                ))}
+                 </div>
+
+               <div className={styles.tags}>
+                <h3>Tags</h3>
+  
+                    {props.TrackData?.tags?.map((tag, index) => (
+                        <Button key={index} className="btn-inactive">{tag}</Button>
                     ))}
                 </div>
+                
+
+            <div className={styles.metadata}>
+                            {props.TrackData?.createdAt && props.TrackData.modifiedAt && (
+                                <>
+                                    <p>Created: {new Date(props.TrackData.createdAt).toLocaleString()} </p>
+                                    <p>Last modified: {new Date(props.TrackData.modifiedAt).toLocaleString()} </p>
+                                </>
+                            )}
+
+                        </div>
             </div>
-        </div>
+   
     );
 }

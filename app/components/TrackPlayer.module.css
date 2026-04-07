@@ -1,22 +1,64 @@
-﻿
+﻿@layer components{
+
 .trackWindow {
     position: relative;
     overflow: hidden;
-    height: 345px;
+    height: 352px;
+    margin-inline: -2rem;
+    padding-inline: 2rem;
+    box-shadow: 0px 0px 15px inset #000;
+    margin-bottom:auto;
+}
+
+@property --percentage {
+  initial-value: 0%;
+  inherits: false;
+  syntax: "<percentage>";
+}
+
+.pie{
+    background: conic-gradient(#406eae7d var(--percentage), #00000042 0);
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    animation: timer 5s infinite linear;
+    box-shadow: 0px 0px 10px #111;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    span{
+        color:#fff;
+    }
+}
+
+@keyframes timer {
+  to {
+    --percentage: 100%;
+  }
 }
 
 .countdownOverlay {
     position: absolute;
-    top: 1.25rem;
+    top: 1.5rem;
     left: 0;
     right: 0;
     z-index: 20;
     display: flex;
     justify-content: center;
     color: #5eead4;
+    font-size: 2rem;
+    font-weight:700;
 }
 
-
+.spinner {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #5eead4;
+    animation: spin 0.8s linear infinite;
+}
 
 .animationContainer {
     animation-timing-function: linear;
@@ -26,11 +68,7 @@
     display:flex;
     flex-direction:column;
     gap:2rem;
-    padding:1rem 0;
-}
-
-.barWrapper {
-       
+    padding:1.4rem 0;
 }
 
 .barWrapperPlaceholder {
@@ -44,7 +82,7 @@
     box-shadow:rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
 }
 
-.bar.active {
+.active {
     background-image: linear-gradient(to right, #52585fff, #52585fff);
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -53,6 +91,12 @@
     animation-iteration-count: infinite;
     opacity:1;
 }
+
+.highlighted {
+    opacity:1;
+}
+
+
 
 .beat {
         font-size: 1.4rem;
@@ -65,13 +109,6 @@
         box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
 }
 
-.beat.active {
-  
-}
-
-.beatFirstBar {
-
-}
 
 .beatFirstInBar {
     border-top-left-radius: 1rem;
@@ -148,4 +185,12 @@
     to {
         background-size: 100% 100%;
     }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 }

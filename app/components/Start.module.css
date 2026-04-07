@@ -1,38 +1,56 @@
-﻿.container{
-    text-align: center;
-    min-height: 100dvh;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 2rem;
-}
+﻿@layer components{
+
 
 .cards{
     display: flex;
     flex-direction: column;
-        gap: 2rem;
 }
 
 .card{
-    padding: 2rem 1rem;
+        margin-bottom: clamp(1.1rem, 4vh, 3.2rem);
+    padding-block: clamp(1.1rem, 4vh, 3.2rem);
+    padding-inline: clamp(0.5rem, 4vw, 1.2rem);
     background: #1f2937;
     border-radius: 15px;
-    box-shadow: rgb(85 85 85) 0px -1px 2px 0px, rgb(13 17 24) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px;
+    box-shadow: rgb(85 85 85) 0px -1px 2px 0px, rgb(13 17 24) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgb(0 0 0 / 95%) 0px 0px 70px -35px inset;
 }
 
 h1{
-    font-size: 3rem;
+    font-size: clamp(3rem, 13vw, 3.5rem);
+    padding-top: clamp(1.4rem, 3.5vh, 4.2rem);
 }
 
 h2{
     margin-bottom: 1rem;
+    font-size: clamp(1.2rem, 3vh, 2rem);
+    padding-bottom: clamp(0.5rem, 1.3vh, 1.1rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+    font-weight: 400;
+
+    :global(svg){
+        width:32px;
+        height:32px;
+    }
 }
 
+
+p{
+    font-size: clamp(0.8rem, 2vh, 1.2rem);
+}
 .logoChords{
   color: #ececec;
 }
 
 .logoTrainer{
   color: #8ab8ba;
+}
+
+:global(.lucide){
+        display: inline;
+    vertical-align: text-bottom;
+}
+
 }

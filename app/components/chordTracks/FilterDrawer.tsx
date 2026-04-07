@@ -1,8 +1,11 @@
 "use client";
 
-import { Drawer, DrawerHeader, DrawerItems, TextInput, Button } from "flowbite-react";
+import { Drawer } from '@base-ui/react/drawer';
+import { Button } from '@base-ui/react/button';
+import { Input } from '@base-ui/react/input';
 import React from "react";
 import styles from "./FilterDrawer.module.css";
+import { SlidersHorizontal } from 'lucide-react';
 
 interface FilterDrawerProps {
   open: boolean;
@@ -56,39 +59,49 @@ export default function FilterDrawer(props: FilterDrawerProps) {
   };
 
   return (
-    <Drawer open={open} onClose={onClose} position="bottom">
-      <DrawerHeader title="Filter tracks" />
-      <DrawerItems>
-        <div className={styles.content}>
-          <label className={styles.fieldLabel}>Track name contains</label>
-          <TextInput
-            id="filter-name"
-            placeholder="Enter part of a track name"
-            value={filterText}
-            onChange={(e) => onChangeFilter((e.target as HTMLInputElement).value)}
-          />
+
+    <Drawer.Root>
+      <Drawer.Trigger className="btn-action-alt">Filters <SlidersHorizontal size={15} color='#999' /></Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Backdrop className="Backdrop" />
+        <Drawer.Viewport className="Viewport">
+          <Drawer.Popup className="Popup">
+            <div className="Handle" />
+            <Drawer.Content className="Content">
+
+<h2>Filters</h2>
+
+
+              <Input
+                id="filter-name"
+                placeholder="Chord track name..."
+                value={filterText}
+                onChange={(e) => onChangeFilter((e.target as HTMLInputElement).value)}
+              />
+   
 
           <div className={styles.tagSection}>
-            <label className={styles.fieldLabel}>Tags</label>
+            <h3>Tags</h3>
             <div className={styles.tagList}>
               {allTags.map((tag, tagIndex) => (
-                  <Button key={tagIndex} color="dark" outline={localTags.includes(tag)} pill onClick={() => toggleTag(tag)}>
+                  <Button className={localTags.includes(tag) ? "btn-active" : "btn-inactive"} onClick={() => toggleTag(tag)}>
                   {tag}
                 </Button>
               ))}
             </div>
           </div>
-        </div>
-      </DrawerItems>
+              <div className="drawer-footer">
+                 <Button className="btn-action-alt" onClick={handleClear}>
+                                                    Clear
+                                                </Button>
+                <Drawer.Close className="btn-action-alt" onClick={() => { if (onChangeTags) onChangeTags(localTags); onClose(); } }>Apply</Drawer.Close>
+              </div>
 
-      <div className={styles.actions}>
-        <Button color="gray" pill onClick={handleClear}>
-          Clear
-        </Button>
-        <Button color="teal" pill onClick={() => { if (onChangeTags) onChangeTags(localTags); onClose(); }}>
-          Apply
-        </Button>
-      </div>
-    </Drawer>
+            </Drawer.Content>
+          </Drawer.Popup>
+        </Drawer.Viewport>
+      </Drawer.Portal>
+
+    </Drawer.Root >
   );
 }

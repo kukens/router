@@ -1,6 +1,5 @@
 ﻿'use client';
 
-import { Spinner } from "flowbite-react";
 import { useEffect, useRef, useState } from 'react';
 import { useChord, type ChordValue } from '~/features/audio/ChordContext';
 import styles from '~/components/TrackPlayer.module.css';
@@ -11,7 +10,6 @@ import type { Bar, TrackData } from '~/types/TrackData';
 interface TrackPlayerProps {
     TrackData: TrackData | null
 }
-
 
 interface BeatData {
     index: number;
@@ -39,7 +37,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     const [trackData, setTrackData] = useState(EmptyTrackData);
 
-    const countDownInitialValue = 3;
+    const countDownInitialValue = 5;
     const [countDownToStart, setCountDownToStart] = useState(countDownInitialValue);
     const [countDownStarted, setCountDownStarted] = useState(false)
 
@@ -88,6 +86,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     useEffect(() => {
         if (isAnalyzing && trackData.bars.length > 0) {
+            barsElementsRef.current[0]?.classList.add(styles.highlighted);
             setCountDownStarted(true)
 
             console.log('starting countdown')
@@ -103,6 +102,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
 
     useEffect(() => {
         if (countDownToStart == 0) {
+            barsElementsRef.current[0]?.classList.remove(styles.highlighted);
             setIsReadyToPlay(true)
         }
     }, [countDownToStart]);
@@ -339,7 +339,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     }
 
 
-    const getRef: any = (useFakeBars: boolean, usePlaceholder: boolean) => {
+    const getBarRef: any = (useFakeBars: boolean, usePlaceholder: boolean) => {
         if (usePlaceholder) {
             return dividerRef;
         }
@@ -357,9 +357,8 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             bars.map((bar, barIndex) => (
                 <div key={barIndex} className={`${styles.barWrapper} ${usePlaceholder ? styles.barWrapperPlaceholder : ''}`}>
                     <div
-                        ref={getRef(useFakeBars, usePlaceholder)}
+                        ref={getBarRef(useFakeBars, usePlaceholder)}
                         className={`${barIndex == 0 ? '' : ''} ${styles.bar}`}
-
                     >
                         {bar.chords.map((beat, beatIndex) => (
                             <div
@@ -379,14 +378,15 @@ export default function TrackPlayer(props: TrackPlayerProps) {
     }
 
     return (
-        <div>
+
             <div className={styles.trackWindow}>
 
                 <div className={styles.countdownOverlay}>
+                    
                     {!countDownStarted &&
-                        <Spinner aria-label="Default status example" />
+                        <div className={styles.spinner} aria-label="Loading" />
                     }
-                    {countDownStarted && countDownToStart > 0 ? <p>{countDownToStart}</p> : ""} </div>
+                    {countDownStarted && countDownToStart > 0 ? <div className={styles.pie}><span>{countDownToStart}</span></div> : ""} </div>
             
                 <style ref={animationKeyFramesStyleRef} />
                 <div
@@ -400,7 +400,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
                     {generateBarsHtml(trackData.bars.slice(0, 2), true, false)}
                 </div>
           
-            </div>
+        
 
             {/* <div className={styles.metrics}>
                 <div className={styles.metricGroup}>

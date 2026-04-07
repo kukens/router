@@ -1,39 +1,52 @@
-.title {
-    text-align: center;
-    color: #f3f4f6;
+@layer components{
+    
+    .container{
+        margin-top:1rem;
+        margin-bottom:auto;
+
 }
 
-.controlGrid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
-}
 
-.buttonSpacing {
-    margin: 0.5rem;
-}
-
-.filterChips {
+.chordTrackCard{
+    gap:0.6rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    padding: 1rem;
+    background: #1f2937;
+    border-radius: 15px;
+    box-shadow: rgb(85 85 85) 0px -1px 2px 0px, rgb(13 17 24) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgb(0 0 0 / 95%) 0px 0px 70px -35px inset;
+
 }
 
-.emptyState {
-    margin: 1.25rem;
-    color: #f3f4f6;
+    .trackList{
+        margin-top:2rem;
+        display:flex;
+        flex-direction: column;
+        gap:1.5rem;
+    }
+
+.trackName{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #fff;
+
+    :global(svg){
+        height: 32px;
+        width: 32px;
+    }
+
+     :global(path){
+        color:#8ab8ba;
+    }
 }
 
-.trackLink {
-    display: inline-block;
-    margin: 1.25rem;
+.trackDetails{
+    display: flex;
+    flex-direction: column;
 }
 
-.footerActions {
-    margin: 1.25rem;
+
 }
 
-.createLink {
-    display: inline-block;
-    margin: 0.5rem;
-}

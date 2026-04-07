@@ -1,23 +1,24 @@
 'use client'
 
-import { Button } from "flowbite-react";
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@base-ui/react/button';
 import { Link } from "react-router";
 import { default as TrackList } from "~/components/chordTracks/TrackList"
-import { HR } from "flowbite-react";
+import pageStyles from "~/theme/Page.module.css";
 
 export default function StartChallenge() {
 
     return (
-        <main className="">
+        <>
 
-            <Link className="m-5" to="/"><Button className="m-5 mb-10" as="span" color="teal" pill> ← Go Back</Button></Link>
-
+        <div className={pageStyles.pageHeader}>
+            <Link to="/"><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
+            <h1>Chord Tracks</h1>
+        </div>
             <TrackList />
 
-            <HR />
+            <Link to="/chord-tracks/create"><Button className="btn-action">Add new track</Button></Link>
 
-            <Link className="m-5" to="/chord-tracks/create"><Button className="m-2" as="span" color="teal" pill >Add new track</Button></Link>
-
-        </main>
+        </>
     );
 }

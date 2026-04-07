@@ -1,0 +1,45 @@
+﻿@layer components{
+
+    .container{
+        margin-bottom:auto;
+    }
+
+    .bars{
+        margin-block:3rem;
+    }
+
+    .bar{
+    display: flex;
+        align-items: center;
+        margin-inline: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .beat{
+        margin: 0;
+        height: clamp(3.5rem, 9dvh, 4.5rem);
+        padding: 0;
+        border-radius: 0;
+        font-size: 1.1rem;
+        text-align: center;
+        align-self: center;
+        display: block;
+        width: 100%;
+    }
+
+    .firstBeat{
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+
+    }
+
+    .lastBeat{
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .tags{
+        margin-bottom:2rem;
+    }
+
+}

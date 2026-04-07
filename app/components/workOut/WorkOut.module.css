@@ -1,17 +1,13 @@
-.container{
-    text-align: center;
-    min-height: 100dvh;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
+@layer components{
 
+    
 
 .filter-group{
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    margin-top:1rem;
+    margin-bottom:auto;
 }
 
 .filter{
@@ -27,4 +23,5 @@
 .start-workout{
 
 
+}
 }

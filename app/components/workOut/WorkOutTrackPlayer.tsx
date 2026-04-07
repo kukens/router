@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { Button } from '@base-ui/react/button';
 
-import styles from '~/components/WorkOut/WorkOutTrackPlayer.module.css'
+import styles from '~/components/workOut/WorkOutTrackPlayer.module.css'
 import { EmptyTrackData } from '~/types/TrackData';
 import type { TrackData } from '~/types/TrackData';
 import type { WorkOutTrack } from "~/data/workOutTracks";
@@ -48,19 +48,19 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
+        <>
+            <div className={styles.title}>
             <h2>{trackData.name}</h2>
             </div>
            <TrackPlayer key={trackData.id}  TrackData={trackData} />
            <div className={styles.footer}>
            <p>Playing {currentTrackIndex + 1} from {props.WorkOutTracks.length} tracks</p>
         
-           <div className="flex justify-center gap-4 mt-4">
+           <div className={styles.navigationButtons}>
                 <Button onClick={goToPreviousTrack} className="btn-action-alt" disabled={props.WorkOutTracks.length <= 1}>Previous</Button>
                 <Button onClick={goToNextTrack} className="btn-action-alt" disabled={props.WorkOutTracks.length <= 1}>Next</Button>
            </div>
                </div>
-        </div>
+        </>
     )
 }

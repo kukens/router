@@ -1,8 +1,12 @@
 'use client';
 
-import { Button, Drawer, DrawerHeader, DrawerItems, TextInput, CloseIcon } from "flowbite-react";
+import { Drawer } from '@base-ui/react/drawer';
+import { Button } from '@base-ui/react/button';
+import { Input } from '@base-ui/react/input';
+import { X } from 'lucide-react';
 import { useEffect, useState } from "react";
 import type { TrackData } from "~/types/TrackData";
+import style from "./TagSelectorDrawer.module.css";
 
 interface TagSelectorDrawerProps {
     isOpen: boolean;
@@ -24,8 +28,8 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
             if (key?.startsWith("trackData")) {
                 const value = localStorage.getItem(key) ?? "";
 
-                    const track = JSON.parse(value) as TrackData;
-                    track.tags?.forEach(t => { if (t && !temp.includes(t)) temp.push(t); });
+                const track = JSON.parse(value) as TrackData;
+                track.tags?.forEach(t => { if (t && !temp.includes(t)) temp.push(t); });
             }
         }
 
@@ -64,34 +68,45 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
     }
 
     return (
-        <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom">
-            <DrawerHeader title="Select tags" titleIcon={() => <></>} />
-            <DrawerItems>
-                <div className="m-5">
-                    <p className="dark:text-white mb-3">Available tags:</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {allTags.map((tag, tagIndex) => (
-                            <Button key={tagIndex} color="dark" outline={tags.includes(tag)} pill onClick={() => toggleTag(tag)}>
-                                {tag}
-                            </Button>
-                        ))}
-                    </div>
-
-                    <div className="flex gap-2">
-                        <TextInput value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="New tag" />
-                        <Button onClick={addNewTag} color="teal">Add new</Button>
-                    </div>
+        <Drawer.Root>
+            <Drawer.Trigger className="btn-action-alt">Select tags</Drawer.Trigger>
+            <Drawer.Portal>
+                <Drawer.Backdrop className="Backdrop" />
+                <Drawer.Viewport className="Viewport">
+                    <Drawer.Popup className="Popup">
+                        <div className="Handle" />
+                        <Drawer.Content className="Content">
 
 
-                </div>
-            </DrawerItems>
+                            <h2>Select tags</h2>
 
-            <div className="m-5">
-                <div className="flex gap-2">
-                    <Button color="teal" onClick={() => props.handleSave(tags)}>Save</Button>
-                    <Button color="light" onClick={props.handleClose}>Cancel</Button>
-                </div>
-            </div>
-        </Drawer>
+                            <div>
+                                <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="New tag" />
+                                <Button onClick={addNewTag} className="btn-action-alt">Add new</Button>
+                            </div>
+                            <div className={style.tags}>
+                                {allTags.map((tag, tagIndex) => (
+                                    <Button key={tagIndex} className={`${tags.includes(tag) ? "btn-active" : "btn-inactive"}`} onClick={() => toggleTag(tag)}>
+                                        {tag}
+                                    </Button>
+                                ))}
+                            </div>
+
+
+                            <div className="drawer-footer">
+                                <Drawer.Close className="btn-action-alt" onClick={props.handleClose}>Cancel</Drawer.Close>
+                                <Drawer.Close className="btn-action-alt" onClick={() => props.handleSave(tags)}>Save</Drawer.Close>
+                            </div>
+
+
+                        </Drawer.Content>
+                    </Drawer.Popup>
+                </Drawer.Viewport>
+            </Drawer.Portal>
+
+        </Drawer.Root>
+
+
+
     )
 }

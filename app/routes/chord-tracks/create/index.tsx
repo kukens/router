@@ -1,15 +1,19 @@
 'use client'
 
 import TrackEditor from '~/components/chordTracks/TrackEditor';
-import { Button } from "flowbite-react";
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@base-ui/react/button';
 import { Link } from "react-router";
+import pageStyles from "~/theme/Page.module.css";
 
 export default function CreateTrack() {
 
   return (
       <>
-          <Link key="back" className="m-5" to={`/chord-tracks`}> <Button as="span" color="teal" pill> ← Go Back</Button></Link> 
-
+         <div className={pageStyles.pageHeader}>
+            <Link to="/chord-tracks"><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
+            <h1>New Chord Track</h1>
+        </div>
           <TrackEditor TrackData={null} Id={""} />
       </>
   );

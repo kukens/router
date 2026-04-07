@@ -1,8 +1,10 @@
 'use client';
 
-import { Button, Drawer, DrawerHeader, DrawerItems, ToggleSwitch } from "flowbite-react";
+import { Drawer } from '@base-ui/react/drawer';
+import { Button } from '@base-ui/react/button';
 import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
+import styles from "./ChordSelectorDrawer.module.css";
 
 interface ChordSelectorDrawerProps {
     isOpen: boolean
@@ -10,6 +12,8 @@ interface ChordSelectorDrawerProps {
     handleClose: () => void;
     handleSelect: (chordName: string, fill: boolean) => void;
 }
+
+
 
 export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
 
@@ -22,16 +26,16 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
     }
 
     const getChordTypeButtonColor = (chordType: string) => {
-      
-       if (activeChordType == chordType) {
-            return "teal"
-       }
 
-        if (selectedChordType == chordType) {
-           return "alternative"
+        if (activeChordType == chordType) {
+            return "btn-active"
         }
 
-        return "light"
+        if (selectedChordType == chordType) {
+            return "btn-action-alt"
+        }
+
+        return "btn-inactive"
     }
 
     useEffect(() => {
@@ -44,36 +48,58 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
         }
     }, [props.selectedChord]);
 
+        useEffect(() => {
+       console.log(props.isOpen)
+    }, [props.isOpen]);
+
+
+    
     return (
-        <Drawer open={props.isOpen} onClose={props.handleClose} position="bottom" >
-            <DrawerHeader title="Select chord" titleIcon={() => <></>} />
-            <DrawerItems>
-                <div className="flex m-5 flex-wrap gap-2">
-                    <ToggleSwitch checked={fill} color="teal" label="Fill with chord until end of bar" onChange={() => setFill(!fill)} />
-                </div>
-                <div className="flex m-5 flex-wrap gap-2">
-                    {CHORDS_DATA.map((chordType, index) => (
-                        <Button key={index} color={getChordTypeButtonColor(chordType.name)} pill onClick={() => handleChordTypeSelect(chordType.name)}>
-                            {chordType.name} 
-                        </Button>  
-                    ))}  
-                    </ div>
-                <div className="flex m-5 flex-wrap gap-2">
-                    {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
-                        chordType.chords.map(chord => (
-                            <Button key={chord.name} color={props.selectedChord == chord.name ? "teal" : "light"} pill onClick={() => props.handleSelect(chord.name, fill)}>
-                                {chord.name} 
-                            </Button> 
-                        ))
-                    ))}  
-                      </ div>
-            </DrawerItems>
-            <div className="flex m-5 flex-wrap gap-2">
-                <Button color="teal" pill onClick={() => props.handleSelect("", fill)}>
-                Clear
-                </Button> 
-            </ div>
-            </Drawer>
+        
+
+
+ <Drawer.Root open={props.isOpen}>
+            
+            <Drawer.Portal>
+                <Drawer.Backdrop className="Backdrop" />
+                <Drawer.Viewport className="Viewport">
+                    <Drawer.Popup className="Popup">
+                        <div className="Handle" />
+                        <Drawer.Content className="Content">
+                            <div className={styles.container}>
+                                <h2>Select scale</h2>
+
+                                <div className={styles.scale}>
+                            {CHORDS_DATA.map((chordType, index) => (
+                                <Button key={index} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
+                                    {chordType.name} 
+                                </Button>  
+                            ))}  
+                                </div>
+
+                                <h2>Select chords</h2>
+
+                                <div className={styles.chords}>
+
+                        {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
+                                            chordType.chords.map(chord => (
+                                                <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active" : "btn-inactive"} onClick={() => props.handleSelect(chord.name, fill)}>
+                                                    {chord.name.replace("b", "♭").replace("#", "♯") } 
+                                                </Drawer.Close> 
+                                            ))
+                                        ))}  
+                                 
+                                </div></div>
+                            <div className="drawer-footer">
+                                  <Drawer.Close className="btn-action-alt" onClick={props.handleClose}>Cancel</Drawer.Close>
+                            </div>
+
+                        </Drawer.Content>
+                    </Drawer.Popup>
+                </Drawer.Viewport>
+            </Drawer.Portal>
+
+        </Drawer.Root >
     );
 }
 

@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import type { TrackData } from "../../types/TrackData";
-import { Button, HR, CloseIcon } from "flowbite-react";
+import { Button } from '@base-ui/react/button';
 import { Link } from "react-router";
 import OrderingDrawer from "./OrderingDrawer";
 import FilterDrawer from "./FilterDrawer";
 import styles from "./TrackList.module.css";
+import { ChevronRight, X } from 'lucide-react';
 
 export const orderBy: Record<string, string> = {
     1: "Recently played",
@@ -119,29 +120,8 @@ export default function TrackList() {
     }
 
     return (
-        <div>
-            <h2 className={styles.title}>My tracks:</h2>
-            <HR />
-
-            <div className={styles.controlGrid}>
-                <Button className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setIsOrderingOpen(true)}>
-                    Ordering
-                </Button>
-                <Button className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setIsFilterOpen(true)}>
-                    {`Filters ${filterText || selectedTags.length > 0 ? selectedTags.length + isFilterTextApplied() : ""}`}
-                </Button>
-            </div>
-            <div className={styles.filterChips}>
-                {filterText &&
-                    <Button className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setFilterText("")}>Text: {filterText}  <CloseIcon /></Button>}
-
-                {selectedTags.length > 0 &&
-                    selectedTags.map(tag => <Button key={tag} className={styles.buttonSpacing} as="span" color="alternative" pill onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}  <CloseIcon /></Button>)
-                }
-            </div>
-
-
-            <OrderingDrawer
+        <div className={styles.container}>
+       <OrderingDrawer
                 open={isOrderingOpen}
                 onClose={() => setIsOrderingOpen(false)}
                 selectedOrder={selectedOrder}
@@ -149,7 +129,7 @@ export default function TrackList() {
                 options={orderBy}
             />
 
-            <FilterDrawer
+           <FilterDrawer
                 open={isFilterOpen}
                 onClose={() => setIsFilterOpen(false)}
                 filterText={filterText}
@@ -159,33 +139,39 @@ export default function TrackList() {
                 onChangeTags={(ts: string[]) => setSelectedTags(ts)}
             />
 
+            <div>
+                {filterText &&
+                    <Button className="btn-active" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} color='#999' /></Button>}
+
+                {selectedTags.length > 0 &&
+                    selectedTags.map(tag => 
+                    <Button key={tag} className="btn-active" onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}  
+                        <X size={15} color='#999' />
+                    </Button>)
+                }
+            </div>
+
+
             {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
 
-            {tracks.slice(0, visibleCount).map((track) => (
-                <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
-                    <Button as="span" color="dark" pill>
-                        {track.name}
-                    </Button>
-                </Link>
-            ))}
+            <div className={styles.trackList}>
+                {tracks.slice(0, visibleCount).map((track) => (
+                    <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
+                        <div className={styles.chordTrackCard}>
+                            <span className={styles.trackName}>{track.name} <ChevronRight color='#8ab8ba'/></span>   
+                            <p className={styles.trackDetails}>Tags: {track.tags?.join(', ')}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
 
             <div className={styles.footerActions}>
-                <Button
-                    className={styles.buttonSpacing}
-                    as="span"
-                    color="alternative"
-                    pill
-                    onClick={loadMore}
-                    disabled={allLoaded || tracks.length === 0}
-                >
-                    {allLoaded ? "All loaded" : "Load more"}
+                {!allLoaded &&
+                <Button className="btn-action-alt" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
+                   Load more
                 </Button>
+            }
 
-                <Link className={styles.createLink} to="/chord-tracks/create">
-                    <Button as="span" color="teal" pill>
-                        Create track
-                    </Button>
-                </Link>
             </div>
         </div>
     );

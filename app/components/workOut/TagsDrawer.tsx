@@ -74,7 +74,7 @@ export default function TagsDrawer(props: TagsDrawerProps) {
 
     useEffect(() => {
         setSelected(props.selected)
-    }, [props.isOpen]);
+    }, [props.selected]);
 
     return (
 
@@ -86,33 +86,33 @@ export default function TagsDrawer(props: TagsDrawerProps) {
                     <Drawer.Popup className="Popup">
                         <div className="Handle" />
                         <Drawer.Content className="Content">
-                          
-                            
-                            <Drawer.Description className="Description">
+
+                            <div className="drawer-header">
+                                <h2>Select tags</h2>
 
                                 <Input
-                                    placeholder="Search tags..."
-                                    value={searchTerm}                
+                                    placeholder="Filter tags..."
+                                    value={searchTerm}
                                     onValueChange={(value) => setSearchTerm(value)}
                                 />
+                            </div>
 
-                                
-                          
-                                <div className={styles.scrollable}>
-                                    <div>
-                                        {filteredTags.map((value) => (
-                                            <Button key={value} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => filterItemToggle(value)}>
-                                                {value}
-                                            </Button>
-                                        ))}
-                                    </div>
+
+                            <div className={styles.scrollable}>
+                                <div>
+                                    {filteredTags.map((value) => (
+                                        <Button key={value} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => filterItemToggle(value)}>
+                                            {value}
+                                        </Button>
+                                    ))}
                                 </div>
-
+                            </div>
+                            <div className="drawer-footer">
                                 <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
                                     Clear
                                 </Button>
                                 <Drawer.Close className="btn-action-alt" onClick={() => props.handleApply(selected)}>Apply</Drawer.Close>
-                            </Drawer.Description>
+                            </div>
                         </Drawer.Content>
                     </Drawer.Popup>
                 </Drawer.Viewport>

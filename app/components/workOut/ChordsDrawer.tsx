@@ -79,7 +79,7 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
 
     useEffect(() => {
         setSelectedChords(props.selected)
-    }, [props.isOpen]);
+    }, [props.selected]);
 
 
     return (
@@ -93,6 +93,7 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
                         <div className="Handle" />
                         <Drawer.Content className="Content">
                             <div className={styles.container}>
+                                
                                 <h2>Select scale</h2>
 
                                 <div className={styles.scale}>
@@ -103,17 +104,21 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
                                     ))}
                                 </div>
 
+                                <h2>Select chords</h2>
+
                                 <div className={styles.chords}>
 
-                                    <h2>Select chords</h2>
+                                    
 
                                     {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
                                         chordType.chords.filter(chord => availableChords.includes(chord.name)).map(chord => (
                                             <Button key={chord.name} className={selectedChords.some(x => x === chord.name) ? "btn-active" : "btn-inactive"} onClick={() => ChordToggle(chord.name)}>
-                                                {chord.name}
+                                                {chord.name.replace("b", "♭").replace("#", "♯") }
                                             </Button>
                                         ))
                                     ))}
+
+                                 
                                 </div></div>
                             <div className="drawer-footer">
                                 <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
