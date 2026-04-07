@@ -1,14 +1,14 @@
 @layer components{
     .chords{
 
-margin-bottom:1rem;
-}
+    margin-bottom:1rem;
+    }
 
-.container{
-    display: flex;
-    flex-direction: column;
-}
-.scale{
-margin-bottom:1rem;
-}
+    .container{
+        display: flex;
+        flex-direction: column;
+    }
+    .scale{
+    margin-bottom:1rem;
+    }
 }

@@ -99,7 +99,7 @@ export default function () {
                         }
 
                         {selectedChords.length === 0 &&
-                            <div> <Button className="btn-inactive">Any</Button></ div>
+                            <div> <Button className="btn-disabled">Any</Button></ div>
                         }
                     </div>
 
@@ -114,7 +114,7 @@ export default function () {
                         }
 
                         {selectedTags.length === 0 &&
-                            <div className=""> <Button className="btn-inactive">Any</Button></ div>
+                            <div className=""> <Button className="btn-disabled">Any</Button></ div>
                         }
                     </div>
 
@@ -129,7 +129,7 @@ export default function () {
                         }
 
                         {selectedDifficultyLevels.length === 0 &&
-                            <div className=""> <Button className="btn-inactive">Any</Button></ div>
+                            <div className=""> <Button className="btn-disabled">Any</Button></ div>
                         }
                     </div>
                 </div>

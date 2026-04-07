@@ -20,7 +20,18 @@
             box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px,  rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
         }
 
+        
+
+        
         .btn-inactive {
+             color: #bebebe;
+             background: #171d2d;
+                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
+                       }
+
+
+
+        .btn-disabled {
              color: #bebebe;
              background: #13181f;
                 box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
