@@ -102,4 +102,27 @@ h3{
     padding-bottom: clamp(1rem, 2.5vh, 1.5rem);
     font-weight: 400;
 }
+
+/* Blokuje zaznaczanie tekstu na całej stronie */
+body {
+  -webkit-touch-callout: none; /* iOS Safari: menu po przytrzymaniu */
+  -webkit-user-select: none;   /* Safari */
+  -khtml-user-select: none;    /* Konqueror HTML */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Standardowa reguła (Chrome, Android, Opera) */
+}
+
+/* Pozwól na zaznaczanie tekstu w polach formularzy, aby użytkownik mógł pisać */
+input, textarea {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 }
