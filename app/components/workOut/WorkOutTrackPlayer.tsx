@@ -57,8 +57,8 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
            <p>Playing {currentTrackIndex + 1} from {props.WorkOutTracks.length} tracks</p>
         
            <div className={styles.navigationButtons}>
-                <Button onClick={goToPreviousTrack} className="btn-action-alt" disabled={props.WorkOutTracks.length <= 1}>Previous</Button>
-                <Button onClick={goToNextTrack} className="btn-action-alt" disabled={props.WorkOutTracks.length <= 1}>Next</Button>
+                <Button onClick={goToPreviousTrack} className="btn-action" disabled={props.WorkOutTracks.length <= 1}>Previous</Button>
+                <Button onClick={goToNextTrack} className="btn-action" disabled={props.WorkOutTracks.length <= 1}>Next</Button>
            </div>
                </div>
         </>

@@ -11,8 +11,9 @@ export default function CreateTrack() {
   return (
       <>
          <div className={pageStyles.pageHeader}>
-            <Link to="/chord-tracks"><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
+            <Link to="/chord-tracks"><Button className="btn-action-back" render={()=> <span />} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
             <h1>New Chord Track</h1>
+            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
         </div>
           <TrackEditor TrackData={null} Id={""} />
       </>

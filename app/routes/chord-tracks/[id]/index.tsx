@@ -26,6 +26,7 @@ export default function Tracks() {
         <div className={pageStyles.pageHeader}>
             <Link to={`/chord-tracks`}><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
             <h1>{trackData?.name}</h1>
+            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
         </div>
 
         <TrackDetails TrackData={trackData} />

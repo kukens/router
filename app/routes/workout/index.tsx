@@ -13,6 +13,7 @@ export default function StartChallenge() {
         <div className={pageStyles.pageHeader}>
             <Link to="/"><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
             <h1>Workout</h1>
+            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
         </div>
             <WorkOut />
         </>
