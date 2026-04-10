@@ -25,6 +25,7 @@ export default function EditTrack() {
         <div className={pageStyles.pageHeader}>
             <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
             <h1>Edit Chord Track</h1>
+            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
         </div>
 
           <TrackEditor TrackData={trackData} Id={id as string} />

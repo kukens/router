@@ -4,7 +4,7 @@
         padding-inline: clamp(2rem, 8.5vw, 2.5rem);
         padding-block: clamp(0.4rem, 1vh, 0.5rem);
         margin: clamp(0.5rem, 1.7vh, 1rem);
-        border-radius: 25px;
+        border-radius: 20px;
         border: none;
         display: inline-flex;
         position:relative;
@@ -17,7 +17,7 @@
         
         .btn-active{
             background: #1e324e;
-            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px,  rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
+            box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px,  rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
         }
 
         
@@ -26,7 +26,7 @@
         .btn-inactive {
              color: #bebebe;
              background: #171d2d;
-                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
+                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
                        }
 
 
@@ -34,29 +34,29 @@
         .btn-disabled {
              color: #bebebe;
              background: #13181f;
-                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
+                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
                        }
 
         .btn-action-alt {
             background: #1f2937;
-            box-shadow: rgb(113 113 113) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
+            box-shadow: rgb(113 113 113) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
          }
         .btn-action {
             background: #24404e;
-            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
-            padding: 0.6rem 4rem;
-            font-size:clamp(0.9rem, 2.2vh, 1.3rem);;
+            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgb(0 0 0) 0px 0px 20px -10px inset
+
         }
 
         .btn-action-back {
     background: #24404e;
-    box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
+    box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgb(0 0 0) 0px 0px 20px -10px inset;
     padding: 0rem 1rem;
     margin-left: 0;
     height: 35px;
-
+    width:53px;
     .lucide{
-        margin-inline: 0;
+        margin-inline: 0 auto;
+      
     }
         }
  }

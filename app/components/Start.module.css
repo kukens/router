@@ -12,12 +12,12 @@
     padding-inline: clamp(0.5rem, 4vw, 1.2rem);
     background: #1f2937;
     border-radius: 15px;
-    box-shadow: rgb(85 85 85) 0px -1px 2px 0px, rgb(13 17 24) 0px 3px 2px 0px, rgba(0, 0, 0, 0.95) 0px 20px 20px -10px, rgb(0 0 0 / 95%) 0px 0px 70px -35px inset;
+    box-shadow: rgb(85 85 85) 0px -1px 2px 0px, rgb(13 17 24) 0px 3px 2px 0px,#00000073 0 5px 10px 0px, rgb(0 0 0 / 95%) 0px 0px 70px -35px inset;
 }
 
 h1{
-    font-size: clamp(3rem, 13vw, 3.5rem);
-    padding-top: clamp(1.4rem, 3.5vh, 4.2rem);
+    font-size: 12dvw
+  
 }
 
 h2{
@@ -41,11 +41,29 @@ p{
     font-size: clamp(0.8rem, 2vh, 1.2rem);
 }
 .logoChords{
+    margin-left: 10dvw;
   color: #ececec;
 }
 
 .logoTrainer{
   color: #8ab8ba;
+}
+
+.logoBg{
+        position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.logoWrapper {
+position: relative;
+    display: inline-block;
+    padding-block: 9dvw;
+    margin-left: -5dvw;
+    margin-top:-1dvh;
 }
 
 :global(.lucide){
