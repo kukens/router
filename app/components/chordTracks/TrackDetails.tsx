@@ -65,7 +65,7 @@ export default function TrackDetails(props: TrackDetailsProps) {
                 <h3>Tags</h3>
   
                     {props.TrackData?.tags?.map((tag, index) => (
-                        <Button key={index} className="btn-inactive">{tag}</Button>
+                        <Button key={index} className="btn-disabled">{tag}</Button>
                     ))}
                 </div>
                 
