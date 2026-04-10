@@ -45,13 +45,13 @@ p{
 }
 
 .logoTrainer{
-  color: #8ab8ba;
+  color: #b0cdce;
 }
 
 .logoBg{
         position: absolute;
     top: 0;
-    left: 0;
+    left: 10px;
     width: 100%;
     height: 100%;
     z-index: -1;

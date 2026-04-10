@@ -37,7 +37,7 @@
     height: 0.5rem;
     margin: 0.25rem 0.75rem;
     border-radius: 9999px;
-    background: #8ab8ba;
+    background: #b0cdce;
     opacity: 0.75;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -60,7 +60,7 @@
 
 .chord{
     padding: 0.5rem 0.5rem;
-    color: #8ab8ba;
+    color: #b0cdce;
     font-weight: 600;
 }
 

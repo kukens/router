@@ -40,7 +40,7 @@
     }
 
      :global(path){
-        color:#8ab8ba;
+        color:#b0cdce;
     }
 }
 
@@ -57,7 +57,7 @@
     justify-content: center;
 
     span{
-        color:#8ab8ba;
+        color:#b0cdce;
     }
 }
 

@@ -23,14 +23,14 @@ export default function Start() {
                         </mask>
                     </defs>
                     <g mask="url(#fadeMask)" >
-                        <g stroke="#8ab8ba" stroke-width="0.1" style={{display:'none'}}>
+                        <g stroke="#b0cdce" stroke-width="0.1" style={{display:'none'}}>
                             <line x1="10" y1="35" x2="190" y2="35"></line>
                             <line x1="10" y1="45" x2="190" y2="45"></line>
                             <line x1="10" y1="55" x2="190" y2="55"></line>
                             <line x1="10" y1="65" x2="190" y2="65"></line>
                             <line x1="10" y1="75" x2="190" y2="75"></line>
                         </g>
-                        <g fill="#8ab8ba" transform="translate(0, 0)">
+                        <g fill="#b0cdce" transform="translate(0, 0)">
                             <ellipse cx="20" cy="45" rx="7" ry="4.8" transform="rotate(-15 20 45)"></ellipse>
                             <ellipse cx="20" cy="55" rx="7" ry="4.8" transform="rotate(-15 20 55)"></ellipse>
                             <ellipse cx="20" cy="65" rx="7" ry="4.8" transform="rotate(-15 20 65)"></ellipse>
@@ -44,7 +44,7 @@ export default function Start() {
                 <Link to="/workout">
                     <div className={`${styles.card}`}>
                         <h2>
-                            Workout <ChevronRight color='#8ab8ba' />
+                            Workout <ChevronRight color='#b0cdce' />
                         </h2>
                         <p>Pick your style and start playing.</p>
                     </div>
@@ -53,7 +53,7 @@ export default function Start() {
                 <Link to="/chord-tracks">
                     <div className={`${styles.card}`}>
                         <h2>
-                            Chord Tracks <ChevronRight color='#8ab8ba' />
+                            Chord Tracks <ChevronRight color='#b0cdce' />
                         </h2>
                         <p>Build a collection of custom chord sequences and practice them.</p>
                     </div>

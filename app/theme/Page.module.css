@@ -1,15 +1,20 @@
 .pageHeader{
     display:flex;
-    align-items:center;
     margin-bottom:1rem;
     margin-top:0.5rem;
-        justify-content: space-between;
+    justify-content: space-between;
+
+    >a, >button{
+        width:25%;
+    }
     h1{
         font-size: clamp(1.2rem, 3.2vh, 2rem);
         padding-top:0;
         margin-inline:1rem;
         font-weight:400;
-       /* color:#8ab8ba; */
+        width:50%;
+        align-self: center;
+       /* color:#b0cdce; */
     }
 
 }
