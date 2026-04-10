@@ -51,6 +51,14 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
         <>
             <div className={styles.title}>
             <h2>{trackData.name}</h2>
+
+            {trackData && (
+                                                            <div className={styles.chords}>
+                                                                {trackData.bars.map((bar, index) => (
+                                                                    <span className={styles.chord} key={index}>{bar.chords[0]}</span>
+                                                                ))}
+                                                            </div>
+                                                        )}
             </div>
            <TrackPlayer key={trackData.id}  TrackData={trackData} />
            <div className={styles.footer}>

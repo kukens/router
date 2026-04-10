@@ -17,7 +17,6 @@
 
 h1{
     font-size: 12dvw
-  
 }
 
 h2{
@@ -31,8 +30,8 @@ h2{
     font-weight: 400;
 
     :global(svg){
-        width:32px;
-        height:32px;
+        width: 3dvh;
+        height: 3dvh;
     }
 }
 

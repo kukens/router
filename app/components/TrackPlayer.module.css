@@ -55,7 +55,7 @@
     width: 5rem;
     height: 5rem;
     border-radius: 50%;
-    border: 10px solid rgba(255, 255, 255, 0.25);
+    border: 10px solid #00000042;
     border-top-color: #406eae7d;
     animation: spin 0.8s linear infinite;
 }

@@ -22,8 +22,8 @@ export default function Start() {
                             <rect width="200" height="100" fill="url(#fadeGradient)"></rect>
                         </mask>
                     </defs>
-                    <g mask="url(#fadeMask)">
-                        <g stroke="#8ab8ba" stroke-width="0.1">
+                    <g mask="url(#fadeMask)" >
+                        <g stroke="#8ab8ba" stroke-width="0.1" style={{display:'none'}}>
                             <line x1="10" y1="35" x2="190" y2="35"></line>
                             <line x1="10" y1="45" x2="190" y2="45"></line>
                             <line x1="10" y1="55" x2="190" y2="55"></line>

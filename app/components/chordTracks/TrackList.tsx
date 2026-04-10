@@ -121,7 +121,7 @@ export default function TrackList() {
 
     return (
         <div className={styles.container}>
-       <OrderingDrawer
+            <OrderingDrawer
                 open={isOrderingOpen}
                 onClose={() => setIsOrderingOpen(false)}
                 selectedOrder={selectedOrder}
@@ -129,7 +129,7 @@ export default function TrackList() {
                 options={orderBy}
             />
 
-           <FilterDrawer
+            <FilterDrawer
                 open={isFilterOpen}
                 onClose={() => setIsFilterOpen(false)}
                 filterText={filterText}
@@ -144,10 +144,10 @@ export default function TrackList() {
                     <Button className="btn-active" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} color='#999' /></Button>}
 
                 {selectedTags.length > 0 &&
-                    selectedTags.map(tag => 
-                    <Button key={tag} className="btn-active" onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}  
-                        <X size={15} color='#999' />
-                    </Button>)
+                    selectedTags.map(tag =>
+                        <Button key={tag} className="btn-active" onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}
+                            <X size={15} color='#999' />
+                        </Button>)
                 }
             </div>
 
@@ -158,8 +158,22 @@ export default function TrackList() {
                 {tracks.slice(0, visibleCount).map((track) => (
                     <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
                         <div className={styles.chordTrackCard}>
-                            <span className={styles.trackName}>{track.name} <ChevronRight color='#8ab8ba'/></span>   
-                            <p className={styles.trackDetails}>Tags: {track.tags?.join(', ')}</p>
+                            <h2 className={styles.trackName}>{track.name} <ChevronRight color='#8ab8ba' /></h2>
+                            <div className={styles.trackDetails}>
+                                <div className={styles.metadata}>
+                                     <span>{track.tempo} BPM</span>
+                                     <span>{track.bars.length} bars</span>
+                                </div>
+
+                            {track.tags && track.tags.length > 0 && 
+                                  <div className={styles.tags}>
+                                    {track.tags.map((tag, index) => (
+                                        <Button key={index} className="btn-disabled">{tag}</Button>
+                                    ))}
+                                </div>
+                           }
+                            </div>
+
                         </div>
                     </Link>
                 ))}
@@ -167,10 +181,10 @@ export default function TrackList() {
 
             <div className={styles.footerActions}>
                 {!allLoaded &&
-                <Button className="btn-action-alt" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
-                   Load more
-                </Button>
-            }
+                    <Button className="btn-action-alt" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
+                        Load more
+                    </Button>
+                }
 
             </div>
         </div>
