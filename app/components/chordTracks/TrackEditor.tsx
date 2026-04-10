@@ -114,7 +114,7 @@ export default function TrackEditor(props: TrackEditorProps) {
     return (
                 <div className={styles.container}>
           
-                    <label>Track name <Input value={trackName} type="text" placeholder="Track name" required onChange={(e) => setTrackName(e.target.value)} /></label>
+                    <label className={styles.trackName}><span>Track name</span> <Input value={trackName} type="text" placeholder="Track name" required onChange={(e) => setTrackName(e.target.value)} /></label>
              
                     <label>Beats per Bar <Input value={beatsPerBar} min={3} max={4} type="number" required onChange={(e) => updateBeats(Number.parseInt(e.target.value))} /></label>
              

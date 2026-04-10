@@ -16,11 +16,26 @@ label{
     }
 }
 
+.trackName{
+
+        input{
+            width:60%;
+        }
+        label{
+            width: 50%;
+        }
+
+
+}
+
 .bar{
-display: flex;
+            font-weight:300;
+    display: flex;
     align-items: center;
-    margin-inline: 1rem;
     margin-bottom: 1rem;
+    margin-left: 0rem;
+    margin-right: 2rem;
+    font-weight: 300;
 }
 
 .beat{
@@ -51,7 +66,7 @@ display: flex;
     padding: 0.5rem;
     border-radius: 10px;
     position:absolute;
-    right:5px;
+    right: 15px;
 
     :global(.lucide){
         margin:0;
