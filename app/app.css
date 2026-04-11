@@ -59,7 +59,7 @@
 @layer base {
 
 body {
-   background:linear-gradient(180deg, rgb(0 0 0 / 50%) 0%, rgba(47, 54, 92, 0) 8%, rgba(47, 54, 92, 0) 92%, rgb(0 0 0 / 50%) 100%), radial-gradient(ellipse at top, #2f4066, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #1d2237);
+   background:#232c3c;
       background-attachment: fixed;
    background-size: cover;
    min-height: 100dvh;
@@ -83,7 +83,7 @@ main{
 
 
 p{
-  color:  #9ca3af;
+  color:  #c9cfd9;
 }
 
 a{
