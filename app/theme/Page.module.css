@@ -4,8 +4,8 @@
     margin-top:0.5rem;
     justify-content: space-between;
 
-    >a, >button{
-        width:25%;
+    >button{
+        width:15%;
     }
     h1{
         font-size: clamp(1.2rem, 3.2vh, 2rem);

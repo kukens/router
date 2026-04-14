@@ -8,6 +8,7 @@ import WorkOutTrackPlayer from '~/components/workOut/WorkOutTrackPlayer';
 import { useLocation } from 'react-router';
 import type { WorkOutTrack } from '~/data/workOutTracks';
 import { ArrowLeft } from 'lucide-react';
+import PageHeader from '~/components/shared/PageHeader';
 
 import pageStyles from "~/theme/Page.module.css";
 
@@ -25,11 +26,7 @@ console.log(locationState.WorkOutTracks)
 
   return (
       <>
-              <div className={pageStyles.pageHeader}>
-            <Link to="/workout"><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
-            <h1>Workout</h1>
-            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
-        </div>
+        <PageHeader title="Workout" backLink="/workout" />
 
         <ChordProvider>
           <WorkOutTrackPlayer WorkOutTracks={locationState.WorkOutTracks} />

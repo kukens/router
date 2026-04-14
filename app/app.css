@@ -60,7 +60,9 @@
 
 body {
    background:#232c3c;
-      background-attachment: fixed;
+   background-image: url('/background-ellipses.svg');
+   background-position-x: 80%;
+   background-attachment: fixed;
    background-size: cover;
    min-height: 100dvh;
 }

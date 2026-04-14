@@ -5,16 +5,13 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@base-ui/react/button';
 import { Link } from "react-router";
 import pageStyles from "~/theme/Page.module.css";
+import PageHeader from '~/components/shared/PageHeader';
 
 export default function CreateTrack() {
 
   return (
       <>
-         <div className={pageStyles.pageHeader}>
-            <Link to="/chord-tracks"><Button className="btn-action-back"><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
-            <h1>New Chord Track</h1>
-            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
-        </div>
+        <PageHeader title="New Chord Track" backLink="/chord-tracks" />
           <TrackEditor TrackData={null} Id={""} />
       </>
   );

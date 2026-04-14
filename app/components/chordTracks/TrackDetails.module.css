@@ -26,17 +26,24 @@
         align-self: center;
         display: block;
         width: 100%;
+        border-inline:1px solid #2c323e;
+        background: #1b212e;
     }
 
     .firstBeat{
         border-top-left-radius: 15px;
         border-bottom-left-radius: 15px;
+        border-inline: none;
+        border-right: 1px solid #2c323e
 
     }
 
     .lastBeat{
         border-top-right-radius: 15px;
         border-bottom-right-radius: 15px;
+        border-inline: none;
+        border-left: 1px solid #2c323e;
+
     }
 
     .tags{

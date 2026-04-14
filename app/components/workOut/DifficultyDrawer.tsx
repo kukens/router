@@ -36,27 +36,27 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
 
     useEffect(() => {
         let baseTracks = WORKOUT_TRAKCS;
-        
+
         // Filter tracks based on selected chords
         if (props.selectedChords && props.selectedChords.length > 0) {
-            baseTracks = baseTracks.filter(track => 
+            baseTracks = baseTracks.filter(track =>
                 props.selectedChords!.every(chord => track.chords.includes(chord))
             );
         }
-        
+
         // Filter tracks based on selected tags
         if (props.selectedTags && props.selectedTags.length > 0) {
-            baseTracks = baseTracks.filter(track => 
+            baseTracks = baseTracks.filter(track =>
                 props.selectedTags!.some(tag => track.tags.includes(tag))
             );
         }
-        
+
         // Get unique difficulties from filtered tracks
         const availableDifficultyNumbers = [...new Set(baseTracks.map(item => item.difficulty))];
         const availableDifficultyLabels = availableDifficultyNumbers
             .map(num => difficultyLevels[num.toString()])
             .filter(label => label !== undefined);
-        
+
         setAvailableDifficulties(availableDifficultyLabels);
     }, [props.selectedChords, props.selectedTags]);
 
@@ -66,7 +66,7 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
 
     return (
 
-  <Drawer.Root>
+        <Drawer.Root>
             <Drawer.Trigger className="btn-action-alt">Select difficulty</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
@@ -75,21 +75,21 @@ export default function DifficultyDrawer(props: DifficultyDrawerProps) {
                         <div className="Handle" />
                         <Drawer.Content className="Content">
 
-                                    <h2>Select difficulty</h2>
-                         <div className={styles.difficultyButtons}>
-                    {Object.entries(difficultyLevels).filter(([key, value]) => availableDifficulties.includes(value)).map(([key, value]) => (
-                            <Button key={key} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => difficultyLevelToggle(value)}>
-                                {value}
-                            </Button>
-                        ))}
+                            <h2>Select difficulty</h2>
+                            <div className={styles.difficultyButtons}>
+                                {Object.entries(difficultyLevels).filter(([key, value]) => availableDifficulties.includes(value)).map(([key, value]) => (
+                                    <Button key={key} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => difficultyLevelToggle(value)}>
+                                        {value}
+                                    </Button>
+                                ))}
 
-                        </div>
+                            </div>
                             <div className="drawer-footer">
                                 <Button className="btn-action-alt" onClick={() => props.handleApply([])}>
                                     Clear
                                 </Button>
                                 <Drawer.Close className="btn-action-alt" onClick={() => props.handleApply(selected)}>Apply</Drawer.Close>
-                    </div>
+                            </div>
                         </Drawer.Content>
                     </Drawer.Popup>
                 </Drawer.Viewport>

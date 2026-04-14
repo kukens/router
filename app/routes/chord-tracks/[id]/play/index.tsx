@@ -9,7 +9,7 @@ import { Link, useParams} from "react-router";
 import type { TrackData } from '~/types/TrackData';
 import { useEffect, useState } from 'react';
 import pageStyles from "~/theme/Page.module.css";
-
+import PageHeader from '~/components/shared/PageHeader';
 
 export default function PlayTrack() {
 
@@ -27,11 +27,7 @@ export default function PlayTrack() {
       <>
 
 
-        <div className={pageStyles.pageHeader}>
-            <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
-             <h1>{trackData?.name}</h1>
-             <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
-        </div>
+        <PageHeader title={trackData?.name ?? ""} backLink={`/chord-tracks/${id}`} />
 
         <ChordProvider>
           <ChordTracksPlayer TrackData={trackData} />

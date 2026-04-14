@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router";
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
 import pageStyles from "~/theme/Page.module.css";
+import PageHeader from '~/components/shared/PageHeader';
 
 export default function EditTrack() {
 
@@ -22,11 +23,7 @@ export default function EditTrack() {
 
   return (
     <>
-        <div className={pageStyles.pageHeader}>
-            <Link to={`/chord-tracks/${id}`}><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
-            <h1>Edit Chord Track</h1>
-            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
-        </div>
+        <PageHeader title="Edit Chord Track" backLink={`/chord-tracks/${id}`} />
 
           <TrackEditor TrackData={trackData} Id={id as string} />
     </>
