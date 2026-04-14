@@ -10,6 +10,7 @@
          position: relative;
 
          .lucide {
+ 
              margin-right: -10px;
              margin-left: 5px;
          }
@@ -40,13 +41,14 @@
      }
 
      .btn-action-back {
-         background: #464f62;
-         padding: 0rem 1rem;
-         margin-left: 0;
-         height: 4.5dvh;
+        background: #464f62;
+        padding: 0 0rem;
+        margin-left: 0;
+        height: 4.5dvh;
+        margin-right: 0;
 
          .lucide {
-             margin-inline: 0 auto;
+             margin: 0 auto;
 
          }
      }
