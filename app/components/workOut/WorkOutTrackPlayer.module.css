@@ -1,7 +1,7 @@
 ﻿@layer components{
 
 .title {
-    margin:2rem -2rem;
+       margin-bottom: 2rem;
 }
 
 .footer {
@@ -14,6 +14,12 @@
 
 .navigationButtons{
     display:flex;
+}
+
+.chord{
+    padding: 0.5rem 0.5rem;
+    color: #b0cdce;
+    font-weight: 600;
 }
 
 }

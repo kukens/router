@@ -33,7 +33,7 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
-  { rel: "apple-touch-icon", href: "https://via.placeholder.com/180" }
+  { rel: "apple-touch-icon", href: "maskable_icon_x512.png" }
 ];
 
 

@@ -59,9 +59,8 @@
 @layer base {
 
 body {
-   background: linear-gradient(180deg, rgb(0 0 0 / 50%) 0%, rgba(47, 54, 92, 0) 8%, rgba(47, 54, 92, 0) 92%, rgb(0 0 0 / 50%) 100%), 
-   radial-gradient(ellipse at top, #1d2c4d, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #000000);
-   background-attachment: fixed;
+   background:linear-gradient(180deg, rgb(0 0 0 / 50%) 0%, rgba(47, 54, 92, 0) 8%, rgba(47, 54, 92, 0) 92%, rgb(0 0 0 / 50%) 100%), radial-gradient(ellipse at top, #2f4066, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #1d2237);
+      background-attachment: fixed;
    background-size: cover;
    min-height: 100dvh;
 }
@@ -128,27 +127,3 @@ input, textarea {
 }
 
 
-.logo-wrapper {
-  position: relative;
-  display: inline-block; /* Container fits the text size */
-
-}
-
-.staff-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;          /* Stretches to match wrapper width */
-  height: 100%;         /* Stretches to match wrapper height */
-  z-index: -1;          /* Puts it behind the text */
-}
-
-.logo-text {
-  margin: 0;
-  font-family: sans-serif;
-  font-size: clamp(1.5rem, 5vw, 3rem); /* Scales text for mobile/desktop */
-  text-transform: lowercase;
-  color: #333;
-  /* Adjust padding-left so text doesn't overlap the chord notes */
-  padding-left: 30px; 
-}

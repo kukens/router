@@ -8,55 +8,49 @@
         border: none;
         display: inline-flex;
         position:relative;
-    }
 
-            .lucide {
+        .lucide {
             margin-right: -10px;
             margin-left: 5px;
         }
-        
+    }
+
+      
         .btn-active{
             background: #1e324e;
             box-shadow: rgb(143 143 143) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px,  rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
         }
 
-        
-
-        
         .btn-inactive {
-             color: #bebebe;
+             color: #e7e7e7;
              background: #171d2d;
                 box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
                        }
 
-
-
         .btn-disabled {
-             color: #bebebe;
-             background: #13181f;
-                box-shadow: rgb(70 70 70) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset; 
-                       }
+             color: #e7e7e7;
+               background: #2d323a;
+    box-shadow: rgb(96 96 96) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 1px -10px inset;              }
 
         .btn-action-alt {
             background: #1f2937;
             box-shadow: rgb(113 113 113) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgba(0, 0, 0, 0.95) 0px 0px 15px -10px inset;
          }
         .btn-action {
-            background: #24404e;
-            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgb(0 0 0) 0px 0px 20px -10px inset
-
+            padding:0.6rem 2.2rem;
+            background: #324e79;
+            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgb(0 0 0 / 68%) 0px 0px 20px -10px inset;
         }
 
         .btn-action-back {
-    background: #24404e;
-    box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgb(0 0 0) 0px 0px 20px -10px inset;
-    padding: 0rem 1rem;
-    margin-left: 0;
-    height: 35px;
-    width:53px;
-    .lucide{
-        margin-inline: 0 auto;
-      
-    }
+            background: #324e79;
+            box-shadow: rgb(191 191 191) 0px -1px 2px 0px, rgb(0 0 0) 0px 3px 2px 0px, #00000073 0 5px 10px 0px, rgb(0 0 0 / 68%) 0px 0px 20px -10px inset;
+            padding: 0rem 1rem;
+            margin-left: 0;
+            height: 4.5dvh;
+            .lucide{
+                margin-inline: 0 auto;
+            
+            }
         }
  }
