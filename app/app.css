@@ -59,7 +59,7 @@
 @layer base {
 
 body {
-   background:#202d43;
+   background:#223453;
    background-image: url('/background-ellipses.svg');
    background-position-x: 80%;
    background-attachment: fixed;
