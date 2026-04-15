@@ -3,5 +3,5 @@
     <defs>
         <ellipse id="e" cx="20" cy="50" rx="75" ry="20" />
     </defs>
-    <use href="#e" y="-5" transform="rotate(-55 50 25)" fill="#1a202c" fill-opacity="0.17" />
+    <use href="#e" y="-5" transform="rotate(-55 50 25)" fill="#1a202c" fill-opacity="0.2" />
 </svg>
