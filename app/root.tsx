@@ -44,19 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <script dangerouslySetInnerHTML={{
-          __html: `(
-            function(){
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    // This executes exactly when the browser is ready to paint the first frame
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', vh + 'px');
-  });
-});
-            }
-          )();`,
-        }} />
+
         <Meta />
         <Links />
       </head>
