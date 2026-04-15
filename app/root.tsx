@@ -44,6 +44,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <script dangerouslySetInnerHTML={{
+          __html: `(
+            function(){
+              function setVh(){
+                try{document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');}catch(e){}
+              }
+              setVh();
+              window.addEventListener('resize', setVh);
+              window.addEventListener('orientationchange', setVh);
+              document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') setVh(); });
+              window.addEventListener('fullscreenchange', setVh);
+            }
+          )();`,
+        }} />
         <Meta />
         <Links />
       </head>

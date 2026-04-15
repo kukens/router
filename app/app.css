@@ -18,8 +18,12 @@
   }
 
   /* 3. Smooth, accessible body defaults */
+  :root {
+    --vh: 1vh;
+  }
+
   body {
-    min-height: 100dvh; /* Dynamic viewport height */
+    min-height: calc(var(--vh, 1vh) * 100);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     font-family: system-ui, sans-serif;
@@ -59,12 +63,12 @@
 @layer base {
 
 body {
-   background:#223453;
-   background-image: url('/background-ellipses.svg');
-   background-position-x: 80%;
-   background-attachment: fixed;
-   background-size: cover;
-   min-height: 100dvh;
+  background:#223453;
+  background-image: url('/background-ellipses.svg');
+  background-position-x: 80%;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 /* Respect safe-area insets (notches / system bars) */
