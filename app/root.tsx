@@ -47,14 +47,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{
           __html: `(
             function(){
-              function setVh(){
-                try{document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');}catch(e){}
-              }
-              setVh();
-              window.addEventListener('resize', setVh);
-              window.addEventListener('orientationchange', setVh);
-              document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') setVh(); });
-              window.addEventListener('fullscreenchange', setVh);
+if (window.visualViewport) {
+  const syncHeight = () => {
+    document.documentElement.style.height = window.visualViewport.height + 'px';
+  };
+  
+  // Fires as soon as the viewport is initialized or changed (like your mic/rotation)
+  window.visualViewport.addEventListener('resize', syncHeight);
+  syncHeight();
+}
             }
           )();`,
         }} />
