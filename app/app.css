@@ -75,9 +75,6 @@ html, body {
   padding: 0;
   height: 100dvh;
   width: 100%;
-  /* This prevents the entire app window from moving */
-  overflow: hidden; 
-  position: fixed;
 }
 
 main {
@@ -85,11 +82,6 @@ main {
   height: 100%; 
   width: 100%;
   
-  /* Enable scrolling here instead of the body */
-  overflow-y: auto; 
-  
-  /* This ensures smooth scrolling on mobile */
-  -webkit-overflow-scrolling: touch; 
   
   /* Crucial: add padding for the Android nav bar we made transparent */
   padding-bottom: env(safe-area-inset-bottom);
