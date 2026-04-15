@@ -70,21 +70,29 @@ body {
   background-size: cover;
 }
 
-  html, body {
+html, body {
   margin: 0;
   padding: 0;
-  /* Use dvh for both to keep them in sync */
-  height: 100dvh; 
-  min-height: 100dvh;
-  overflow: hidden; /* Prevents the 'bounce' that triggers rescaling */
+  height: 100dvh;
+  width: 100%;
+  /* This prevents the entire app window from moving */
+  overflow: hidden; 
+  position: fixed;
 }
 
 main {
-  display: block;
-  min-height: 100dvh;
-  /* Use overscroll-behavior to stop the PWA from shifting 
-     when you reach the top/bottom */
-  overscroll-behavior-y: contain; 
+  /* This becomes your new 'viewport' */
+  height: 100%; 
+  width: 100%;
+  
+  /* Enable scrolling here instead of the body */
+  overflow-y: auto; 
+  
+  /* This ensures smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch; 
+  
+  /* Crucial: add padding for the Android nav bar we made transparent */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Respect safe-area insets (notches / system bars) */
