@@ -8,6 +8,7 @@
          border: none;
          display: inline-flex;
          position: relative;
+         box-shadow:0px 0px 20px -10px #000;
 
          .lucide {
  
@@ -29,6 +30,7 @@
      .btn-disabled {
          color: #e7e7e7;
          background: #0000003d;
+         box-shadow:none;
      }
 
      .btn-action-alt {

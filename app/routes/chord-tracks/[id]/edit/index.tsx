@@ -23,7 +23,7 @@ export default function EditTrack() {
 
   return (
     <>
-        <PageHeader title="Edit Chord Track" backLink={`/chord-tracks/${id}`} />
+        <PageHeader title={`Edit ${trackData?.name}`} backLink={`/chord-tracks/${id}`} />
 
           <TrackEditor TrackData={trackData} Id={id as string} />
     </>
