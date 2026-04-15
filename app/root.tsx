@@ -47,15 +47,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{
           __html: `(
             function(){
-if (window.visualViewport) {
-  const syncHeight = () => {
-    document.documentElement.style.height = window.visualViewport.height + 'px';
-  };
-  
-  // Fires as soon as the viewport is initialized or changed (like your mic/rotation)
-  window.visualViewport.addEventListener('resize', syncHeight);
-  syncHeight();
-}
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    // This executes exactly when the browser is ready to paint the first frame
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+  });
+});
             }
           )();`,
         }} />
