@@ -68,7 +68,23 @@ body {
   background-position-x: 80%;
   background-attachment: fixed;
   background-size: cover;
-  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+  html, body {
+  margin: 0;
+  padding: 0;
+  /* Use dvh for both to keep them in sync */
+  height: 100dvh; 
+  min-height: 100dvh;
+  overflow: hidden; /* Prevents the 'bounce' that triggers rescaling */
+}
+
+main {
+  display: block;
+  min-height: 100dvh;
+  /* Use overscroll-behavior to stop the PWA from shifting 
+     when you reach the top/bottom */
+  overscroll-behavior-y: contain; 
 }
 
 /* Respect safe-area insets (notches / system bars) */
