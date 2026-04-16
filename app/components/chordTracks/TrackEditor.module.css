@@ -32,10 +32,15 @@ label{
             font-weight:300;
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     margin-left: 0rem;
     margin-right: 2rem;
     font-weight: 300;
+    box-shadow:0px 0px 7px -3px #000;
+
+    button{
+        box-shadow:#4f4f4f 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 70px -35px inset;
+    }
 }
 
 .beat{
@@ -48,6 +53,7 @@ label{
     align-self: center;
     display: block;
     width: 100%;
+    border-right:1px solid #223453;
 }
 
 .firstBeat{

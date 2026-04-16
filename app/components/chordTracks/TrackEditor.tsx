@@ -137,13 +137,14 @@ export default function TrackEditor(props: TrackEditorProps) {
                                  >{bars[barIndex].chords[beatIndex]?.replace("b", "♭").replace("#", "♯") || ""}</Button>
                             ))}
 
-                             <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
-
                             <Button key={barIndex} className={`btn-action-alt ${styles.removeBar}`} onClick={() => removeBar(barIndex)}>
                                 <Trash2 size={18} strokeWidth={1.5} />
                             </Button>
                         </div>
                 ))}
+
+                                             <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isDrawerOpen} handleClose={() => setIsDrawerOpen(false)} handleSelect={handleChordSelection} />
+
 
 
             <Button className="btn-action-alt" onClick={addBar}>Add Bar</Button>
@@ -163,7 +164,7 @@ export default function TrackEditor(props: TrackEditorProps) {
                 {tags?.map((tag, tagIndex) => (
                     <Button key={tagIndex} className={`btn-active`} onClick={() => removeTag(tag)}>
                         {tag}
-                         <X size={15} color='#999' />
+                         <X size={15} />
                     </Button>
                 ))}
                 </div>

@@ -94,7 +94,7 @@ export default function () {
 
                         {selectedChords.length > 0 &&
                             <div className={styles['active-filters']}>
-                                {selectedChords.map(selectedChord => <Button className="btn-active" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15} color='#999' /></Button>)}
+                                {selectedChords.map(selectedChord => <Button className="btn-active" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15}  /></Button>)}
                             </ div>
                         }
 
@@ -109,7 +109,7 @@ export default function () {
 
                         {selectedTags.length > 0 &&
                             <div className="">
-                                {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15} color='#999' /></Button>)}
+                                {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15}  /></Button>)}
                             </ div>
                         }
 
@@ -124,7 +124,7 @@ export default function () {
 
                         {selectedDifficultyLevels.length > 0 &&
                             <div className="">
-                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel} <X size={15} color='#999' /></Button>)}
+                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel} <X size={15}  /></Button>)}
                             </ div>
                         }
 

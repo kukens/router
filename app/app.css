@@ -18,8 +18,12 @@
   }
 
   /* 3. Smooth, accessible body defaults */
+  :root {
+    --vh: 1vh;
+  }
+
   body {
-    min-height: 100dvh; /* Dynamic viewport height */
+    min-height: calc(var(--vh, 1vh) * 100);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     font-family: system-ui, sans-serif;
@@ -59,10 +63,41 @@
 @layer base {
 
 body {
-   background:linear-gradient(180deg, rgb(0 0 0 / 50%) 0%, rgba(47, 54, 92, 0) 8%, rgba(47, 54, 92, 0) 92%, rgb(0 0 0 / 50%) 100%), radial-gradient(ellipse at top, #2f4066, #100a0abf), radial-gradient(ellipse at bottom, #2b2b2b, #1d2237);
-      background-attachment: fixed;
-   background-size: cover;
-   min-height: 100dvh;
+  background: linear-gradient(180deg,#0000007f,#2f365c00 8% 92%,#0000007f),radial-gradient(ellipse at top,#2f4066,#100a0abf),radial-gradient(ellipse at bottom,#2b2b2b,#1d2237);
+
+  background-position-x: 80%;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  width: 100%;
+  position:fixed;
+}
+
+main {
+  /* This becomes your new 'viewport' */
+  height: 100%; 
+  width: 100%;
+  
+  
+  /* Crucial: add padding for the Android nav bar we made transparent */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Respect safe-area insets (notches / system bars) */
+html, body {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: constant(safe-area-inset-left);
+  padding-left: env(safe-area-inset-left);
+  padding-right: constant(safe-area-inset-right);
+  padding-right: env(safe-area-inset-right);
 }
 
 
@@ -79,11 +114,6 @@ main{
 *{
   color: #ececec;
   text-align: center;
-}
-
-
-p{
-  color:  #9ca3af;
 }
 
 a{

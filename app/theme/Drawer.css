@@ -1,11 +1,11 @@
 @layer theme{
 .Backdrop {
-  --backdrop-opacity: 0.2;
+  --backdrop-opacity: 0.5;
   --bleed: 3rem;
   position: fixed;
   min-height: 100dvh;
   inset: 0;
-  background-color: black;
+  background-color: #0a0c14;
   opacity: calc(var(--backdrop-opacity) * (1 - var(--drawer-swipe-progress)));
   transition-duration: 450ms;
   transition-property: opacity;
@@ -44,7 +44,7 @@
   /*max-height: calc(80vh + var(--bleed));*/
   border-radius: 1rem 1rem 0 0;
   outline: 1px solid var(--color-gray-200);
-  background-color: #131921;
+  background-color: #181f2b;
   color: var(--color-gray-900);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -111,27 +111,16 @@
 
 
 .drawer-header{
-    box-shadow: #000 0px 15px 10px -10px;
-    border-bottom: 1px solid #3c3c3c;
-    z-index: 9000;
-    position: relative;
 
-        box-shadow: #171e26 0px 25px 23px -10px;
-    border-bottom: 1px solid #3c3c3c;
+    border-bottom: 1px solid #5c656e;
     z-index: 9000;
     position: relative;
 }
 
 
 .drawer-footer{
-    box-shadow: #000 0px -15px 10px -10px;
-    border-top: 1px solid #3c3c3c;
-    z-index: 9000;
-    position: relative;
-    padding:1rem;
 
-        box-shadow: #171e26 0px -15px 10px -10px;
-    border-top: 1px solid #3c3c3c;
+    border-top: 1px solid #5c656e;
     z-index: 9000;
     position: relative;
     padding: 1rem;

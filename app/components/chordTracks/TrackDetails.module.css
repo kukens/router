@@ -12,8 +12,8 @@
         font-weight:300;
     display: flex;
         align-items: center;
-        margin-inline: 1rem;
-        margin-bottom: 1rem;
+       
+        margin-bottom: 1.2rem;
     }
 
     .beat{
@@ -26,17 +26,19 @@
         align-self: center;
         display: block;
         width: 100%;
+        border-right:1px solid #2c323e;
+        box-shadow:#4f4f4f 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 0px 0px inset;
     }
 
     .firstBeat{
         border-top-left-radius: 15px;
         border-bottom-left-radius: 15px;
-
     }
 
     .lastBeat{
         border-top-right-radius: 15px;
         border-bottom-right-radius: 15px;
+        border-inline: none;
     }
 
     .tags{

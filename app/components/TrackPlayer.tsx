@@ -119,7 +119,7 @@ export default function TrackPlayer(props: TrackPlayerProps) {
             for (let i = 0; i <= barsCount; i++) {
                 const keyFrameStep = i == barsCount ? "100%" : `${animationSplit * i}%, ${animationSplit * (i + 1) - (timePerBeat * trackData.beatsPerBar / 1000 / barsCount * 6)}%`
                 keyframes += `
-                ${keyFrameStep} { transform: translateY(${-i * 115}px); }`;
+                ${keyFrameStep} { transform: translateY(${-i * 112}px); }`;
             }
             animationKeyFramesStyleRef.current.innerHTML = `@keyframes dynamic-step { ${keyframes} }`
 

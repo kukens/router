@@ -7,6 +7,7 @@ import type { TrackData } from '~/types/TrackData';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@base-ui/react/button';
 import TrackDetails from '~/components/chordTracks/TrackDetails';
+import PageHeader from '~/components/shared/PageHeader';
 import pageStyles from "~/theme/Page.module.css";
 
 export default function Tracks() {
@@ -23,11 +24,7 @@ export default function Tracks() {
 
     return (
         <>
-        <div className={pageStyles.pageHeader}>
-            <Link to={`/chord-tracks`}><Button className="btn-action-back" ><ArrowLeft size={20} strokeWidth={1.5} /> </Button></Link>
-            <h1>{trackData?.name}</h1>
-            <Button className="btn-action-back" style={{visibility: 'hidden'}} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
-        </div>
+        <PageHeader title={trackData?.name ?? ""} backLink="/chord-tracks" />
 
         <TrackDetails TrackData={trackData} />
         </>
