@@ -14,7 +14,9 @@ margin-bottom: clamp(1.1rem, 4vh, 3.2rem);
     background: #1f2937;
     border-radius: 15px;
     box-shadow: #555 0 0px 2px, #0d1118 0 3px 2px, #00000073 0 5px 10px, #00000094 0 0 70px -35px inset;
+    border-right: 1px solid #223453;
 }
+
 
 h1{
     font-size: 13dvw
