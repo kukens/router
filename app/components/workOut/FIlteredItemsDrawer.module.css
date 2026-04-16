@@ -18,9 +18,9 @@
     border-radius: 20px;
     padding-block: clamp(0.3rem, 0.8vh, 0.5rem);
 
-
-        background: #49658f;
-        box-shadow: #dedeff 0 0px 2px, #000000a8 0 2px 2px, #0000003d 0 5px 10px, #000000 0 0 91px -41px inset;
+background: #1f2937;
+    border-radius: 15px;
+    box-shadow: #555 0 0px 2px, #0d1118 0 3px 2px, #00000073 0 5px 10px, #00000094 0 0 70px -35px inset;
 }
 
 .result-content{
@@ -91,22 +91,19 @@ h2{
 }
 
 .barWithBottomShadow{
-    border-bottom: 1px solid #5c656e;
-    box-shadow: 0px 11px 11px -3px #0000007d;
+box-shadow: 0px 11px 11px -3px #000000bf;
     height: 16px;
     margin-top: -1rem;
     z-index: 8000;
     position: relative;
-    margin-inline: 1rem;
-
 }
 .barWithTopShadow{
-border-top: 1px solid #5c656e;
-    box-shadow: 0px -11px 11px -3px #0000007d;
+
+    box-shadow: 0px -11px 11px -3px #000000bf;
     height: 16px;
     margin-bottom: -1rem;
     z-index: 8000;
     position: relative;
-    margin-inline: 1rem;
+  
 }
 }

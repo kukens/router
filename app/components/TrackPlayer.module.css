@@ -4,9 +4,11 @@
         position: relative;
         overflow: hidden;
         height: 352px;
-        border-top: 1px solid #5c656e;
-        border-bottom: 1px solid #5c656e;
+
         margin-bottom: auto;
+            margin-inline: -4rem;
+    padding-inline: 4rem;
+    box-shadow: 0px 0px 10px 5px #0000007d inset;
     }
 
     @property --percentage {
@@ -21,7 +23,7 @@
         width: 5rem;
         height: 5rem;
         animation: timer 5s infinite linear;
-
+box-shadow: 0px 0px 20px -10px #000;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -51,6 +53,7 @@
     }
 
     .spinner {
+        
         width: 5rem;
         height: 5rem;
         border-radius: 50%;
@@ -77,16 +80,19 @@
     }
 
     .barWrapper {
+    
+        box-shadow: #485485 0 -1px 1px, #181a28 0 2px 2px, #00000045 0 5px 10px, #000000 0 0 40px -15px inset;
+        border-radius: 15px;
     }
 
     .bar {
         display: flex;
         border-radius: 15px;
         opacity: 0.5;
-        box-shadow:0px 0px 7px -3px #000;
     }
 
-    .active {
+
+    .active{
         background-image: linear-gradient(to right, #52585fff, #52585fff);
         background-size: 100% 100%;
         background-repeat: no-repeat;
@@ -94,10 +100,17 @@
         animation: fillFromTopLeft linear forwards;
         animation-iteration-count: infinite;
         opacity: 1;
+        
+    }
+
+    .bar.active{
+          border-top:1px solid #7a7d81;
+          
     }
 
     .highlighted {
         opacity: 1;
+          border-top:1px solid #7a7d81;
     }
 
 
