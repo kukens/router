@@ -68,7 +68,24 @@ body {
   background-position-x: 80%;
   background-attachment: fixed;
   background-size: cover;
-  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  width: 100%;
+  position:fixed;
+}
+
+main {
+  /* This becomes your new 'viewport' */
+  height: 100%; 
+  width: 100%;
+  
+  
+  /* Crucial: add padding for the Android nav bar we made transparent */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Respect safe-area insets (notches / system bars) */
