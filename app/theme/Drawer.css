@@ -112,15 +112,15 @@
 
 .drawer-header{
 
-    border-bottom: 1px solid #5c656e;
     z-index: 9000;
     position: relative;
+    margin: 1.5rem 0rem 1rem 0rem;
 }
 
 
 .drawer-footer{
 
-    border-top: 1px solid #5c656e;
+
     z-index: 9000;
     position: relative;
     padding: 1rem;
