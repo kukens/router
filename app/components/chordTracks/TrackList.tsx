@@ -141,12 +141,12 @@ export default function TrackList() {
 
             <div>
                 {filterText &&
-                    <Button className="btn-active" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} color='#999' /></Button>}
+                    <Button className="btn-active" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} /></Button>}
 
                 {selectedTags.length > 0 &&
                     selectedTags.map(tag =>
                         <Button key={tag} className="btn-active" onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}
-                            <X size={15} color='#999' />
+                            <X size={15} />
                         </Button>)
                 }
             </div>

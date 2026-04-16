@@ -164,7 +164,7 @@ export default function TrackEditor(props: TrackEditorProps) {
                 {tags?.map((tag, tagIndex) => (
                     <Button key={tagIndex} className={`btn-active`} onClick={() => removeTag(tag)}>
                         {tag}
-                         <X size={15} color='#999' />
+                         <X size={15} />
                     </Button>
                 ))}
                 </div>
