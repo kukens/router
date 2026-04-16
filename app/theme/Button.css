@@ -8,7 +8,7 @@
          border: none;
          display: inline-flex;
          position: relative;
-         box-shadow: #4f4f4f 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
+         box-shadow: #4f4f4f 0 0px 2px, #040a20 0 2px 2px, #00000030 0 5px 10px, #000000f2 0 0 15px -10px inset;
 
          .lucide {
  
@@ -43,7 +43,7 @@ box-shadow: #a5a5a5 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2
      .btn-action {
          padding: 0.6rem 2.2rem;
          background: #2d3d60;
-         box-shadow: #656565 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
+         box-shadow: #485485 0 -1px 1px, #181a28 0 2px 2px, #00000045 0 5px 10px, #000000 0 0 15px -10px inset;
      }
 
      .btn-action-back {
@@ -52,7 +52,7 @@ box-shadow: #a5a5a5 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2
         margin-left: 0;
         height: 4.5dvh;
         margin-right: 0;
-box-shadow: #656565 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
+box-shadow: #485485 0 -1px 1px, #181a28 0 2px 2px, #00000045 0 5px 10px, #000000 0 0 15px -10px inset;
          .lucide {
              margin: 0 auto;
 

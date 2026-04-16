@@ -13,7 +13,7 @@ margin-bottom: clamp(1.1rem, 4vh, 3.2rem);
     background: #2c445f;
     background: #1f2937;
     border-radius: 15px;
-    box-shadow: #555 0 -1px 2px, #0d1118 0 3px 2px, #00000073 0 5px 10px, #000000f2 0 0 70px -35px inset;
+    box-shadow: #555 0 0px 2px, #0d1118 0 3px 2px, #00000073 0 5px 10px, #00000094 0 0 70px -35px inset;
 }
 
 h1{
@@ -39,6 +39,7 @@ h2{
 
 p{
     font-size: clamp(0.8rem, 2vh, 1.2rem);
+    color:#c1c1c1;
 }
 .logoChords{
     margin-left: 10dvw;
@@ -46,7 +47,7 @@ p{
 }
 
 .logoTrainer{
-  color: #b0cdce;
+  color: #88bac1;
 }
 
 .logoBg{
@@ -64,6 +65,10 @@ position: relative;
     padding-block: 9dvw;
     margin-left: -5dvw;
     margin-top:-1dvh;
+
+    svg{
+        fill: #88bac1;
+    }
 }
 
 :global(.lucide){

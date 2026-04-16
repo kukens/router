@@ -39,7 +39,7 @@
 
     .countdownOverlay {
         position: absolute;
-        top: 1.5rem;
+        top: 1.4rem;
         left: 0;
         right: 0;
         z-index: 20;
@@ -77,7 +77,6 @@
     }
 
     .barWrapper {
-        background-color: #223453;
     }
 
     .bar {
@@ -117,13 +116,13 @@
 
 
     .beatFirstInBar {
-        border-top-left-radius: 1rem;
-        border-bottom-left-radius: 1rem;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
     }
 
     .beatLastInBar {
-        border-top-right-radius: 1rem;
-        border-bottom-right-radius: 1rem;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
     }
 
     .reactionStrong {
