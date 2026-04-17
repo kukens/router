@@ -63,8 +63,7 @@
 @layer base {
 
 body {
-  background: linear-gradient(180deg,#0000007f,#2f365c00 8% 92%,#0000007f),radial-gradient(ellipse at top,#2f4066,#100a0abf),radial-gradient(ellipse at bottom,#2b2b2b,#1d2237);
-
+  background: radial-gradient(ellipse 300px 1250px at 50% 132%, #2f4066, #000000);
   background-position-x: 80%;
   background-attachment: fixed;
   background-size: cover;
@@ -75,7 +74,6 @@ html, body {
   padding: 0;
   height: 100dvh;
   width: 100%;
-  position:fixed;
 }
 
 main {

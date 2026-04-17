@@ -47,6 +47,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         <Meta />
         <Links />
+                <script dangerouslySetInnerHTML={{
+          __html: `(
+            function(){
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    // This executes exactly when the browser is ready to paint the first frame
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+  });
+});
+            }
+          )();`,
+        }} />
       </head>
       <body>   
           <main>

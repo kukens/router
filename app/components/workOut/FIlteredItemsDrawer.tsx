@@ -215,7 +215,8 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                     <Drawer.Popup className="Popup">
                         <div className="Handle" />
                         <Drawer.Content className="Content">
-                            <div className="drawer-header"><h2>Adjust Workout</h2></div>
+                            <div className="drawer-header"><h2>Edit Workout</h2></div>
+                            <div className={styles.barWithBottomShadow}></div>
                             <div data-base-ui-swipe-ignore
                                 ref={listContainerRef}
                                 className={styles.scrollable}
@@ -240,7 +241,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                                     <div className={`${styles.checkboxWrapper}`}>
                                                         <Checkbox.Root id={`select-${index}`} defaultChecked checked={isVisible} onCheckedChange={(e) => toggleItem(trackId)} className="Checkbox">
                                                             <Checkbox.Indicator className="Indicator">
-                                                                <Check />
+                                                               
                                                             </Checkbox.Indicator>
                                                         </Checkbox.Root>
                                                     </div>
@@ -274,6 +275,8 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                     <div className={styles.placeholderBar}></div>
                                 )}
                             </div>
+
+                            <div className={styles.barWithTopShadow}></div>
                             <div className="drawer-footer">
                                 <Button className="btn-action-alt" onClick={resetOrder}>Reset order</Button>
                                 <Drawer.Close className="btn-action-alt" onClick={onApply}>Apply</Drawer.Close>
