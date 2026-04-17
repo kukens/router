@@ -38,7 +38,7 @@ export default function Start() {
                     </g>
                 </svg>
 
-                <h1><span className={styles.logoChords}>chords</span><span className={styles.logoTrainer}>mate</span></h1>
+                <h1><span className={styles.logoChords}>chords</span><span className={styles.logoTrainer}>arena</span></h1>
             </div>
             <div className={styles.cards}>
                 <Link to="/workout">
