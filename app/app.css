@@ -63,7 +63,7 @@
 @layer base {
 
 body {
-  background: radial-gradient(ellipse at 50% 67%, #2f4066, #000000);
+  background: radial-gradient(ellipse 300px 1250px at 50% 132%, #2f4066, #000000);
   background-position-x: 80%;
   background-attachment: fixed;
   background-size: cover;
