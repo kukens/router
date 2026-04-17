@@ -10,7 +10,7 @@
 margin-bottom: clamp(1.1rem, 4vh, 3.2rem);
     padding-block: clamp(1.1rem, 4vh, 3.2rem);
     padding-inline: clamp(0.5rem, 4vw, 1.2rem);
-    background: #324457;
+    background: #334b65;
     border-radius: 15px;
     /* box-shadow: rgb(92 93 95) 0px -1px 0px 0px, rgb(0 0 0) 0px 1px 1px 0px, #000000 0 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 70px -35px inset; */
 }
@@ -41,7 +41,7 @@ p{
 }
 .logoChords{
     margin-left: 10dvw;
-  color: #ececec;
+  color: #fff;
 }
 
 .logoTrainer{

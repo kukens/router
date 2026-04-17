@@ -8,7 +8,8 @@
          border: none;
          display: inline-flex;
          position: relative;
-
+         box-shadow:rgb(92 93 95 / 0%) 0px -1px 0px 0px, rgb(0 0 0 / 0%) 0px 1px 1px 0px, #00000000 0 0px 0px 0px, rgb(0 0 0 / 54%) 0px 0px 70px -35px inset;
+         
          .lucide {
  
              margin-right: -10px;
@@ -23,12 +24,13 @@
 
      .btn-inactive {
          color: #e7e7e7;
-         background: #36435b;
+         background: #353f55;
      }
 
      .btn-disabled {
          color: #e7e7e7;
-         background: #0000003d;
+         background: #313c52;
+        box-shadow: none;
      }
 
      .btn-action-alt {
