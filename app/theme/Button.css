@@ -23,7 +23,7 @@
 
      .btn-inactive {
          color: #e7e7e7;
-         background: #283245;
+         background: #50586f;
      }
 
      .btn-disabled {
@@ -33,7 +33,7 @@
      }
 
      .btn-action-alt {
-        background: #50586f;
+        background:  #283245;
 
      }
 
