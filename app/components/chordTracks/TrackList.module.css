@@ -12,9 +12,17 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    background: #18191a;
-    border-radius: 15px;
+    background: #1e1f24;
 
+         &.first{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    }
+
+    &.last{
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
     
 }
 
@@ -22,7 +30,7 @@
         margin-block:2rem;
         display:flex;
         flex-direction: column;
-        gap:1.5rem;
+        gap:0.5dvh;
     }
 
 .trackName{

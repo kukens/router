@@ -28,24 +28,24 @@
 
      .btn-disabled {
          color: #e7e7e7;
-        background: #202429;
+        background: #2f3039;
 
      }
 
      .btn-action-alt {
-        background: #3e619d;
+        background: #50586f;
 
      }
 
      .btn-action {
          padding: 0.6rem 2.2rem;
-         background: #96a7ca;
-         color:#000;
+         background: #344475;
+         color:#fff;
         font-weight:500;
      }
 
      .btn-action-back {
-        background: #96a7ca;
+        background: #344475;
         padding: 0 0rem;
         margin-left: 0;
         height: 4.5dvh;
@@ -53,7 +53,7 @@
 
          .lucide {
              margin: 0 auto;
-            stroke: #000;
+            stroke: #fff;
          }
      }
  }

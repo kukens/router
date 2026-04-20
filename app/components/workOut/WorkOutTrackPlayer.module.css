@@ -1,7 +1,10 @@
 ﻿@layer components{
 
 .title {
-       margin-bottom: 2rem;
+      margin-bottom: 2rem;
+    background: #1e1f24;
+    border-radius: 25px;
+    padding: 2rem 0;
 }
 
 .footer {

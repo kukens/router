@@ -15,16 +15,16 @@ export default function Start() {
             </div>
             <div className={styles.cards}>
                 <Link to="/workout">
-                    <div className={`${styles.card}`}>
+                    <div className={`${styles.card} ${styles.first}`}>
                         <h2>
                             Workout <ChevronRight  />
                         </h2>
-                        <p>Pick your style and start playing.</p>
+                        <p>Pick your chords and style and take the challenge.</p>
                     </div>
                 </Link>
 
                 <Link to="/chord-tracks">
-                    <div className={`${styles.card}`}>
+                    <div className={`${styles.card} ${styles.last}`}>
                         <h2>
                             Chord Tracks <ChevronRight />
                         </h2>

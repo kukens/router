@@ -4,15 +4,25 @@
 .cards{
     display: flex;
     flex-direction: column;
+    /* background: #1e1f24; */
+    border-radius: 15px;
+    gap: 0.5dvh;
 }
 
 .card{
-margin-bottom: clamp(1.1rem, 4vh, 3.2rem);
     padding-block: clamp(1.1rem, 4vh, 3.2rem);
     padding-inline: clamp(0.5rem, 4vw, 1.2rem);
-    background: #18191a;
-    border-radius: 15px;
-    box-shadow: #555 0 ;
+    background: #1e1f24;
+    
+    &.first{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    }
+
+    &.last{
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
 
     h2{
     margin-bottom: 1rem;
