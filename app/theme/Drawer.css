@@ -5,7 +5,7 @@
   position: fixed;
   min-height: 100dvh;
   inset: 0;
-  background-color: #0a0c14;
+  background-color: #232323;
   opacity: calc(var(--backdrop-opacity) * (1 - var(--drawer-swipe-progress)));
   transition-duration: 450ms;
   transition-property: opacity;
@@ -44,7 +44,7 @@
   /*max-height: calc(80vh + var(--bleed));*/
   border-radius: 1rem 1rem 0 0;
   outline: 1px solid var(--color-gray-200);
-  background: radial-gradient(ellipse at 50% 16%, #232f4b, #090e19);
+  background: #0f0f0f;
   color: var(--color-gray-900);
   overflow-y: auto;
   overscroll-behavior: contain;

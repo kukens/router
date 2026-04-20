@@ -5,11 +5,8 @@
          padding-block: clamp(0.4rem, 1vh, 0.5rem);
          margin: clamp(0.5rem, 1.7vh, 1rem);
          border-radius: 20px;
-         border: none;
-         display: inline-flex;
-         position: relative;
-         box-shadow: #4f4f4f 0 0px 2px, #040a20 0 2px 2px, #00000030 0 5px 10px, #000000f2 0 0 15px -10px inset;
-
+        border:none;
+        display: inline-flex;
          .lucide {
  
              margin-right: -10px;
@@ -20,43 +17,43 @@
 
      .btn-active {
          background: #49658f;
-box-shadow: #dedeff 0 0px 2px, #000000a8 0 2px 2px, #0000003d 0 5px 10px, #000000f2 0 0 15px -10px inset;
+
          
      }
 
      .btn-inactive {
          color: #e7e7e7;
-         background: #36435b;
+         background: #283245;
      }
 
      .btn-disabled {
          color: #e7e7e7;
-        background: #2f3845;
+        background: #202429;
 
      }
 
      .btn-action-alt {
-         background: #1f2937;
-         border-right: 1px solid #223453;
-        
+        background: #29477b;
+
      }
 
      .btn-action {
          padding: 0.6rem 2.2rem;
-         background: #2d3d60;
-         box-shadow: #485485 0 -1px 1px, #181a28 0 2px 2px, #00000045 0 5px 10px, #000000 0 0 15px -10px inset;
+         background: #96a7ca;
+         color:#000;
+        font-weight:400;
      }
 
      .btn-action-back {
-        background: #2d3d60;
+        background: #96a7ca;
         padding: 0 0rem;
         margin-left: 0;
         height: 4.5dvh;
         margin-right: 0;
-box-shadow: #485485 0 -1px 1px, #181a28 0 2px 2px, #00000045 0 5px 10px, #000000 0 0 15px -10px inset;
+
          .lucide {
              margin: 0 auto;
-
+            stroke: #000;
          }
      }
  }
