@@ -54,7 +54,7 @@ export default function TrackDetails(props: TrackDetailsProps) {
                         <div className={styles.bar}>
                             {Array.from({ length: props.TrackData?.beatsPerBar || 4 }).map((_, beatIndex) => (
                                  
-                                 <Button key={beatIndex} className={`btn-disabled ${styles.beat} ${beatIndex === 0 ? styles.firstBeat : ""} ${beatIndex === (props.TrackData?.beatsPerBar || 4)-1 ? styles.lastBeat : ""}`}>
+                                 <Button key={beatIndex} className={`btn-disabled ${styles.beat}`}>
                                     {props.TrackData?.bars[barIndex].chords[beatIndex]?.replace("b", "♭").replace("#", "♯") || ""}</Button>
                             ))}
                         </div>

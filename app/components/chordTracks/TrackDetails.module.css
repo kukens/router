@@ -13,8 +13,23 @@
     display: flex;
         align-items: center;
        
-        margin-bottom: 1.2rem;
-    }
+        margin-bottom: 1dvh;
+
+        
+           .beat:first-child{
+            border-top-left-radius: 15px;
+             border-bottom-left-radius: 15px;
+           }
+           .beat:last-child{
+             border-top-right-radius: 15px;
+              border-bottom-right-radius: 15px;
+           }           
+        
+
+       
+   
+        
+    }   
 
     .beat{
         margin: 0;
@@ -31,16 +46,7 @@
 
     }
 
-    .firstBeat{
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-    }
 
-    .lastBeat{
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-        border-inline: none;
-    }
 
     .tags{
         margin-bottom:2rem;
