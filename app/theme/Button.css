@@ -16,7 +16,7 @@
 
 
      .btn-active {
-         background: #49658f;
+         background: #5780ba;
 
          
      }
@@ -33,19 +33,19 @@
      }
 
      .btn-action-alt {
-        background:  #283245;
+        background:  #254068;
 
      }
 
      .btn-action {
          padding: 0.6rem 2.2rem;
-         background: #344475;
+         background: #3a66a4;
          color:#fff;
         font-weight:500;
      }
 
      .btn-action-back {
-        background: #344475;
+        background: #3a66a4;
         padding: 0 0rem;
         margin-left: 0;
         height: 4.5dvh;
