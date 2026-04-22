@@ -24,7 +24,7 @@ export default function Start() {
                 </Link>
 
                 <Link to="/chord-tracks">
-                    <div className={`${styles.card} ${styles.last}`}>
+                    <div className={`${styles.card}`}>
                         <h2>
                             Chord Tracks <ChevronRight />
                         </h2>

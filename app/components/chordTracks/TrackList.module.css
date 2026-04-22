@@ -13,24 +13,14 @@
     flex-direction: column;
     padding: 1rem;
     background: #1e1f24;
-
-         &.first{
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    }
-
-    &.last{
-        border-bottom-left-radius: 25px;
-        border-bottom-right-radius: 25px;
-    }
-    
+    border-radius:15px;
 }
 
     .trackList{
         margin-block:2rem;
         display:flex;
         flex-direction: column;
-        gap:0.5dvh;
+        gap:1.5dvh;
     }
 
 .trackName{

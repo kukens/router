@@ -16,18 +16,14 @@
 
 
      .btn-active {
-         background: #5780ba;
-
-         
+         background: #6383af;
      }
 
      .btn-inactive {
-         color: #e7e7e7;
-         background: #50586f;
+         background: #2d3a4d;
      }
 
      .btn-disabled {
-         color: #e7e7e7;
         background: #30333f;
 
      }

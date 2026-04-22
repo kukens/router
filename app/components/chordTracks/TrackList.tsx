@@ -157,7 +157,7 @@ export default function TrackList() {
             <div className={styles.trackList}>
                 {tracks.slice(0, visibleCount).map((track, index) => (
                     <Link key={track.id} className={`${styles.trackLink}`} to={`/chord-tracks/${track.id}`}>
-                        <div className={`${styles.chordTrackCard} ${index === 0 ? styles.first : ''} ${index === tracks.slice(0, visibleCount).length - 1 ? styles.last : ''}`}>
+                        <div className={`${styles.chordTrackCard}`}>
                             <h2 className={styles.trackName}>{track.name} <ChevronRight /></h2>
                             <div className={styles.trackDetails}>
                                 <div className={styles.metadata}>
