@@ -39,47 +39,54 @@ export default function TrackDetails(props: TrackDetailsProps) {
     return (
         <div className={styles.container}>
             <Link to={`/chord-tracks/${props.TrackData?.id}/play`}><Button className="btn-action" nativeButton={false}>Play</Button></Link>
-            
-            <div className={styles.actionButtons}>
-            <Link to={`/chord-tracks/${props.TrackData?.id}/edit`}><Button className="btn-action-alt" nativeButton={false}>Edit</Button></Link>
-            <Button className="btn-action-alt" onClick={deleteTrack}>Delete</Button>
 
-    
+            <div className={styles.actionButtons}>
+                <Link to={`/chord-tracks/${props.TrackData?.id}/edit`}><Button className="btn-action-alt" nativeButton={false}>Edit</Button></Link>
+                <Button className="btn-action-alt" onClick={deleteTrack}>Delete</Button>
+
+
             </div>
 
             <p>Tempo: {props.TrackData?.tempo} </p>
 
             <div className={styles.bars}>
-                      {props.TrackData?.bars?.map((bar, barIndex) => (
-                        <div className={styles.bar}>
+                {props.TrackData?.bars?.map((bar, barIndex) => (
+                    <>
+                        {bar.repeat && (
+                            <Button className="btn-disabled">
+                                Repeat x1
+                            </Button>
+                        )}
+                        <div className={`${styles.bar} ${bar.repeatEnd ? styles.repeatEnd : ''}`}>
                             {Array.from({ length: props.TrackData?.beatsPerBar || 4 }).map((_, beatIndex) => (
-                                 
-                                 <Button key={beatIndex} className={`btn-disabled ${styles.beat}`}>
+
+                                <Button key={beatIndex} className={`btn-disabled ${styles.beat}`}>
                                     {props.TrackData?.bars[barIndex].chords[beatIndex]?.replace("b", "♭").replace("#", "♯") || ""}</Button>
                             ))}
                         </div>
+                    </>
                 ))}
-                 </div>
+            </div>
 
-               <div className={styles.tags}>
+            <div className={styles.tags}>
                 <h3>Tags</h3>
-  
-                    {props.TrackData?.tags?.map((tag, index) => (
-                        <Button key={index} className="btn-disabled">{tag}</Button>
-                    ))}
-                </div>
-                
+
+                {props.TrackData?.tags?.map((tag, index) => (
+                    <Button key={index} className="btn-disabled">{tag}</Button>
+                ))}
+            </div>
+
 
             <div className={styles.metadata}>
-                            {props.TrackData?.createdAt && props.TrackData.modifiedAt && (
-                                <>
-                                    <p>Created: {new Date(props.TrackData.createdAt).toLocaleString()} </p>
-                                    <p>Last modified: {new Date(props.TrackData.modifiedAt).toLocaleString()} </p>
-                                </>
-                            )}
+                {props.TrackData?.createdAt && props.TrackData.modifiedAt && (
+                    <>
+                        <p>Created: {new Date(props.TrackData.createdAt).toLocaleString()} </p>
+                        <p>Last modified: {new Date(props.TrackData.modifiedAt).toLocaleString()} </p>
+                    </>
+                )}
 
-                        </div>
             </div>
-   
+        </div>
+
     );
 }

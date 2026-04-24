@@ -46,10 +46,11 @@
 
     }
 
-
-
     .tags{
         margin-bottom:2rem;
     }
 
+    .repeatEnd{
+        margin-bottom: 2rem;
+    }
 }

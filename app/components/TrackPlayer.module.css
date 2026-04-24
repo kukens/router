@@ -94,7 +94,6 @@ border-radius: 15px;
 
 
     .active{
-        background-image: linear-gradient(to right, #52585fff, #52585fff);
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: top left;
@@ -121,7 +120,6 @@ border-radius: 15px;
         height: 5rem;
         border-right: 1px solid #000000;
         background: #5c9fff91;
-        background: linear-gradient(180deg, #5c9fff91 50%, #4d8fed91 50%);
         display: flex;
         align-items: center;
         justify-content: center;

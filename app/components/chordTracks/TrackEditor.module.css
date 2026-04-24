@@ -8,7 +8,7 @@
     > button{
         align-self:center;
     }
-}
+
 
 label{
     input{
@@ -26,6 +26,10 @@ label{
         }
 
 
+}
+
+.bars{
+    margin-block:1rem;
 }
 
 .bar{
@@ -78,8 +82,14 @@ label{
     padding-top:1rem;
 }
 
+.repeatEnd {
+    margin-bottom: 2rem;
+}
+
 .selectedTags{
 
 }
 
 }
+}
+

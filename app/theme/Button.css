@@ -16,37 +16,30 @@
 
 
      .btn-active {
-         background: #6383af;
-         background: linear-gradient(180deg, #6383af 50%, #4e70a0 50%);
+         background: #6383af; 
      }
 
      .btn-inactive {
          background: #2d3a4d;
-         background: linear-gradient(180deg, #2d3a4d 50%, #253347 50%);
      }
 
      .btn-disabled {
         background: #30333f;
-    background: linear-gradient(180deg, #30333f 50%, #2c2e3d 50%);
      }
 
      .btn-action-alt {
         background: #253759;
-        background: linear-gradient(180deg, #253759 50%, #1c3247 50%);
-
      }
 
      .btn-action {
          padding: 0.6rem 2.2rem;
          background: #3a66a4;
-         background: linear-gradient(180deg, #3a66a4 50%, #3e5b91 50%);
          color:#fff;
         font-weight:500;
      }
 
      .btn-action-back {
         background: #3a66a4;
-        background: linear-gradient(180deg, #3a66a4 50%, #3e5b91 50%);
         padding: 0 0rem;
         margin-left: 0;
         height: 4.5dvh;

@@ -68,7 +68,7 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
     }
 
     return (
-        <Drawer.Root>
+          <Drawer.Root>
             <Drawer.Trigger className="btn-action-alt">Select tags</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
@@ -78,7 +78,7 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
                         <Drawer.Content className="Content">
 
 
-                            <h2>Select tags</h2>
+                            <h2>Select tag</h2>
 
                             <div>
                                 <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="New tag" />
