@@ -29,6 +29,11 @@
     font-family: system-ui, sans-serif;
   }
 
+  html {
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
+  }
+
   /* 4. Balanced headings */
   :where(h1, h2, h3, h4, h5, h6) {
     text-wrap: balance;
@@ -46,6 +51,8 @@
   :where(input, button, textarea, select) {
     font: inherit;
     color: inherit;
+    background: none;
+    border:none;
   }
 
   /* 7. Respect user motion preferences */
@@ -79,6 +86,8 @@ html, body {
   padding: 0;
   height: 100dvh;
   width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-y: none;
 }
 
 main {
@@ -106,12 +115,17 @@ html, body {
 
 main{
   padding-inline: 1.5rem;
-    padding-bottom: 1.5rem;
-   min-height: 100dvh;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  padding-bottom: 1.5rem;
+  min-height: 100dvh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  position: relative;
+  overflow-x: clip;
+  overscroll-behavior-y: contain;
+  isolation: isolate;
 }
 
 *{
@@ -160,3 +174,43 @@ input, textarea {
 }
 
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 300ms;
+  animation-timing-function: ease-in-out;
+  left:0;
+}
+
+body.page-fade-ready main {
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  will-change: opacity, transform;
+}
+
+body.page-fade-ready:not(.page-fade-in):not(.page-fade-out) main {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+body.page-fade-in main {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.page-fade-out main {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-fade-ready main,
+  body.page-fade-in main,
+  body.page-fade-out main {
+    transition: none;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

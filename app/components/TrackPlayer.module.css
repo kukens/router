@@ -81,19 +81,19 @@
     }
 
     .barWrapper {
-border-radius: 15px;
-    background: #0f1b2b;
-  
+        border-radius: 20px;
+        background: #0f1b2b;
     }
 
     .bar {
         display: flex;
-        border-radius: 15px;
+        border-radius: 20px;
         opacity: 0.5;
     }
 
 
     .active{
+        background-image: linear-gradient(to right, #52585fff, #52585fff);
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: top left;
@@ -128,13 +128,13 @@ border-radius: 15px;
 
 
     .beatFirstInBar {
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
     }
 
     .beatLastInBar {
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
     }
 
     .reactionStrong {

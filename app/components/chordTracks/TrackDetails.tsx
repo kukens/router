@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
-import { Link, useNavigate } from "react-router";
 import { Button } from '@base-ui/react/button';
+import { useFadeNavigate } from '~/components/RouteTransition';
 import styles from "./TrackDetails.module.css"
+import { X } from 'lucide-react';
 
 interface TrackDetailsProps {
     TrackData: TrackData | null
@@ -13,7 +14,7 @@ interface TrackDetailsProps {
 export default function TrackDetails(props: TrackDetailsProps) {
 
     const [tracks, setTracks] = useState<TrackData[]>([])
-    const navigate = useNavigate();
+    const navigate = useFadeNavigate();
 
     useEffect(() => {
         const tempTracks: TrackData[] = [];
@@ -38,24 +39,25 @@ export default function TrackDetails(props: TrackDetailsProps) {
 
     return (
         <div className={styles.container}>
-            <Link to={`/chord-tracks/${props.TrackData?.id}/play`}><Button className="btn-action" nativeButton={false}>Play</Button></Link>
+            <Button className="btn-action" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/play`)}>Play</Button>
 
             <div className={styles.actionButtons}>
-                <Link to={`/chord-tracks/${props.TrackData?.id}/edit`}><Button className="btn-action-alt" nativeButton={false}>Edit</Button></Link>
+                <Button className="btn-action-alt" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/edit`)}>Edit</Button>
                 <Button className="btn-action-alt" onClick={deleteTrack}>Delete</Button>
 
 
             </div>
 
-            <p>Tempo: {props.TrackData?.tempo} </p>
+            <p>Tempo: <span className={styles.numberLabel}>{props.TrackData?.tempo}</span></p>
 
             <div className={styles.bars}>
                 {props.TrackData?.bars?.map((bar, barIndex) => (
                     <>
-                        {bar.repeat && (
-                            <Button className="btn-disabled">
-                                Repeat x1
-                            </Button>
+                        {!!bar.repeat && (
+                            <div className={styles.repeatBlock}>
+                             Repeat <span className={styles.numberLabel}> <X />{bar.repeat}</span>
+                              
+                            </div>
                         )}
                         <div className={`${styles.bar} ${bar.repeatEnd ? styles.repeatEnd : ''}`}>
                             {Array.from({ length: props.TrackData?.beatsPerBar || 4 }).map((_, beatIndex) => (

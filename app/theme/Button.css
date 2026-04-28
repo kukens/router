@@ -1,45 +1,75 @@
  @layer theme {
-     button {
-         font-size: clamp(0.7rem, 1.8vh, 1.1rem);
-         padding-inline: clamp(2rem, 8.5vw, 2.5rem);
-         padding-block: clamp(0.4rem, 1vh, 0.5rem);
-         margin: clamp(0.5rem, 1.7vh, 1rem);
-         border-radius: 20px;
-        border:none;
+
+
+.btn-group{
+
         display: inline-flex;
-         .lucide {
- 
-             margin-right: -10px;
-             margin-left: 5px;
-         }
+        gap:0;
+        button{
+             &[class^="btn-"] {
+            margin:0;
+            border-right:1px solid #121318;
+           padding-inline: 7dvw;
+
+            &:first-child{
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+            &:last-child{
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-right:none;
+            }
+        }
+        }
      }
 
+   button{
+            &[class^="btn-"] {
+                    font-size: clamp(0.7rem, 1.8vh, 1.1rem);
+                    padding-inline: clamp(2rem, 8.5vw, 2.5rem);
+                    padding-block: clamp(0.4rem, 1vh, 0.5rem);
+                    margin: clamp(0.5rem, 1.7vh, 1rem);
+                    border-radius: 20px;
+                    border: none;
+                    display: inline-flex;
+                    .lucide {
+                        margin-right: -10px;
+                        margin-left: 5px;
+                    }
+                }
 
-     .btn-active {
+     &.btn-active {
          background: #6383af; 
+         background: #526d92; 
      }
 
-     .btn-inactive {
+     &.btn-inactive {
          background: #2d3a4d;
+         background: #3a4456;
      }
 
-     .btn-disabled {
+     &.btn-disabled {
         background: #30333f;
+        background: #2b2d37;
      }
 
-     .btn-action-alt {
+     &.btn-action-alt {
         background: #253759;
+        background: #2a364e;
      }
 
-     .btn-action {
+     &.btn-action {
          padding: 0.6rem 2.2rem;
          background: #3a66a4;
+        background:#436698;
          color:#fff;
         font-weight:500;
      }
 
-     .btn-action-back {
+     &.btn-action-back {
         background: #3a66a4;
+        background:#436698;
         padding: 0 0rem;
         margin-left: 0;
         height: 4.5dvh;
@@ -50,4 +80,5 @@
             stroke: #fff;
          }
      }
+    }
  }

@@ -2,7 +2,7 @@
 
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@base-ui/react/button';
-import { useNavigate } from 'react-router';
+import { useFadeNavigate } from '~/components/RouteTransition';
 import pageStyles from "~/theme/Page.module.css";
 
 type PageHeaderProps = {
@@ -11,7 +11,7 @@ type PageHeaderProps = {
 }
 
 export default function PageHeader({ title, backLink }: PageHeaderProps) {
-    const navigate = useNavigate();
+    const navigate = useFadeNavigate();
 
     const handleBack = () => {
         if (backLink) {

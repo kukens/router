@@ -1,5 +1,26 @@
 ﻿@layer components{
 
+.trackContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.trackFadeReady {
+    will-change: opacity, transform;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.trackFadeIn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.trackFadeOut {
+    opacity: 0;
+    transform: translateY(12px);
+}
+
 .title {
       margin-bottom: 2rem;
       h2{

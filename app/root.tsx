@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import RouteTransition from "./components/RouteTransition";
 
 import type { MetaFunction } from "react-router";
 
@@ -33,8 +34,7 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
-  { rel: "apple-touch-icon", href: "/maskable_icon_x512.png" },
-  { rel: "manifest", href: "/manifest.webmanifest" }
+  { rel: "apple-touch-icon", href: "maskable_icon_x512.png" }
 ];
 
 
@@ -44,34 +44,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-
         <Meta />
         <Links />
-                <script dangerouslySetInnerHTML={{
-          __html: `(
-            function(){
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    // This executes exactly when the browser is ready to paint the first frame
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', vh + 'px');
-  });
-});
-            }
-          )();`,
-        }} />
       </head>
-      <body>   
+      <body>
+          <RouteTransition />
           <main>
              {children}
         </main>
         <ScrollRestoration />
         <Scripts />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registered')).catch(e=>console.warn('SW register failed',e));}`,
-          }}
-        />
       </body>
     </html>
   );

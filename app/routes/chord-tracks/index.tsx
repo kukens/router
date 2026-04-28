@@ -1,13 +1,12 @@
 'use client'
 
-import { ArrowLeft } from 'lucide-react';
 import { Button } from '@base-ui/react/button';
-import { Link } from "react-router";
 import { default as TrackList } from "~/components/chordTracks/TrackList"
-import pageStyles from "~/theme/Page.module.css";
 import PageHeader from '~/components/shared/PageHeader';
+import { useFadeNavigate } from '~/components/RouteTransition';
 
 export default function StartChallenge() {
+    const navigate = useFadeNavigate();
 
     return (
         <>
@@ -15,7 +14,7 @@ export default function StartChallenge() {
         <PageHeader title="Chord Tracks" backLink="/" />
             <TrackList />
 
-            <Link to="/chord-tracks/create"><Button className="btn-action">Add new track</Button></Link>
+            <div><Button className="btn-action" onClick={() => navigate('/chord-tracks/create')}>Add new track</Button></div>
 
         </>
     );
