@@ -48,12 +48,6 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
         }
     }, [props.selectedChord]);
 
-        useEffect(() => {
-       console.log(props.isOpen)
-    }, [props.isOpen]);
-
-
-    
     return (
         
 
@@ -69,7 +63,7 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
                             <div className={styles.container}>
                                 <h2>Select scale</h2>
 
-                                <div className={styles.scale}>
+                                <div className={`${styles.scale} ${styles.buttonSpacing}`}>
                             {CHORDS_DATA.map((chordType, index) => (
                                 <Button key={index} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
                                     {chordType.name} 
@@ -79,7 +73,7 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
 
                                 <h2>Select chords</h2>
 
-                                <div className={styles.chords}>
+                                <div className={`${styles.chords} ${styles.buttonSpacing}`}>
 
                         {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
                                             chordType.chords.map(chord => (

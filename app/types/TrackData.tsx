@@ -21,5 +21,7 @@ export const EmptyTrackData: TrackData = {
 }
 
 export interface Bar {
+    repeat?: number;
+    repeatEnd?: boolean;
     chords: string[];
 }

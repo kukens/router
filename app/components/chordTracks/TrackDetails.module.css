@@ -4,6 +4,34 @@
         margin-bottom:auto;
     }
 
+ .numberLabel{
+     
+            font-size: clamp(1rem, 2.5vh, 1.5rem);
+ }
+
+.repeatBlock{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2dvw;
+
+        margin-top: 2rem;
+        margin-bottom: 0.7rem;
+ .numberLabel{
+            display: flex;
+            font-size: clamp(1rem, 2.5vh, 1.5rem);
+            svg{
+                display: inline-block;
+                position: relative;
+                top: 2px;
+                width: 15px;
+                 path{
+                stroke-width: 2;
+            }
+            }
+        }  
+    }
+
     .bars{
         margin-block:3rem;
     }
@@ -13,8 +41,23 @@
     display: flex;
         align-items: center;
        
-        margin-bottom: 1.2rem;
-    }
+        margin-bottom: 1dvh;
+
+        
+           .beat:first-child{
+            border-top-left-radius: 20px;
+             border-bottom-left-radius: 20px;
+           }
+           .beat:last-child{
+             border-top-right-radius: 20px;
+              border-bottom-right-radius: 20px;
+           }           
+        
+
+       
+   
+        
+    }   
 
     .beat{
         margin: 0;
@@ -26,23 +69,16 @@
         align-self: center;
         display: block;
         width: 100%;
-        border-right:1px solid #2c323e;
-        box-shadow:#4f4f4f 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 0px 0px inset;
-    }
+        border-right: 1px solid #000000;
 
-    .firstBeat{
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-    }
 
-    .lastBeat{
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-        border-inline: none;
     }
 
     .tags{
         margin-bottom:2rem;
     }
 
+    .repeatEnd{
+        margin-bottom: 2rem;
+    }
 }

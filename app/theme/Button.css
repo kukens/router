@@ -1,61 +1,85 @@
  @layer theme {
-     button {
-         font-size: clamp(0.7rem, 1.8vh, 1.1rem);
-         padding-inline: clamp(2rem, 8.5vw, 2.5rem);
-         padding-block: clamp(0.4rem, 1vh, 0.5rem);
-         margin: clamp(0.5rem, 1.7vh, 1rem);
-         border-radius: 20px;
-         border: none;
-         display: inline-flex;
-         position: relative;
-         box-shadow: #4f4f4f 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
-
-         .lucide {
- 
-             margin-right: -10px;
-             margin-left: 5px;
-         }
-     }
 
 
-     .btn-active {
-         background: #49658f;
-box-shadow: #a5a5a5 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
-         
-     }
+.btn-group{
 
-     .btn-inactive {
-         color: #e7e7e7;
-         background: #36435b;
-     }
-
-     .btn-disabled {
-         color: #e7e7e7;
-        background: #2f3845;
-
-     }
-
-     .btn-action-alt {
-         background: #1f2937;
+        display: inline-flex;
+        gap:0;
         
+        button{
+             &[class^="btn-"] {
+            margin:0;
+            border-right:1px solid #121318;
+           padding-inline: 7dvw;
+
+            &:first-child{
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+            &:last-child{
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-right:none;
+            }
+        }
+        }
      }
 
-     .btn-action {
+   button{
+            &[class^="btn-"] {
+                    font-size: clamp(0.7rem, 1.8vh, 1.1rem);
+                    padding-inline: clamp(2rem, 8.5vw, 2.5rem);
+                    padding-block: clamp(0.4rem, 1vh, 0.5rem);
+                    margin: clamp(0.5rem, 1.7vh, 1rem);
+                    border-radius: 20px;
+                    border: none;
+                    display: inline-flex;
+                    .lucide {
+                        margin-right: -10px;
+                        margin-left: 5px;
+                    }
+                }
+
+     &.btn-active {
+         background: #6383af; 
+         background: #526d92; 
+     }
+
+     &.btn-inactive {
+         background: #2d3a4d;
+         background: #3a4456;
+     }
+
+     &.btn-disabled {
+        background: #30333f;
+        background: #2b2d37;
+     }
+
+     &.btn-action-alt {
+        background: #253759;
+        background: #2a364e;
+     }
+
+     &.btn-action {
          padding: 0.6rem 2.2rem;
-         background: #2d3d60;
-         box-shadow: #656565 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
+         background: #3a66a4;
+        background:#436698;
+         color:#fff;
+        font-weight:500;
      }
 
-     .btn-action-back {
-        background: #2d3d60;
+     &.btn-action-back {
+        background: #3a66a4;
+        background:#436698;
         padding: 0 0rem;
         margin-left: 0;
         height: 4.5dvh;
         margin-right: 0;
-box-shadow: #656565 0 -1px 2px,  #000 0 2px 2px, #00000073 0 5px 10px, #000000f2 0 0 15px -10px inset;
+
          .lucide {
              margin: 0 auto;
-
+            stroke: #fff;
          }
      }
+    }
  }

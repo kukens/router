@@ -1,8 +1,8 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ChevronLeft } from 'lucide-react';
 import { Button } from '@base-ui/react/button';
-import { useNavigate } from 'react-router';
+import { useFadeNavigate } from '~/components/RouteTransition';
 import pageStyles from "~/theme/Page.module.css";
 
 type PageHeaderProps = {
@@ -11,7 +11,7 @@ type PageHeaderProps = {
 }
 
 export default function PageHeader({ title, backLink }: PageHeaderProps) {
-    const navigate = useNavigate();
+    const navigate = useFadeNavigate();
 
     const handleBack = () => {
         if (backLink) {
@@ -21,9 +21,9 @@ export default function PageHeader({ title, backLink }: PageHeaderProps) {
 
     return (
         <div className={pageStyles.pageHeader}>
-            {backLink ? <Button className="btn-action-back" onClick={handleBack}><ArrowLeft size={20} strokeWidth={1.5} /> </Button> : <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>}
+            {backLink ? <Button className="btn-action-back" onClick={handleBack}><ChevronLeft size={30} strokeWidth={1.5} /> </Button> : <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>}
             <h1>{title}</h1>
-            <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>
+            <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ChevronLeft size={30} strokeWidth={1.5} /> </Button>
         </div>
     )
 }

@@ -1,14 +1,11 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useParams, Link } from "react-router";
+import { useParams } from "react-router";
 
 import type { TrackData } from '~/types/TrackData';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '@base-ui/react/button';
 import TrackDetails from '~/components/chordTracks/TrackDetails';
 import PageHeader from '~/components/shared/PageHeader';
-import pageStyles from "~/theme/Page.module.css";
 
 export default function Tracks() {
 
