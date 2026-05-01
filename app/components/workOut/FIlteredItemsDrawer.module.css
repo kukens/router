@@ -9,8 +9,8 @@
     gap: clamp(0.6rem, 2vh, 1.2rem);
     padding: 1.5rem 1.5rem;
     margin: 1.5rem;
-    border-top: 1px solid #444;
-    border-bottom: 1px solid #444;
+    border-top: 2px solid #2a364e;
+    border-bottom: 2px solid #2a364e;
 
 .result{
     transition-property: all;
