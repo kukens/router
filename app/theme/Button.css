@@ -41,22 +41,18 @@
                 }
 
      &.btn-active {
-         background: #6383af; 
          background: #526d92; 
      }
 
      &.btn-inactive {
-         background: #2d3a4d;
-         background: #3a4456;
+         background: #384151;
      }
 
      &.btn-disabled {
-        background: #30333f;
         background: #2b2d37;
      }
 
      &.btn-action-alt {
-        background: #253759;
         background: #2a364e;
      }
 
