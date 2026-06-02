@@ -71,10 +71,15 @@
         margin-left: 0;
         height: 4.5dvh;
         margin-right: 0;
+            display: flex;
 
          .lucide {
              margin: 0 auto;
             stroke: #fff;
+          height: 3.3dvh;
+            width: 3.3dvh;
+            stroke-width: 0.3dvw;
+            align-self: center;
          }
      }
     }

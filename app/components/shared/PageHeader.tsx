@@ -21,9 +21,9 @@ export default function PageHeader({ title, backLink }: PageHeaderProps) {
 
     return (
         <div className={pageStyles.pageHeader}>
-            {backLink ? <Button className="btn-action-back" onClick={handleBack}><ChevronLeft size={30} strokeWidth={1.2} /> </Button> : <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>}
+            {backLink ? <Button className="btn-action-back" onClick={handleBack}><ChevronLeft /> </Button> : <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ArrowLeft size={20} strokeWidth={1.5} /> </Button>}
             <h1>{title}</h1>
-            <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ChevronLeft size={30} strokeWidth={1.2} /> </Button>
+            <Button className="btn-action-back" style={{ visibility: 'hidden' }} ><ChevronLeft /> </Button>
         </div>
     )
 }
