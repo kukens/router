@@ -8,7 +8,7 @@ import { EllipsisVertical, Minus, Plus, X } from 'lucide-react';
 import TagSelectorDrawer from "~/components/chordTracks/TagSelectorDrawer"
 import ChordSelectorDrawer from "~/components/chordTracks/ChordSelectorDrawer"
 import styles from "./TrackEditor.module.css";
-import BarOptionsDrawer from "./BarOptionsDrawer";
+import BarOptionsDrawer, { BAR_OPTION_ADD, BAR_OPTION_REMOVE, BAR_OPTION_REPEAT } from "./BarOptionsDrawer";
 import { Slider } from "@base-ui/react/slider";
 import { useFadeNavigate } from "~/components/RouteTransition";
 
@@ -230,11 +230,11 @@ export default function TrackEditor(props: TrackEditorProps) {
         const barIndex = selectedBarIndex;
         const canSetRepeat = !isBarInsideRepeatBlock(bars, barIndex);
 
-        if (key === '1') { // Remove bar
+        if (key === BAR_OPTION_REMOVE) { 
             removeBar(barIndex);
-        } else if (key === '2') { // Add bar
+        } else if (key === BAR_OPTION_ADD) { 
             addBar(barIndex);
-        } else if (key === '3' && canSetRepeat) { // Open repeat block
+        } else if (key === BAR_OPTION_REPEAT && canSetRepeat) { 
             const updated = [...bars];
             if (updated[barIndex]) {
                 updated[barIndex] = { ...updated[barIndex], repeat: 1, repeatEnd: true };
@@ -269,10 +269,6 @@ export default function TrackEditor(props: TrackEditorProps) {
             }
             return newBars;
         });
-    };
-
-    const shouldHideBarOptionsButton = (bar: Bar, barIndex: number) => {
-        return barIndex === bars.length - 1 && isBlankBar(bar);
     };
 
     return (
@@ -342,7 +338,7 @@ export default function TrackEditor(props: TrackEditorProps) {
 
                             </div>
 
-                            <Button key={barIndex} className={`btn-action-alt ${styles.removeBar}`} style={shouldHideBarOptionsButton(bar, barIndex) ? { visibility: 'hidden' } : undefined} onClick={() => {
+                            <Button key={barIndex} className={`btn-action-alt ${styles.removeBar}`} onClick={() => {
                                 setSelectedBarIndex(barIndex);
                                 setIsBarOptionsDrawerOpen(true);
                             }}>

@@ -69,7 +69,7 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
 
     return (
           <Drawer.Root>
-            <Drawer.Trigger className="btn-action-alt">Select tags</Drawer.Trigger>
+            <Drawer.Trigger className="btn-action-alt">Edit tags</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
                 <Drawer.Viewport className="Viewport">
@@ -78,11 +78,11 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
                         <Drawer.Content className="Content">
 
 
-                            <h2>Select tag</h2>
+                            <h2>Edit tags</h2>
 
-                            <div>
+                            <div className={style.addTagContainer}>
                                 <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="New tag" />
-                                <Button onClick={addNewTag} className="btn-action-alt">Add new</Button>
+                                <Button onClick={addNewTag} className="btn-action-alt">Add</Button>
                             </div>
                             <div className={style.tags}>
                                 {allTags.map((tag, tagIndex) => (

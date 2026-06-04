@@ -61,7 +61,7 @@
          background: #3a66a4;
         background:#436698;
          color:#fff;
-        font-weight:500;
+     
      }
 
      &.btn-action-back {
@@ -76,8 +76,8 @@
          .lucide {
              margin: 0 auto;
             stroke: #fff;
-          height: 3.3dvh;
-            width: 3.3dvh;
+          height: 3.4dvh;
+            width: 3.4dvh;
             stroke-width: 0.3dvw;
             align-self: center;
          }
