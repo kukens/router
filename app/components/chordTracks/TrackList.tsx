@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import type { TrackData } from "../../types/TrackData";
 import { Button } from '@base-ui/react/button';
-import { Link } from "react-router";
 import OrderingDrawer from "./OrderingDrawer";
 import FilterDrawer from "./FilterDrawer";
 import styles from "./TrackList.module.css";
 import { ChevronRight, X } from 'lucide-react';
+import { useFadeNavigate } from '~/components/RouteTransition';
 
 export const orderBy: Record<string, string> = {
     1: "Recently played",
@@ -17,6 +17,7 @@ export const orderBy: Record<string, string> = {
 } as const;
 
 export default function TrackList() {
+    const navigate = useFadeNavigate();
     const [rawTracks, setRawTracks] = useState<TrackData[]>([]);
     const [tracks, setTracks] = useState<TrackData[]>([]);
     const [visibleCount, setVisibleCount] = useState<number>(2);
@@ -155,10 +156,10 @@ export default function TrackList() {
             {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
 
             <div className={styles.trackList}>
-                {tracks.slice(0, visibleCount).map((track) => (
-                    <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
-                        <div className={styles.chordTrackCard}>
-                            <h2 className={styles.trackName}>{track.name} <ChevronRight color='#b0cdce' /></h2>
+                {tracks.slice(0, visibleCount).map((track, index) => (
+                    <Button key={track.id} className={`${styles.trackLink}`} onClick={() => navigate(`/chord-tracks/${track.id}`)}>
+                        <div className={`${styles.chordTrackCard}`}>
+                            <h2 className={styles.trackName}>{track.name} <ChevronRight /></h2>
                             <div className={styles.trackDetails}>
                                 <div className={styles.metadata}>
                                      <span>{track.tempo} BPM</span>
@@ -175,7 +176,7 @@ export default function TrackList() {
                             </div>
 
                         </div>
-                    </Link>
+                    </Button>
                 ))}
             </div>
 

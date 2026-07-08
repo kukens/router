@@ -4,9 +4,12 @@
         position: relative;
         overflow: hidden;
         height: 352px;
-        border-top: 1px solid #5c656e;
-        border-bottom: 1px solid #5c656e;
+
         margin-bottom: auto;
+
+  border-top: 1px solid #33353f;
+    border-bottom: 1px solid #33353f;
+
     }
 
     @property --percentage {
@@ -16,7 +19,7 @@
     }
 
     .pie {
-        background: conic-gradient(#4a6792 var(--percentage), #00000042 0);
+        background: conic-gradient(#3a66a4 var(--percentage), #00000042 0);
         border-radius: 50%;
         width: 5rem;
         height: 5rem;
@@ -39,7 +42,7 @@
 
     .countdownOverlay {
         position: absolute;
-        top: 1.5rem;
+        top: 1.4rem;
         left: 0;
         right: 0;
         z-index: 20;
@@ -51,6 +54,7 @@
     }
 
     .spinner {
+        
         width: 5rem;
         height: 5rem;
         border-radius: 50%;
@@ -77,17 +81,18 @@
     }
 
     .barWrapper {
-        background-color: #223453;
+        border-radius: 20px;
+        background: #0f1b2b;
     }
 
     .bar {
         display: flex;
-        border-radius: 15px;
+        border-radius: 20px;
         opacity: 0.5;
-        box-shadow:0px 0px 7px -3px #000;
     }
 
-    .active {
+
+    .active{
         background-image: linear-gradient(to right, #52585fff, #52585fff);
         background-size: 100% 100%;
         background-repeat: no-repeat;
@@ -95,10 +100,16 @@
         animation: fillFromTopLeft linear forwards;
         animation-iteration-count: infinite;
         opacity: 1;
+        
+    }
+
+    .bar.active{
+
     }
 
     .highlighted {
         opacity: 1;
+
     }
 
 
@@ -107,8 +118,8 @@
         font-size: 1.4rem;
         flex: 1;
         height: 5rem;
-        border-right: 1px solid #223453;
-        background: rgb(104 148 211 / 57%);
+        border-right: 1px solid #000000;
+        background: #5c9fff91;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -117,13 +128,13 @@
 
 
     .beatFirstInBar {
-        border-top-left-radius: 1rem;
-        border-bottom-left-radius: 1rem;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
     }
 
     .beatLastInBar {
-        border-top-right-radius: 1rem;
-        border-bottom-right-radius: 1rem;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
     }
 
     .reactionStrong {

@@ -11,9 +11,9 @@
         font-size: clamp(1.2rem, 3.2vh, 2rem);
         padding-top:0;
         margin-inline:1rem;
-        font-weight:400;
         width:64%;
         align-self: center;
+            font-weight: 300;
         /* color:#b0cdce;  */
     }
 

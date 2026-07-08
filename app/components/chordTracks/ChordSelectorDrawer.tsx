@@ -2,9 +2,11 @@
 
 import { Drawer } from '@base-ui/react/drawer';
 import { Button } from '@base-ui/react/button';
+import { Switch } from '@base-ui/react/switch';
 import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
 import styles from "./ChordSelectorDrawer.module.css";
+import switchStyles from "~/theme/Switch.module.css";
 
 interface ChordSelectorDrawerProps {
     isOpen: boolean
@@ -14,8 +16,7 @@ interface ChordSelectorDrawerProps {
 }
 
 
-
-export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
+ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
 
     const [selectedChordType, setSelectedChordType] = useState("");
     const [activeChordType, setActiveChordType] = useState("major");
@@ -41,24 +42,19 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
     useEffect(() => {
         setSelectedChordType("")
         if (props.selectedChord) {
-            const activeChordType = CHORDS_DATA.find(x => x.chords.some(y => y.name == props.selectedChord))?.name;
+
+            const activeChordType = props.selectedChord === "-" ? CHORDS_DATA[0].name : CHORDS_DATA.find(x => x.chords.some(y => y.name == props.selectedChord))?.name;
 
             setSelectedChordType(activeChordType || "");
             setActiveChordType(activeChordType || "");
         }
     }, [props.selectedChord]);
 
-        useEffect(() => {
-       console.log(props.isOpen)
-    }, [props.isOpen]);
-
-
-    
     return (
         
 
 
- <Drawer.Root open={props.isOpen}>
+ <Drawer.Root open={props.isOpen} onOpenChange={(open) => { if (!open) props.handleClose(); }}>
             
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
@@ -69,7 +65,7 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
                             <div className={styles.container}>
                                 <h2>Select scale</h2>
 
-                                <div className={styles.scale}>
+                                <div className={`${styles.scale} ${styles.buttonSpacing}`}>
                             {CHORDS_DATA.map((chordType, index) => (
                                 <Button key={index} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
                                     {chordType.name} 
@@ -77,13 +73,13 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
                             ))}  
                                 </div>
 
-                                <h2>Select chords</h2>
+                                <h2>Select chord</h2>
 
-                                <div className={styles.chords}>
+                                <div className={`${styles.chords} ${styles.buttonSpacing}`}>
 
                         {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
                                             chordType.chords.map(chord => (
-                                                <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active" : "btn-inactive"} onClick={() => props.handleSelect(chord.name, fill)}>
+                                                <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active" : "btn-action-alt"} onClick={() => props.handleSelect(chord.name, fill)}>
                                                     {chord.name.replace("b", "♭").replace("#", "♯") } 
                                                 </Drawer.Close> 
                                             ))
@@ -91,7 +87,14 @@ export default function ChordSelectorDrawer(props: ChordSelectorDrawerProps) {
                                  
                                 </div></div>
                             <div className="drawer-footer">
-                                  <Drawer.Close className="btn-action-alt" onClick={props.handleClose}>Cancel</Drawer.Close>
+                                <Drawer.Close className="btn-action-alt" onClick={() => props.handleSelect('-', fill)}>Clear</Drawer.Close>
+                          <label className={switchStyles.Label}>
+                            <Switch.Root defaultChecked className={switchStyles.Switch} onCheckedChange={(checked) => setFill(checked)}>
+                                <Switch.Thumb className={switchStyles.Thumb} />
+                            </Switch.Root>
+                                        Apply to all beats in bar
+                            </label>
+                            
                             </div>
 
                         </Drawer.Content>

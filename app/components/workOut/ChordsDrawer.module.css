@@ -11,4 +11,11 @@
     .scale{
     margin-bottom:1rem;
     }
+
+    .buttonSpacing button{
+        padding-inline: 0;
+        width: 25%;
+        margin-inline: 2%;
+        display: inline;
+    }
 }

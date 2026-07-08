@@ -4,23 +4,17 @@
 .cards{
     display: flex;
     flex-direction: column;
+    gap: 1.5dvh;
 }
 
 .card{
-margin-bottom: clamp(1.1rem, 4vh, 3.2rem);
     padding-block: clamp(1.1rem, 4vh, 3.2rem);
     padding-inline: clamp(0.5rem, 4vw, 1.2rem);
-    background: #2c445f;
-    background: #1f2937;
-    border-radius: 15px;
-    box-shadow: #555 0 -1px 2px, #0d1118 0 3px 2px, #00000073 0 5px 10px, #000000f2 0 0 70px -35px inset;
-}
+    background: #1e1f24;
+    border-radius: 20px;
+  
 
-h1{
-    font-size: 13dvw
-}
-
-h2{
+    h2{
     margin-bottom: 1rem;
     font-size: clamp(1.2rem, 3vh, 2rem);
     padding-bottom: clamp(0.5rem, 1.3vh, 1.1rem);
@@ -28,31 +22,37 @@ h2{
     justify-content: center;
     align-items: center;
     gap: 0.2rem;
-    font-weight: 400;
+    font-weight: 300;
+    color:#7ebcff;
 
-    :global(svg){
+    svg{
         width: 3dvh;
         height: 3dvh;
+        stroke-width: 1.5;
     }
 }
+}
+
+
 
 
 p{
     font-size: clamp(0.8rem, 2vh, 1.2rem);
+   
 }
 .logoChords{
-    margin-left: 10dvw;
-  color: #ececec;
+    margin-left: 7dvw;
+;
 }
 
 .logoTrainer{
-  color: #b0cdce;
+  color: #7ebcff;
 }
 
 .logoBg{
         position: absolute;
     top: 0;
-    left: 15px;
+    left: 25px;
     width: 100%;
     height: 100%;
     z-index: -1;
@@ -62,8 +62,22 @@ p{
 position: relative;
     display: inline-block;
     padding-block: 9dvw;
-    margin-left: -5dvw;
     margin-top:-1dvh;
+
+    svg{
+        fill: #7ebcff;
+    }
+
+    
+h1{
+        font-size: 14dvw;
+        font-weight: 200;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 174'%3e%3cellipse cx='50' cy='35' rx='38' ry='25' fill='%237ebcff' stroke='%23FFF' stroke-width='0' stroke-opacity='0.02' transform='rotate(-15, 50, 35)'/%3e%3cellipse cx='50' cy='87' rx='38' ry='25' fill='%237ebcff' stroke='%23FFF' stroke-width='0' stroke-opacity='0.02' transform='rotate(-15, 50, 87)'/%3e%3cellipse cx='50' cy='139' rx='38' ry='25' fill='%237ebcff' stroke='%23FFF' stroke-width='0' stroke-opacity='0.02' transform='rotate(-15, 50, 139)'/%3e%3c/svg%3e");
+        display: block;
+        background-repeat: no-repeat;
+        background-position: left 50%;
+        background-size: auto 80%;
+}
 }
 
 :global(.lucide){

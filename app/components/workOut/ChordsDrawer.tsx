@@ -96,7 +96,7 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
                                 
                                 <h2>Select scale</h2>
 
-                                <div className={styles.scale}>
+                                <div className={`${styles.scale} ${styles.buttonSpacing}`}>
                                     {CHORDS_DATA.map((chordType) => (
                                         <Button key={chordType.name} className={getChordTypeButtonColor(chordType.name)} onClick={() => handleChordTypeSelect(chordType.name)}>
                                             {chordType.name}
@@ -106,7 +106,7 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
 
                                 <h2>Select chords</h2>
 
-                                <div className={styles.chords}>
+                                <div className={`${styles.chords} ${styles.buttonSpacing}`}>
 
                                     
 

@@ -9,12 +9,17 @@ import ChordsDrawer from "./ChordsDrawer";
 import FilteredItemsDrawer from "./FIlteredItemsDrawer";
 import { WORKOUT_TRAKCS, type WorkOutTrack } from '~/data/workOutTracks';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 import { Button } from '@base-ui/react/button';
+import { useFadeNavigate } from '~/components/RouteTransition';
 
 import { X } from 'lucide-react';
 
 export default function () {
+    const navigate = useFadeNavigate();
+    const handleStartWorkout = () => {
+        localStorage.setItem('chordsArenaWorkOut', JSON.stringify(finalFilteredItems));
+        navigate('/workout/start');
+    };
 
     const [isDifficultyDrawerOpen, setIsDifficultyDrawerOpen] = useState(false);
     const [isTagsDrawerOpen, setIsTagsDrawerOpen] = useState(false);
@@ -154,12 +159,9 @@ export default function () {
                         selectedCounter={finalFilteredItems.length}
                     />
                     }
-
-   
-
-                    <Link to="/workout/start" state={{ WorkOutTracks: finalFilteredItems }}>
-                        <Button className="btn-action" onClick={() => console.log(finalFilteredItems.map(i => i.id))}>Start Workout</Button>
-                    </Link>
+                    <Button className="btn-action" onClick={handleStartWorkout}>
+                        Start Workout
+                    </Button>
                 </div>
       
         </>

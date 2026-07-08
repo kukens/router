@@ -2,14 +2,12 @@
 
 
 .scrollable{
-    height: 40vh;
+    height: 40dvh;
     overflow-y: auto;
-    padding-block:1.5rem;
-}
-
-input{
-    margin-bottom: 2.2rem;
-    margin-top: 1rem;
+    padding-block:0.5rem;
+    margin: 1.5rem;
+    border-top: 2px solid #2a364e;
+    border-bottom: 2px solid #2a364e;
 }
 
 
