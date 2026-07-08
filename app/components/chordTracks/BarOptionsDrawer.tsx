@@ -26,7 +26,7 @@ export default function BarOptionsDrawer(props: BarOptionsDrawerProps) {
 
     return (
 
-        <Drawer.Root open={props.isOpen} swipeDirection="left">
+        <Drawer.Root open={props.isOpen} onOpenChange={(open) => { if (!open) props.handleClose(); }}>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
                 <Drawer.Viewport className="Viewport">
@@ -46,7 +46,7 @@ export default function BarOptionsDrawer(props: BarOptionsDrawerProps) {
                             </div>
 
                             <div className="drawer-footer">
-                                <Drawer.Close className="btn-action-alt" onClick={props.handleClose}>Cancel</Drawer.Close>
+                                
                             </div>
 
                         </Drawer.Content>
