@@ -4,6 +4,20 @@
         margin-bottom:auto;
     }
 
+    .actionButtons{
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-direction: column;
+            align-items: center;
+    }
+
+    .buttonsAlt{
+        display: flex;
+        gap: 3rem;
+        margin:2rem;
+    }
+
  .numberLabel{
      
             font-size: clamp(1rem, 2.5vh, 1.5rem);

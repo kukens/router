@@ -4,43 +4,41 @@
 .Label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 400;
-  color: oklch(14.5% 0 0deg);
+  gap: 0.8rem;
 
-  @media (prefers-color-scheme: dark) {
-    color: white;
-  }
+  line-height: 1.25rem;
+  font-weight: 400; 
+  margin:auto;
+
+
 }
 
 .Switch {
   box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
-  border: 1px solid oklch(14.5% 0 0deg);
-  padding: 0.125rem;
-  width: 2.25rem;
-  height: 1.25rem;
-  background-color: white;
+  border: 1px solid #2a364e;
+  border-radius: 9999px;
+  padding: 0.2rem;
+  width: 3.6rem;
+  height: 2rem;
   transition: background-color 150ms ease;
 
   @media (prefers-color-scheme: dark) {
-    border: 1px solid white;
-    background-color: oklch(14.5% 0 0deg);
+    border: 1px solid #526d92;
+
   }
 
   &[data-checked] {
-    background-color: oklch(14.5% 0 0deg);
+    background-color: #2a364e;
 
     @media (prefers-color-scheme: dark) {
-      background-color: white;
+      background-color: #526d92;
     }
   }
 
   &:focus-visible {
-    outline: 2px solid oklch(14.5% 0 0deg);
+    outline: 2px solid #2a364e;
     outline-offset: 2px;
 
     @media (prefers-color-scheme: dark) {
@@ -50,23 +48,24 @@
 }
 
 .Thumb {
-  width: 0.875rem;
-  height: 0.875rem;
-  background-color: oklch(14.5% 0 0deg);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 9999px;
+  background-color: #2a364e;
   transition:
     translate 150ms ease,
     background-color 150ms ease;
 
   @media (prefers-color-scheme: dark) {
-    background-color: white;
+    background-color: #526d92;
   }
 
   &[data-checked] {
-    translate: 1rem 0;
-    background-color: white;
+    translate: 1.8rem 0;
+    background-color: #526d92;
 
     @media (prefers-color-scheme: dark) {
-      background-color: oklch(14.5% 0 0deg);
+      background-color: #121318;
     }
   }
 }

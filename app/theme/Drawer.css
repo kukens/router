@@ -81,7 +81,7 @@
   height: 0.25rem;
   margin: 0 auto 1rem;
   border-radius: 9999px;
-  background-color: #384151;
+  background-color: #526d92;
 }
 
 .Title {
@@ -119,6 +119,10 @@
 
 
 .drawer-footer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
 
 
     z-index: 9000;

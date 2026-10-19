@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import { Button } from '@base-ui/react/button';
 import { useFadeNavigate } from '~/components/RouteTransition';
 
-import { X } from 'lucide-react';
+import { Play, Settings, X } from 'lucide-react';
 
 export default function () {
     const navigate = useFadeNavigate();
@@ -96,52 +96,59 @@ export default function () {
                 <div className={styles['filter-group']}>
                     <div className={styles['filter']}>
                         <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
-
+                         <div className={styles.selectedFilters}>
                         {selectedChords.length > 0 &&
-                            <div className={styles['active-filters']}>
-                                {selectedChords.map(selectedChord => <Button className="btn-active" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15}  /></Button>)}
-                            </ div>
+                           <>
+                                {selectedChords.map(selectedChord => <Button className="btn-active btn-txt-icon" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15}  /></Button>)}
+                           </>
                         }
 
                         {selectedChords.length === 0 &&
-                            <div> <Button className="btn-disabled">Any</Button></ div>
+                             <Button className="btn-disabled">Any</Button>
                         }
+                    </div>
                     </div>
 
                     <div className={styles['filter']}>
 
                         <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
+                        <div className={styles.selectedFilters}>
+                                {selectedTags.length > 0 &&
+                                <>
+                                        {selectedTags.map(tag => <Button className="btn-active btn-txt-icon" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15}  /></Button>)}
+                                </>
+                                }
 
-                        {selectedTags.length > 0 &&
-                            <div className="">
-                                {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15}  /></Button>)}
-                            </ div>
-                        }
-
-                        {selectedTags.length === 0 &&
-                            <div className=""> <Button className="btn-disabled">Any</Button></ div>
-                        }
+                                {selectedTags.length === 0 &&
+                                <Button className="btn-disabled">Any</Button>
+                                }
+                          </div>
                     </div>
 
                     <div className={styles['filter']}>
 
                         <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
-
+                        <div className={styles.selectedFilters}>              
                         {selectedDifficultyLevels.length > 0 &&
-                            <div className="">
-                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel} <X size={15}  /></Button>)}
-                            </ div>
+                            <>
+                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active btn-txt-icon" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel} <X size={15}  /></Button>)}
+                            </>
                         }
 
                         {selectedDifficultyLevels.length === 0 &&
-                            <div className=""> <Button className="btn-disabled">Any</Button></ div>
+                           <Button className="btn-disabled">Any</Button>
                         }
+                        
                     </div>
+                    </div>
+             
+
                 </div>
 
                 <div className={styles['start-workout']}>
+                 
                     {finalFilteredItems.length === 0 && 
-                    <p>No items found </p>
+                    <p>No tracks found </p>
                     }
 
                     {finalFilteredItems.length > 0 && 
@@ -159,8 +166,13 @@ export default function () {
                         selectedCounter={finalFilteredItems.length}
                     />
                     }
-                    <Button className="btn-action" onClick={handleStartWorkout}>
-                        Start Workout
+  <Button className="btn-action-alt btn-txt-icon">
+                      <Settings size={18}/> Preferences   
+                    </Button>
+               
+                
+                    <Button className="btn-action btn-txt-icon" onClick={handleStartWorkout}>
+                       <Play size={18}/> Play
                     </Button>
                 </div>
       

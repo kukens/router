@@ -5,7 +5,15 @@ import path from 'path';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
 export default defineConfig({
-resolve: {
+  build: {
+    cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
+  resolve: {
     alias: {
       // Ensure this is defined here, not just in tsconfig.json
       "~": path.resolve(__dirname, "./app"), 

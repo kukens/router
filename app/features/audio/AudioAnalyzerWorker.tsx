@@ -62,7 +62,7 @@ self.onmessage = (e: MessageEvent<AudioAnalyzerWorkerIn>) => {
         writeIndex = 0;
         availableSamples = 0;
 
-        console.log('setting window size:' + e.data.windowSize)
+        console.log('setting window size:' + windowSize)
     }
     else if (e.data.type === "push") {
         const { samples, sampleRate } = e.data;

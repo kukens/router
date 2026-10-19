@@ -99,13 +99,13 @@ export default function TagsDrawer(props: TagsDrawerProps) {
 
 
                             <div className={styles.scrollable}>
-                                <div>
+                               
                                     {filteredTags.map((value) => (
                                         <Button key={value} className={selected.includes(value) ? "btn-active" : "btn-inactive"} onClick={() => filterItemToggle(value)}>
                                             {value}
                                         </Button>
                                     ))}
-                                </div>
+                                
                             </div>
                             <div className="drawer-footer">
                                 <Button className="btn-action-alt" onClick={() => props.handleApply([])}>

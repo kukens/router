@@ -76,9 +76,13 @@ export default function TrackEditor(props: TrackEditorProps) {
     const [selectedBarIndex, setSelectedBarIndex] = useState(0);
     const [selectedBeatIndex, setSelectedBeatIndex] = useState(0);
     const [selectedChord, setSelectedChord] = useState("");
+    const [fillSelection, setFillSelection] = useState(true);
     const navigate = useFadeNavigate();
 
     useEffect(() => {
+        const storedPreference = localStorage.getItem('trackEditor-fillSelection');
+        setFillSelection(storedPreference === null ? true : storedPreference === 'true');
+
         if (props.TrackData) {
             setBars(ensureTrailingBlankBar(props.TrackData.bars, props.TrackData.beatsPerBar));
             setTrackName(props.TrackData.name)
@@ -88,6 +92,11 @@ export default function TrackEditor(props: TrackEditorProps) {
             setTags(props.TrackData.tags || [])
         }
     }, [props.TrackData]);
+
+    const handleFillSelectionChange = (checked: boolean) => {
+        setFillSelection(checked);
+        localStorage.setItem('trackEditor-fillSelection', String(checked));
+    };
 
     const updateBeats = (value: number) => {
         if (![3, 4].includes(value)) return;
@@ -350,7 +359,14 @@ export default function TrackEditor(props: TrackEditorProps) {
 
      
                 <BarOptionsDrawer isOpen={isBarOptionsDrawerOpen} canSetRepeat={!isBarInsideRepeatBlock(bars, selectedBarIndex)} handleSelect={handleBarOptionSelect} handleClose={() => setIsBarOptionsDrawerOpen(false)} />
-                <ChordSelectorDrawer selectedChord={selectedChord} isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleSelect={handleChordSelection} />
+                <ChordSelectorDrawer
+                    selectedChord={selectedChord}
+                    fill={fillSelection}
+                    isOpen={isChordsDrawerOpen}
+                    handleClose={() => setIsChordsDrawerOpen(false)}
+                    handleFillChange={handleFillSelectionChange}
+                    handleSelect={handleChordSelection}
+                />
             </div>
 
             <div className={styles.tags}>
@@ -361,7 +377,7 @@ export default function TrackEditor(props: TrackEditorProps) {
 
                 <div className={styles.selectedTags}>
                     {tags?.map((tag, tagIndex) => (
-                        <Button key={tagIndex} className={`btn-active`} onClick={() => removeTag(tag)}>
+                        <Button key={tagIndex} className={`btn-active btn-txt-icon`} onClick={() => removeTag(tag)}>
                             {tag}
                             <X size={15} />
                         </Button>

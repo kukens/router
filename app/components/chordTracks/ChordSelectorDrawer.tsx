@@ -7,11 +7,14 @@ import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
 import styles from "./ChordSelectorDrawer.module.css";
 import switchStyles from "~/theme/Switch.module.css";
+import { X } from 'lucide-react';
 
 interface ChordSelectorDrawerProps {
     isOpen: boolean
     selectedChord: string;
+    fill: boolean;
     handleClose: () => void;
+    handleFillChange: (checked: boolean) => void;
     handleSelect: (chordName: string, fill: boolean) => void;
 }
 
@@ -20,8 +23,6 @@ interface ChordSelectorDrawerProps {
 
     const [selectedChordType, setSelectedChordType] = useState("");
     const [activeChordType, setActiveChordType] = useState("major");
-    const [fill, setFill] = useState(true);
-
     const handleChordTypeSelect = (chordTypeName: string) => {
         setActiveChordType(chordTypeName);
     }
@@ -77,26 +78,29 @@ interface ChordSelectorDrawerProps {
 
                                 <div className={`${styles.chords} ${styles.buttonSpacing}`}>
 
-                        {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
-                                            chordType.chords.map(chord => (
-                                                <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active" : "btn-action-alt"} onClick={() => props.handleSelect(chord.name, fill)}>
-                                                    {chord.name.replace("b", "♭").replace("#", "♯") } 
-                                                </Drawer.Close> 
-                                            ))
-                                        ))}  
-                                 
-                                </div></div>
-                            <div className="drawer-footer">
-                                <Drawer.Close className="btn-action-alt" onClick={() => props.handleSelect('-', fill)}>Clear</Drawer.Close>
-                          <label className={switchStyles.Label}>
-                            <Switch.Root defaultChecked className={switchStyles.Switch} onCheckedChange={(checked) => setFill(checked)}>
-                                <Switch.Thumb className={switchStyles.Thumb} />
-                            </Switch.Root>
-                                        Apply to all beats in bar
-                            </label>
-                            
-                            </div>
+                                {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
+                                                    chordType.chords.map(chord => (
+                                                                          <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active btn-txt-icon" : "btn-action-alt"} onClick={() => props.handleSelect(props.selectedChord == chord.name ? '-' : chord.name, props.fill)}>
+                                                           {chord.name.replace("b", "♭").replace("#", "♯") } 
+                                                            {props.selectedChord == chord.name && 
+                                                             <X size={15}  /> }
+                                                        </Drawer.Close> 
+                                                    ))
+                                                ))}  
+                                </div>
 
+                                 <label className={switchStyles.Label}>
+                                    <Switch.Root checked={props.fill} className={switchStyles.Switch} onCheckedChange={props.handleFillChange}>
+                                        <Switch.Thumb className={switchStyles.Thumb} />
+                                    </Switch.Root>
+                                    Apply to all beats in bar
+                                </label>
+                                
+                                </div>
+                            <div className="drawer-footer">
+                               
+                                 
+                            </div>
 
                         </Drawer.Content>
                     </Drawer.Popup>

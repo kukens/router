@@ -21,7 +21,7 @@ export default function OrderingDrawer(props: OrderingDrawerProps) {
 
   return (
     <Drawer.Root>
-      <Drawer.Trigger className="btn-action-alt">Ordering <ArrowDownUp  size={15} /></Drawer.Trigger>
+      <Drawer.Trigger className="btn-action-alt btn-txt-icon"><ArrowDownUp size={18} /> Ordering</Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Backdrop className="Backdrop" />
         <Drawer.Viewport className="Viewport">

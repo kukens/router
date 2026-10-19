@@ -1,7 +1,10 @@
 @layer components{
     .chords{
-
-    margin-bottom:1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin:1rem;
     }
 
     .container{
@@ -9,13 +12,16 @@
         flex-direction: column;
     }
     .scale{
-    margin-bottom:1rem;
+  display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin:1rem;
     }
 
     .buttonSpacing button{
         padding-inline: 0;
         width: 25%;
-        margin-inline: 2%;
         display: inline;
     }
 }

@@ -122,6 +122,8 @@ export default function TrackList() {
 
     return (
         <div className={styles.container}>
+
+             <div className={styles.filters}>
             <OrderingDrawer
                 open={isOrderingOpen}
                 onClose={() => setIsOrderingOpen(false)}
@@ -139,23 +141,25 @@ export default function TrackList() {
                 selectedTags={selectedTags}
                 onChangeTags={(ts: string[]) => setSelectedTags(ts)}
             />
+            </div>
 
-            <div>
+            <div className={styles.activeFilters}>
                 {filterText &&
-                    <Button className="btn-active" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} /></Button>}
+                    <Button className="btn-active btn-txt-icon" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} /></Button>}
 
                 {selectedTags.length > 0 &&
                     selectedTags.map(tag =>
-                        <Button key={tag} className="btn-active" onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}
+                        <Button key={tag} className="btn-active btn-txt-icon" onClick={() => setSelectedTags(prev => prev.filter(_ => _ !== tag))}>Tag: {tag}
                             <X size={15} />
                         </Button>)
                 }
             </div>
 
 
-            {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
+         
 
             <div className={styles.trackList}>
+                   {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
                 {tracks.slice(0, visibleCount).map((track, index) => (
                     <Button key={track.id} className={`${styles.trackLink}`} onClick={() => navigate(`/chord-tracks/${track.id}`)}>
                         <div className={`${styles.chordTrackCard}`}>

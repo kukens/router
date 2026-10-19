@@ -94,7 +94,6 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
 
 
                             <div className="drawer-footer">
-                                <Drawer.Close className="btn-action-alt" onClick={props.handleClose}>Cancel</Drawer.Close>
                                 <Drawer.Close className="btn-action-alt" onClick={() => props.handleSave(tags)}>Save</Drawer.Close>
                             </div>
 
