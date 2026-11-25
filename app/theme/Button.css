@@ -43,6 +43,10 @@
                     &.btn-txt-icon .lucide {
                         margin-right: 0.5rem;
                     }
+
+                     &.btn-icon {
+                        padding-inline: 1.2rem;     
+                     }
                 }
 
      &.btn-active {

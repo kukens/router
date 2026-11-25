@@ -225,7 +225,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
     return (
 
         <Drawer.Root>
-            <Drawer.Trigger className="btn-action-alt btn-action-alt btn-txt-icon"><ListMusic size={18}/> {props.selectedCounter} tracks</Drawer.Trigger>
+            <Drawer.Trigger className="btn-action-alt btn-txt-icon"><ListMusic size={18}/> {props.selectedCounter} workouts</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
                 <Drawer.Viewport className="Viewport">

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Drawer } from '@base-ui/react/drawer';
@@ -8,6 +7,7 @@ import { Button } from '@base-ui/react/button';
 
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
 import styles from './TagsDrawer.module.css';
+import { Tags } from 'lucide-react';
 
 interface TagsDrawerProps {
     isOpen: boolean
@@ -15,7 +15,6 @@ interface TagsDrawerProps {
     handleClose: () => void;
     handleApply: (chords: string[]) => void;
     selectedChords?: string[];
-    selectedDifficultyLevels?: string[];
 }
 
 
@@ -41,29 +40,11 @@ export default function TagsDrawer(props: TagsDrawerProps) {
             );
         }
 
-        // Filter tracks based on selected difficulty levels
-        if (props.selectedDifficultyLevels && props.selectedDifficultyLevels.length > 0) {
-            const difficultyMap: Record<string, number> = {
-                "Begginer": 1,
-                "Easy": 2,
-                "Intermidiate": 3,
-                "Advanced": 4,
-                "Expert": 5
-            };
-            const selectedNumbers = props.selectedDifficultyLevels
-                .map(level => difficultyMap[level])
-                .filter(n => !isNaN(n));
-
-            baseTracks = baseTracks.filter(track =>
-                selectedNumbers.includes(track.difficulty)
-            );
-        }
-
         // Get unique tags from filtered tracks
         const availableTags = [...new Set(baseTracks.flatMap(item => item.tags))];
         allTags.current = availableTags;
         setFilteredTags(availableTags);
-    }, [props.selectedChords, props.selectedDifficultyLevels]);
+    }, [props.selectedChords]);
 
     useEffect(() => {
         const filtered = allTags.current.filter(tag =>
@@ -79,7 +60,7 @@ export default function TagsDrawer(props: TagsDrawerProps) {
     return (
 
         <Drawer.Root>
-            <Drawer.Trigger className="btn-action-alt">Select tags</Drawer.Trigger>
+            <Drawer.Trigger className="btn-action-alt btn-txt-icon"> <Tags size={18}/> Select tags</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
                 <Drawer.Viewport className="Viewport">

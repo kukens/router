@@ -80,7 +80,7 @@ interface ChordSelectorDrawerProps {
 
                                 {CHORDS_DATA.filter(x => x.name == activeChordType).map((chordType, index) => (
                                                     chordType.chords.map(chord => (
-                                                                          <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active btn-txt-icon" : "btn-action-alt"} onClick={() => props.handleSelect(props.selectedChord == chord.name ? '-' : chord.name, props.fill)}>
+                                                                          <Drawer.Close key={chord.name} className={props.selectedChord == chord.name ? "btn-active" : "btn-action-alt"} onClick={() => props.handleSelect(props.selectedChord == chord.name ? '-' : chord.name, props.fill)}>
                                                            {chord.name.replace("b", "♭").replace("#", "♯") } 
                                                             {props.selectedChord == chord.name && 
                                                              <X size={15}  /> }

@@ -4,6 +4,7 @@
 .scrollable{
     max-height: 60vh;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: clamp(0.6rem, 2vh, 1.2rem);

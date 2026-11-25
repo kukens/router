@@ -3,7 +3,6 @@
 import styles from './WorkOut.module.css';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState, useEffect } from 'react';
-import DifficultyDrawer, { difficultyLevels } from "./DifficultyDrawer";
 import TagsDrawer from "./TagsDrawer";
 import ChordsDrawer from "./ChordsDrawer";
 import FilteredItemsDrawer from "./FIlteredItemsDrawer";
@@ -12,21 +11,29 @@ import { useMemo } from 'react';
 import { Button } from '@base-ui/react/button';
 import { useFadeNavigate } from '~/components/RouteTransition';
 
-import { Play, Settings, X } from 'lucide-react';
+import { Mic, Play, Settings, X } from 'lucide-react';
 
 export default function () {
     const navigate = useFadeNavigate();
     const handleStartWorkout = () => {
-        localStorage.setItem('chordsArenaWorkOut', JSON.stringify(finalFilteredItems));
+        let playlist = finalFilteredItems;
+
+        if (selectedChords.length === 0 && selectedTags.length === 0) {
+            playlist = [...WORKOUT_TRAKCS];
+            for (let i = playlist.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [playlist[i], playlist[j]] = [playlist[j], playlist[i]];
+            }
+        }
+
+        localStorage.setItem('chordsArenaWorkOut', JSON.stringify(playlist));
         navigate('/workout/start');
     };
 
-    const [isDifficultyDrawerOpen, setIsDifficultyDrawerOpen] = useState(false);
     const [isTagsDrawerOpen, setIsTagsDrawerOpen] = useState(false);
     const [isChordsDrawerOpen, setIsChordsDrawerOpen] = useState(false);
     const [selectedChords, setSelectedChords] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [selectedDifficultyLevels, setSelectedDifficultyLevels] = useState<string[]>([]);
     const [isItemsDrawerOpen, setIsItemsDrawerOpen] = useState(false);
     const [excludedItems, setExcludedItems] = useState<number[]>([]);
     const [reorderedFilteredItems, setReorderedFilteredItems] = useState<number[]>([]);
@@ -37,16 +44,6 @@ export default function () {
             prev.includes(value) ? prev.filter(i => i !== value) : [...prev, value]
         );
     }
-
-    const selectedDifficultyNumbers = useMemo(() => {
-        // map selected difficulty level labels back to numeric keys
-        const map = Object.entries(difficultyLevels).reduce<Record<string, string>>((acc, [k, v]) => {
-            acc[v] = k;
-            return acc;
-        }, {} as Record<string, string>);
-
-        return selectedDifficultyLevels.map(l => Number(map[l])).filter(n => !Number.isNaN(n));
-    }, [selectedDifficultyLevels]);
 
     const filteredItems = useMemo<WorkOutTrack[]>(() => {
         return WORKOUT_TRAKCS.filter(item => {
@@ -62,14 +59,9 @@ export default function () {
                 if (!hasAnyTag) return false;
             }
 
-            // difficulty: OR operator (any selected difficulty)
-            if (selectedDifficultyNumbers.length > 0) {
-                if (!selectedDifficultyNumbers.includes(item.difficulty)) return false;
-            }
-
             return true;
         });
-    }, [selectedChords, selectedTags, selectedDifficultyNumbers]);
+    }, [selectedChords, selectedTags]);
 
     const finalFilteredItems = useMemo<WorkOutTrack[]>(() => {
         const base: WorkOutTrack[] = filteredItems;
@@ -95,11 +87,11 @@ export default function () {
 
                 <div className={styles['filter-group']}>
                     <div className={styles['filter']}>
-                        <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} selectedDifficultyLevels={selectedDifficultyLevels} ></ChordsDrawer>
+                        <ChordsDrawer isOpen={isChordsDrawerOpen} handleClose={() => setIsChordsDrawerOpen(false)} handleApply={(chords) => { setSelectedChords(chords); setIsChordsDrawerOpen(false); }} selected={selectedChords} selectedTags={selectedTags} ></ChordsDrawer>
                          <div className={styles.selectedFilters}>
                         {selectedChords.length > 0 &&
                            <>
-                                {selectedChords.map(selectedChord => <Button className="btn-active btn-txt-icon" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15}  /></Button>)}
+                                {selectedChords.map(selectedChord => <Button className="btn-active" onClick={() => RemoveFilterItem(selectedChord, setSelectedChords)}>{selectedChord}<X size={15}  /></Button>)}
                            </>
                         }
 
@@ -111,11 +103,11 @@ export default function () {
 
                     <div className={styles['filter']}>
 
-                        <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} selectedDifficultyLevels={selectedDifficultyLevels} ></TagsDrawer>
+                        <TagsDrawer isOpen={isTagsDrawerOpen} handleClose={() => setIsTagsDrawerOpen(false)} handleApply={(value) => { setSelectedTags(value); setIsTagsDrawerOpen(false); }} selected={selectedTags} selectedChords={selectedChords} ></TagsDrawer>
                         <div className={styles.selectedFilters}>
                                 {selectedTags.length > 0 &&
                                 <>
-                                        {selectedTags.map(tag => <Button className="btn-active btn-txt-icon" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15}  /></Button>)}
+                                        {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15}  /></Button>)}
                                 </>
                                 }
 
@@ -125,57 +117,46 @@ export default function () {
                           </div>
                     </div>
 
-                    <div className={styles['filter']}>
-
-                        <DifficultyDrawer isOpen={isDifficultyDrawerOpen} handleClose={() => setIsDifficultyDrawerOpen(false)} handleApply={(value) => { setSelectedDifficultyLevels(value); setIsDifficultyDrawerOpen(false); }} selected={selectedDifficultyLevels} selectedChords={selectedChords} selectedTags={selectedTags} ></DifficultyDrawer>
-                        <div className={styles.selectedFilters}>              
-                        {selectedDifficultyLevels.length > 0 &&
-                            <>
-                                {selectedDifficultyLevels.map(difficultyLevel => <Button className="btn-active btn-txt-icon" onClick={() => RemoveFilterItem(difficultyLevel, setSelectedDifficultyLevels)}>{difficultyLevel} <X size={15}  /></Button>)}
-                            </>
-                        }
-
-                        {selectedDifficultyLevels.length === 0 &&
-                           <Button className="btn-disabled">Any</Button>
-                        }
-                        
-                    </div>
-                    </div>
              
 
                 </div>
 
                 <div className={styles['start-workout']}>
-                 
-                    {finalFilteredItems.length === 0 && 
-                    <p>No tracks found </p>
+
+                    {finalFilteredItems.length === 0 &&
+                    <p>No tracks found</p>
                     }
 
-                    {finalFilteredItems.length > 0 && 
-                                            <FilteredItemsDrawer
-                        isOpen={isItemsDrawerOpen}
-                        handleClose={() => setIsItemsDrawerOpen(false)}
-                        items={filteredItems.map(i => i.id)}
-                        excluded={excludedItems}
-                        handleApply={(excluded, reorderedItems) => {
-                            setExcludedItems(excluded);
-                            setReorderedFilteredItems(reorderedItems);
-                            setIsItemsDrawerOpen(false);
-                        }}
-                        orderedItems={reorderedFilteredItems}
-                        selectedCounter={finalFilteredItems.length}
-                    />
+                    {finalFilteredItems.length > 0 &&
+                    <div className={styles.itemsDrawer}>
+                        {(selectedChords.length > 0 || selectedTags.length > 0) &&
+                            <FilteredItemsDrawer
+                                isOpen={isItemsDrawerOpen}
+                                handleClose={() => setIsItemsDrawerOpen(false)}
+                                items={filteredItems.map(i => i.id)}
+                                excluded={excludedItems}
+                                handleApply={(excluded, reorderedItems) => {
+                                    setExcludedItems(excluded);
+                                    setReorderedFilteredItems(reorderedItems);
+                                    setIsItemsDrawerOpen(false);
+                                }}
+                                orderedItems={reorderedFilteredItems}
+                                selectedCounter={finalFilteredItems.length}
+                            />
+                        }
+                        <Button className="btn-action-alt btn-txt-icon">
+                            <Settings size={18}/> Options
+                        </Button>
+                    </div>
                     }
-  <Button className="btn-action-alt btn-txt-icon">
-                      <Settings size={18}/> Preferences   
-                    </Button>
-               
-                
+
+                    {finalFilteredItems.length > 0 &&
                     <Button className="btn-action btn-txt-icon" onClick={handleStartWorkout}>
-                       <Play size={18}/> Play
+                       <Mic size={18} /> Start workout
                     </Button>
+                    }
                 </div>
-      
+
         </>
     );
 }

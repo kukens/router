@@ -41,7 +41,7 @@ export default function TrackDetails(props: TrackDetailsProps) {
         <div className={styles.container}>
 
                     <div className={styles.actionButtons}>
-            <Button className="btn-action btn-txt-icon" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/play`)}><Play size={18}/> Play</Button>
+            <Button className="btn-action" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/play`)}></Button>
 
                  <div className={styles.buttonsAlt}>
                 <Button className="btn-action-alt" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/edit`)}>Edit</Button>
