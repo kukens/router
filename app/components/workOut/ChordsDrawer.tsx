@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { CHORDS_DATA } from '~/data/chordsData';
 import { Button } from '@base-ui/react/button';
 import styles from './ChordsDrawer.module.css'
-import { HalfNote } from 'lucide-react';
+import { EighthNote, HalfNote, ListChecks, ListMusic } from 'lucide-react';
 import { WORKOUT_TRAKCS } from '~/data/workOutTracks';
 
 
@@ -69,13 +69,12 @@ export default function ChordsDrawer(props: ChordsDrawerProps) {
 
         <Drawer.Root>
             <Drawer.Trigger className="btn-action-alt btn-txt-icon">
-  
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0">
-  <ellipse cx="10.5" cy="18.5" rx="4.5" ry="2.8" transform="rotate(-10 10.5 18.5)" fill="currentColor"/>
-  <ellipse cx="10.5" cy="12.5" rx="4.5" ry="2.8" transform="rotate(-10 10.5 12.5)" fill="currentColor"/>
-  <ellipse cx="10.5" cy="6.5" rx="4.5" ry="2.8" transform="rotate(-10 10.5 6.5)" fill="currentColor"/>
-</svg>
 
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 1 24 24" fill="none" stroke="currentColor" stroke-width="0">
+  <ellipse cx="10.5" cy="18.5" rx="5.5" ry="2.8" transform="rotate(-10 10.5 18.5)" fill="currentColor" stroke="none" />
+  <ellipse cx="10.5" cy="12.5" rx="5.5" ry="2.8" transform="rotate(-10 10.5 12.5)" fill="currentColor" stroke="none" />
+  <ellipse cx="10.5" cy="6.5" rx="5.5" ry="2.8" transform="rotate(-10 10.5 6.5)" fill="currentColor" stroke="none" />
+</svg>
 
 Choose chords  </Drawer.Trigger>
             <Drawer.Portal>

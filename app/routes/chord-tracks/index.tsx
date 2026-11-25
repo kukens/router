@@ -4,6 +4,7 @@ import { Button } from '@base-ui/react/button';
 import { default as TrackList } from "~/components/chordTracks/TrackList"
 import PageHeader from '~/components/shared/PageHeader';
 import { useFadeNavigate } from '~/components/RouteTransition';
+import { Plus } from 'lucide-react';
 
 export default function StartChallenge() {
     const navigate = useFadeNavigate();
@@ -14,7 +15,7 @@ export default function StartChallenge() {
         <PageHeader title="Chord Tracks" backLink="/" />
             <TrackList />
 
-            <div><Button className="btn-action" onClick={() => navigate('/chord-tracks/create')}>Add new track</Button></div>
+            <div><Button className="btn-action btn-txt-icon" onClick={() => navigate('/chord-tracks/create')}><Plus size={16} />Add new track</Button></div>
 
         </>
     );
