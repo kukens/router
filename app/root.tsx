@@ -11,6 +11,8 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import RouteTransition from "./components/RouteTransition";
+import PWAUpdate from "./components/PWAUpdate";
+import { Analytics } from '@vercel/analytics/react';
 
 import type { MetaFunction } from "react-router";
 
@@ -48,7 +50,8 @@ export const links: Route.LinksFunction = () => [
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
     },
-    { rel: "apple-touch-icon", href: "maskable_icon_x512.png" }
+    { rel: "apple-touch-icon", href: "maskable_icon_x512.png" },
+    { rel: "manifest", href: "/manifest.webmanifest" },
 ];
 
 
@@ -63,6 +66,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </head>
             <body translate="no" className="notranslate">
                 <RouteTransition />
+                <PWAUpdate />
+                <Analytics />
                 <main>
                     {children}
                 </main>

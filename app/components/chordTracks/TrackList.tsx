@@ -6,7 +6,7 @@ import { Button } from '@base-ui/react/button';
 import OrderingDrawer from "./OrderingDrawer";
 import FilterDrawer from "./FilterDrawer";
 import styles from "./TrackList.module.css";
-import { ChevronRight, X } from 'lucide-react';
+import { ArrowDown, ChevronRight, IterationCcw, X } from 'lucide-react';
 import { useFadeNavigate } from '~/components/RouteTransition';
 
 export const orderBy: Record<string, string> = {
@@ -186,8 +186,8 @@ export default function TrackList() {
 
             <div className={styles.footerActions}>
                 {!allLoaded &&
-                    <Button className="btn-action-alt" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
-                        Load more
+                    <Button className="btn-action-alt btn-txt-icon" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
+       <IterationCcw size={16} />  Load more
                     </Button>
                 }
 

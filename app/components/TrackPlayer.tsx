@@ -9,6 +9,7 @@ import type { Bar, TrackData } from '~/types/TrackData';
 
 interface TrackPlayerProps {
     TrackData: TrackData | null
+    onIterationComplete?: (isSuccessful: boolean) => void
 }
 
 interface BeatData {
@@ -284,6 +285,13 @@ export default function TrackPlayer(props: TrackPlayerProps) {
         }
 
         if (currentBeatIndexRef.current == 0) {
+            if (iterationRef.current > 0) {
+                const previousIterationRecords = beatsHistory.current[iterationRef.current] || [];
+                const isSuccessful = previousIterationRecords.length === beatsElementsRef.current.length
+                    && previousIterationRecords.every(record => record.isMatched);
+                props.onIterationComplete?.(isSuccessful);
+            }
+
             iterationRef.current = iterationRef.current + 1;
             beatsHistory.current[iterationRef.current] = [];
 

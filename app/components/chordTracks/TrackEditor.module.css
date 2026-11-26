@@ -174,15 +174,20 @@
     }
 
 .tags{
-    padding-top:1rem;
+            padding-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
 }
 
 .repeatEnd {
     margin-bottom: 2rem;
 }
 
-.selectedTags{
-
+.error {
+    color: #ef4444;
+    text-align: center;
 }
 
 }

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { TrackData, Bar } from "~/types/TrackData";
 import { Button } from '@base-ui/react/button';
 import { Input } from '@base-ui/react/input';
-import { EllipsisVertical, Minus, Plus, X } from 'lucide-react';
+import { Check, EllipsisVertical, Minus, Plus, X } from 'lucide-react';
 import TagSelectorDrawer from "~/components/chordTracks/TagSelectorDrawer"
 import ChordSelectorDrawer from "~/components/chordTracks/ChordSelectorDrawer"
 import styles from "./TrackEditor.module.css";
@@ -77,6 +77,9 @@ export default function TrackEditor(props: TrackEditorProps) {
     const [selectedBeatIndex, setSelectedBeatIndex] = useState(0);
     const [selectedChord, setSelectedChord] = useState("");
     const [fillSelection, setFillSelection] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [validationError, setValidationError] = useState<string | null>(null);
     const navigate = useFadeNavigate();
 
     useEffect(() => {
@@ -178,6 +181,22 @@ export default function TrackEditor(props: TrackEditorProps) {
     };
 
     const saveTrack = () => {
+        const trimmedTrackName = trackName.trim();
+        const nonBlankBars = bars.filter(bar =>
+            bar.chords.some(chord => chord !== '' && chord !== '-')
+        );
+
+        if (!trimmedTrackName) {
+            setValidationError("Track name cannot be empty.");
+            return;
+        }
+
+        if (nonBlankBars.length === 0) {
+            setValidationError("A track requires at least one bar.");
+            return;
+        }
+
+        setValidationError("");
         const now = new Date().toISOString();
 
         const trackData: TrackData = {
@@ -196,8 +215,15 @@ export default function TrackEditor(props: TrackEditorProps) {
             modifiedAt: now
         }
 
-        localStorage.setItem(`trackData-${trackData.id}`, JSON.stringify(trackData));
-        navigate(`/chord-tracks/${id}`);
+        setIsSaving(true);
+        setError(null);
+
+        // Simulate save delay
+        setTimeout(() => {
+            localStorage.setItem(`trackData-${trackData.id}`, JSON.stringify(trackData));
+            setIsSaving(false);
+            navigate(`/chord-tracks/${id}`);
+        }, 1000);
     };
 
     const updateChord = (barIndex: number, beatIndex: number, value: string, fill: boolean) => {
@@ -377,7 +403,7 @@ export default function TrackEditor(props: TrackEditorProps) {
 
                 <div className={styles.selectedTags}>
                     {tags?.map((tag, tagIndex) => (
-                        <Button key={tagIndex} className={`btn-active btn-txt-icon`} onClick={() => removeTag(tag)}>
+                        <Button key={tagIndex} className={`btn-active`} onClick={() => removeTag(tag)}>
                             {tag}
                             <X size={15} />
                         </Button>
@@ -385,8 +411,12 @@ export default function TrackEditor(props: TrackEditorProps) {
                 </div>
             </div>
 
-            <Button onClick={saveTrack} className="btn-action">Save</Button>
+            <Button onClick={saveTrack} className="btn-action btn-txt-icon" disabled={isSaving}>
+                {isSaving ? "Saving..." : <><Check size={16} />Save</>}
+            </Button>
 
+            {error && <div className={styles.error}>{error}</div>}
+            {validationError && <div className={styles.error}>{validationError}</div>}
         </div>
     );
 }

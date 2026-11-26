@@ -5,7 +5,7 @@ import type { TrackData } from '~/types/TrackData';
 import { Button } from '@base-ui/react/button';
 import { useFadeNavigate } from '~/components/RouteTransition';
 import styles from "./TrackDetails.module.css"
-import { Mic, Play, X } from 'lucide-react';
+import { Mic, PenLine, Play, X } from 'lucide-react';
 
 interface TrackDetailsProps {
     TrackData: TrackData | null
@@ -44,8 +44,8 @@ export default function TrackDetails(props: TrackDetailsProps) {
             <Button className="btn-action" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/play`)}><Mic size={16} /> Play track</Button>
 
                  <div className={styles.buttonsAlt}>
-                <Button className="btn-action-alt" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/edit`)}>Edit</Button>
-                <Button className="btn-action-alt" onClick={deleteTrack}>Delete</Button>
+                <Button className="btn-action-alt btn-txt-icon" onClick={() => navigate(`/chord-tracks/${props.TrackData?.id}/edit`)}><PenLine size={14} /> Edit</Button>
+                <Button className="btn-action-alt btn-txt-icon" onClick={deleteTrack}><X size={16} /> Delete</Button>
                 </div>
 
             </div>

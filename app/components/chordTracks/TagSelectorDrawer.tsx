@@ -3,7 +3,7 @@
 import { Drawer } from '@base-ui/react/drawer';
 import { Button } from '@base-ui/react/button';
 import { Input } from '@base-ui/react/input';
-import { X } from 'lucide-react';
+import { PenLine, X } from 'lucide-react';
 import { useEffect, useState } from "react";
 import type { TrackData } from "~/types/TrackData";
 import style from "./TagSelectorDrawer.module.css";
@@ -69,7 +69,7 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
 
     return (
           <Drawer.Root>
-            <Drawer.Trigger className="btn-action-alt">Edit tags</Drawer.Trigger>
+            <Drawer.Trigger className="btn-action-alt btn-txt-icon"><PenLine size={14} />  Edit tags</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
                 <Drawer.Viewport className="Viewport">

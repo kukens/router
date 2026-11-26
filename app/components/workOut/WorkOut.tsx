@@ -2,16 +2,16 @@
 
 import styles from './WorkOut.module.css';
 import type { Dispatch, SetStateAction } from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import TagsDrawer from "./TagsDrawer";
 import ChordsDrawer from "./ChordsDrawer";
 import FilteredItemsDrawer from "./FIlteredItemsDrawer";
 import { WORKOUT_TRAKCS, type WorkOutTrack } from '~/data/workOutTracks';
-import { useMemo } from 'react';
 import { Button } from '@base-ui/react/button';
 import { useFadeNavigate } from '~/components/RouteTransition';
+import OptionsDrawer from './OptionsDrawer';
 
-import { Mic, Play, Settings, X } from 'lucide-react';
+import { Mic, X } from 'lucide-react';
 
 export default function () {
     const navigate = useFadeNavigate();
@@ -107,7 +107,7 @@ export default function () {
                         <div className={styles.selectedFilters}>
                                 {selectedTags.length > 0 &&
                                 <>
-                                        {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={15}  /></Button>)}
+                                        {selectedTags.map(tag => <Button className="btn-active" onClick={() => RemoveFilterItem(tag, setSelectedTags)}>{tag} <X size={14}  /></Button>)}
                                 </>
                                 }
 
@@ -144,9 +144,7 @@ export default function () {
                                 selectedCounter={finalFilteredItems.length}
                             />
                         }
-                        <Button className="btn-action-alt btn-txt-icon">
-                            <Settings size={18}/> Options
-                        </Button>
+                                     <OptionsDrawer />
                     </div>
                     }
 
@@ -155,8 +153,10 @@ export default function () {
                        <Mic size={18} /> Start workout
                     </Button>
                     }
+
                 </div>
 
+   
         </>
     );
 }

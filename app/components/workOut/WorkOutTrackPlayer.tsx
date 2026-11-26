@@ -29,13 +29,21 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
     const [displayedTrackIndex, setDisplayedTrackIndex] = useState(0);
     const [isTrackVisible, setIsTrackVisible] = useState(true);
     const transitionTimeoutRef = useRef<number | null>(null);
+    const consecutiveSuccessfulIterationsRef = useRef(0);
     
+    const workoutTempo = typeof window === 'undefined'
+        ? 120
+        : (() => {
+            const storedTempo = Number(localStorage.getItem('tempo'));
+            return storedTempo >= 40 && storedTempo <= 150 ? storedTempo : 120;
+        })();
+
     // Convert all tracks to TrackData once and store in ref
     const convertedTracksRef = useRef(props.WorkOutTracks.map(track => ({
         id: String(track.id),
         name: track.name,
         tags: [],
-        tempo: 120,
+        tempo: workoutTempo,
         beatsPerBar: 4,
         loop: false,
         bars: track.chords.map(chord => ({
@@ -57,6 +65,8 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
     }, []);
 
     useEffect(() => {
+        consecutiveSuccessfulIterationsRef.current = 0;
+
         if (currentTrackIndex === displayedTrackIndex) {
             return;
         }
@@ -85,6 +95,7 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
             return;
         }
 
+        consecutiveSuccessfulIterationsRef.current = 0;
         setCurrentTrackIndex(nextTrackIndex);
     };
 
@@ -96,6 +107,23 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
     const goToPreviousTrack = () => {
         const nextTrackIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : props.WorkOutTracks.length - 1;
         navigateToTrack(nextTrackIndex);
+    };
+
+    const handleIterationComplete = (isSuccessful: boolean) => {
+        if (!isSuccessful) {
+            consecutiveSuccessfulIterationsRef.current = 0;
+            return;
+        }
+
+        consecutiveSuccessfulIterationsRef.current += 1;
+
+        const storedThreshold = Number(localStorage.getItem('successful_tries'));
+        const threshold = storedThreshold > 0 ? storedThreshold : 3;
+
+        if (consecutiveSuccessfulIterationsRef.current >= threshold) {
+            consecutiveSuccessfulIterationsRef.current = 0;
+            goToNextTrack();
+        }
     };
 
     return (
@@ -113,7 +141,7 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
                     )}
                 </div>
 
-                <TrackPlayer key={trackData.id} TrackData={trackData} />
+                <TrackPlayer key={trackData.id} TrackData={trackData} onIterationComplete={handleIterationComplete} />
 
                 <div className={styles.footer}>
                     <p>Playing {displayedTrackIndex + 1} from {props.WorkOutTracks.length} tracks</p>

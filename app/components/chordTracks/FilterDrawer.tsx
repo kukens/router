@@ -61,7 +61,7 @@ export default function FilterDrawer(props: FilterDrawerProps) {
   return (
 
     <Drawer.Root>
-      <Drawer.Trigger className="btn-action-alt btn-txt-icon"><SlidersHorizontal size={18} /> Filters</Drawer.Trigger>
+      <Drawer.Trigger className="btn-action-alt btn-txt-icon"><SlidersHorizontal size={16} /> Filters</Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Backdrop className="Backdrop" />
         <Drawer.Viewport className="Viewport">
