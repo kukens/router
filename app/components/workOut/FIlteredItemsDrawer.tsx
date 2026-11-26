@@ -184,7 +184,21 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
         }, 500);
 
         const onMove = (ev: PointerEvent) => {
-            if (!dragStateRef.current) return;
+            if (!dragStateRef.current) {
+                const origin = dragOriginRef.current;
+
+                if (origin && listContainerRef.current) {
+                    const movement = ev.clientY - origin.y;
+
+                    if (Math.abs(movement) > 12) {
+                        ev.preventDefault();
+                        listContainerRef.current.scrollTop -= movement;
+                        dragOriginRef.current = { x: ev.clientX, y: ev.clientY };
+                    }
+                }
+                return;
+            }
+
             if (ev.pointerId !== dragStateRef.current.pointerId) return;
 
             ev.preventDefault();
@@ -271,7 +285,6 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                             <div data-base-ui-swipe-ignore
                                 ref={listContainerRef}
                                 className={styles.scrollable}
-                                style={draggedItem ? { touchAction: 'none' } : undefined}
                             >
                                 {orderedItems.map((trackId, index) => {
                                     const trackData = getTrackData(trackId);
@@ -286,7 +299,9 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                             <div data-track-id={trackId}
                                                 className={styles.result}
                                                 onPointerDown={(e) => handlePointerDown(e, trackId)}
-                                                style={isDragged ? { opacity: 0.5, transform: 'scale(0.95)' } : { opacity: 1, transform: 'scale(1)' }}>
+                                                style={isDragged
+                                                    ? { opacity: 0.5, transform: 'scale(0.95)' }
+                                                    : { opacity: 1, transform: 'scale(1)' }}>
 
                                                 <label htmlFor={`select-${index}`} className={styles.resultLabel}>
 

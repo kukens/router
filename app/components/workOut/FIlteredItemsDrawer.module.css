@@ -12,7 +12,7 @@
     margin: 0 1.5rem 0 1.5rem;
     border-top: 2px solid #2a364e;
     border-bottom: 2px solid #2a364e;
-    touch-action: pan-y;
+    touch-action: none;
 
 .result{
     touch-action: none;
