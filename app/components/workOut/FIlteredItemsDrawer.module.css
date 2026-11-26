@@ -12,10 +12,11 @@
     margin: 0 1.5rem 0 1.5rem;
     border-top: 2px solid #2a364e;
     border-bottom: 2px solid #2a364e;
+    touch-action: pan-y;
 
 .result{
+    touch-action: none;
     transition-property: all;
-    transition-duration: 200ms;
     display: flex;
     align-items: center;
     padding-block: clamp(0.3rem, 0.8vh, 0.5rem);
@@ -46,11 +47,6 @@
     }
 }
 
-.dragger{
-    touch-action: none;
-    padding: 1rem;
-}
-
 .name{
             font-weight: 300;
         color: #7ebcff;
@@ -75,6 +71,7 @@
 .checkboxWrapper{
     align-content: center;
     margin: 1rem;
+    display: none;
 }
 
 .resultLabel{

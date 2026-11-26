@@ -1,5 +1,3 @@
-
-
 "use client";
 import { Checkbox } from '@base-ui/react/checkbox';
 import { Button } from "@base-ui/react";
@@ -7,7 +5,7 @@ import { Drawer } from "@base-ui/react";
 import { useState, useEffect, useRef } from "react";
 import { WORKOUT_TRAKCS } from "../../data/workOutTracks";
 import styles from './FIlteredItemsDrawer.module.css'
-import { Check, Grip, ListMusic, Settings } from "lucide-react";
+import { Check, ListMusic, Settings } from "lucide-react";
 
 interface FilteredItemsDrawerProps {
     isOpen: boolean
@@ -33,6 +31,8 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
     const lastClientYRef = useRef<number | null>(null);
     const autoScrollRafRef = useRef<number | null>(null);
     const autoScrollSpeedRef = useRef<number>(0);
+    const longPressTimerRef = useRef<number | null>(null);
+    const dragOriginRef = useRef<{ x: number; y: number } | null>(null);
 
     useEffect(() => {
         setVisibleItems(props.items.filter(n => !props.excluded.includes(n)));
@@ -153,46 +153,79 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, itemId: number) => {
         if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-        e.preventDefault();
-        e.currentTarget.setPointerCapture(e.pointerId);
 
-        dragStateRef.current = { itemId, pointerId: e.pointerId };
-        setDraggedItem(itemId);
-        lastClientYRef.current = e.clientY;
-        computePlaceholderIndex(e.clientY, itemId);
-        updateAutoScrollSpeed(e.clientY);
+        const target = e.target as HTMLElement;
+        if (target.closest('[role="checkbox"]')) return;
+
+        dragOriginRef.current = { x: e.clientX, y: e.clientY };
+        e.preventDefault();
+
+        const rowElement = e.currentTarget;
+
+        if (longPressTimerRef.current !== null) {
+            window.clearTimeout(longPressTimerRef.current);
+        }
+
+        try {
+            rowElement.setPointerCapture(e.pointerId);
+        } catch { }
+
+        longPressTimerRef.current = window.setTimeout(() => {
+            dragStateRef.current = { itemId, pointerId: e.pointerId };
+            setDraggedItem(itemId);
+            lastClientYRef.current = e.clientY;
+            computePlaceholderIndex(e.clientY, itemId);
+            updateAutoScrollSpeed(e.clientY);
+
+            if (navigator.vibrate) {
+                navigator.vibrate(20);
+            }
+
+        }, 500);
 
         const onMove = (ev: PointerEvent) => {
             if (!dragStateRef.current) return;
             if (ev.pointerId !== dragStateRef.current.pointerId) return;
+
             ev.preventDefault();
             lastClientYRef.current = ev.clientY;
             computePlaceholderIndex(ev.clientY, dragStateRef.current.itemId);
             updateAutoScrollSpeed(ev.clientY);
         };
 
-        const onUp = (ev: PointerEvent) => {
-            if (!dragStateRef.current) return;
-            if (ev.pointerId !== dragStateRef.current.pointerId) return;
+        const cancelLongPress = () => {
+            if (longPressTimerRef.current !== null) {
+                window.clearTimeout(longPressTimerRef.current);
+                longPressTimerRef.current = null;
+            }
 
-            const { itemId: draggingId } = dragStateRef.current;
+            if (!dragStateRef.current) {
+                cleanup();
+                return;
+            }
+
+            const draggingId = dragStateRef.current.itemId;
             finalizeReorder(draggingId, placeholderIndexRef.current);
 
             dragStateRef.current = null;
             setDraggedItem(null);
             setPlaceholderIndex(null);
             placeholderIndexRef.current = null;
+            dragOriginRef.current = null;
             lastClientYRef.current = null;
             stopAutoScroll();
+            cleanup();
+        };
 
+        const cleanup = () => {
             window.removeEventListener('pointermove', onMove);
-            window.removeEventListener('pointerup', onUp);
-            window.removeEventListener('pointercancel', onUp);
+            window.removeEventListener('pointerup', cancelLongPress);
+            window.removeEventListener('pointercancel', cancelLongPress);
         };
 
         window.addEventListener('pointermove', onMove);
-        window.addEventListener('pointerup', onUp);
-        window.addEventListener('pointercancel', onUp);
+        window.addEventListener('pointerup', cancelLongPress);
+        window.addEventListener('pointercancel', cancelLongPress);
     };
 
     const resetOrder = () => {
@@ -252,6 +285,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                             )}
                                             <div data-track-id={trackId}
                                                 className={styles.result}
+                                                onPointerDown={(e) => handlePointerDown(e, trackId)}
                                                 style={isDragged ? { opacity: 0.5, transform: 'scale(0.95)' } : { opacity: 1, transform: 'scale(1)' }}>
 
                                                 <label htmlFor={`select-${index}`} className={styles.resultLabel}>
@@ -278,10 +312,6 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
 
                                                     </div>
                                                 </label>
-
-                                                <div className={styles.dragger} onPointerDown={(e) => handlePointerDown(e, trackId)}>
-                                                    <Grip />
-                                                </div>
 
                                             </div>
 
