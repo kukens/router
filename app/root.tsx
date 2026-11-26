@@ -50,7 +50,7 @@ export const links: Route.LinksFunction = () => [
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
     },
-    { rel: "apple-touch-icon", href: "maskable_icon_x512.png" },
+    { rel: "apple-touch-icon", href: "icons/icon-192x192.png" },
     { rel: "manifest", href: "/manifest.webmanifest" },
 ];
 

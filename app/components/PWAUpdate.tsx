@@ -31,21 +31,32 @@ export default function PWAUpdate() {
 
                 registration.addEventListener("updatefound", () => {});
 
-                const checkForUpdate = async () => {
-                    if (document.visibilityState !== "visible") return;
+                let updateCheckRunning = false;
 
-                    await registration.update();
-                    activateWaitingWorker();
+                const checkForUpdate = async () => {
+                    if (document.visibilityState !== "visible" || updateCheckRunning) return;
+
+                    updateCheckRunning = true;
+                    try {
+                        await registration.update();
+                        activateWaitingWorker();
+                    } finally {
+                        updateCheckRunning = false;
+                    }
                 };
 
-                // Check when the PWA/page opens.
-                checkForUpdate();
+                // Check immediately when the PWA opens.
+                void checkForUpdate();
 
-                // Check only when the user returns to the app/tab.
+                // Android PWAs may report task resume through focus/pageshow instead of visibilitychange.
                 document.addEventListener("visibilitychange", checkForUpdate);
+                window.addEventListener("focus", checkForUpdate);
+                window.addEventListener("pageshow", checkForUpdate);
 
                 return () => {
                     document.removeEventListener("visibilitychange", checkForUpdate);
+                    window.removeEventListener("focus", checkForUpdate);
+                    window.removeEventListener("pageshow", checkForUpdate);
                 };
             } catch (error) {
                 console.error("PWA service worker registration failed", error);
