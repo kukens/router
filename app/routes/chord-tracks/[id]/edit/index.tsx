@@ -1,12 +1,9 @@
 'use client'
 
 import TrackEditor from '~/components/chordTracks/TrackEditor';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '@base-ui/react/button';
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useEffect, useState } from 'react';
 import type { TrackData } from '~/types/TrackData';
-import pageStyles from "~/theme/Page.module.css";
 import PageHeader from '~/components/shared/PageHeader';
 
 export default function EditTrack() {

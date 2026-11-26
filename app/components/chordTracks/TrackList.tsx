@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import type { TrackData } from "../../types/TrackData";
 import { Button } from '@base-ui/react/button';
-import { Link } from "react-router";
 import OrderingDrawer from "./OrderingDrawer";
 import FilterDrawer from "./FilterDrawer";
 import styles from "./TrackList.module.css";
-import { ChevronRight, X } from 'lucide-react';
+import { ArrowDown, ChevronRight, IterationCcw, X } from 'lucide-react';
+import { useFadeNavigate } from '~/components/RouteTransition';
 
 export const orderBy: Record<string, string> = {
     1: "Recently played",
@@ -17,6 +17,7 @@ export const orderBy: Record<string, string> = {
 } as const;
 
 export default function TrackList() {
+    const navigate = useFadeNavigate();
     const [rawTracks, setRawTracks] = useState<TrackData[]>([]);
     const [tracks, setTracks] = useState<TrackData[]>([]);
     const [visibleCount, setVisibleCount] = useState<number>(2);
@@ -121,6 +122,8 @@ export default function TrackList() {
 
     return (
         <div className={styles.container}>
+
+             <div className={styles.filters}>
             <OrderingDrawer
                 open={isOrderingOpen}
                 onClose={() => setIsOrderingOpen(false)}
@@ -138,8 +141,9 @@ export default function TrackList() {
                 selectedTags={selectedTags}
                 onChangeTags={(ts: string[]) => setSelectedTags(ts)}
             />
+            </div>
 
-            <div>
+            <div className={styles.activeFilters}>
                 {filterText &&
                     <Button className="btn-active" onClick={() => setFilterText("")}>Text: {filterText}  <X size={15} /></Button>}
 
@@ -152,13 +156,14 @@ export default function TrackList() {
             </div>
 
 
-            {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
+         
 
             <div className={styles.trackList}>
-                {tracks.slice(0, visibleCount).map((track) => (
-                    <Link key={track.id} className={styles.trackLink} to={`/chord-tracks/${track.id}`}>
-                        <div className={styles.chordTrackCard}>
-                            <h2 className={styles.trackName}>{track.name} <ChevronRight color='#b0cdce' /></h2>
+                   {tracks.length === 0 && <p className={styles.emptyState}>No tracks found.</p>}
+                {tracks.slice(0, visibleCount).map((track, index) => (
+                    <Button key={track.id} className={`${styles.trackLink}`} onClick={() => navigate(`/chord-tracks/${track.id}`)}>
+                        <div className={`${styles.chordTrackCard}`}>
+                            <h2 className={styles.trackName}>{track.name} <ChevronRight /></h2>
                             <div className={styles.trackDetails}>
                                 <div className={styles.metadata}>
                                      <span>{track.tempo} BPM</span>
@@ -175,14 +180,14 @@ export default function TrackList() {
                             </div>
 
                         </div>
-                    </Link>
+                    </Button>
                 ))}
             </div>
 
             <div className={styles.footerActions}>
                 {!allLoaded &&
-                    <Button className="btn-action-alt" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
-                        Load more
+                    <Button className="btn-action-alt btn-txt-icon" onClick={loadMore} disabled={allLoaded || tracks.length === 0}>
+       <IterationCcw size={16} />  Load more
                     </Button>
                 }
 

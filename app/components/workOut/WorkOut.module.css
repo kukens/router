@@ -11,17 +11,31 @@
 }
 
 .filter{
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.active-filters{
-    button{
-        margin: 0.6rem;
-    }
-}
 
 .start-workout{
+        gap: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+.selectedFilters{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem;
+}
 
+.itemsDrawer{
+display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;  
 }
 }

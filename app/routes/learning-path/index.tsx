@@ -1,19 +1,21 @@
 'use client'
 
-import { Link } from "react-router";
+import { Button } from '@base-ui/react/button';
 import { useSearchParams } from "react-router";
+import { useFadeNavigate } from '~/components/RouteTransition';
 
 
 export default function StartChallenge() {
 
     const [searchParams] = useSearchParams();
+  const navigate = useFadeNavigate();
 
     const instrument = searchParams.get("instrument") ?? "";
     const difficulty = searchParams.get("difficulty") ?? "";
 
   return (
     <main>
-      <Link to="/"><button className="btn-action-back"> ← Go Back</button></Link>
+      <Button className="btn-action-back" onClick={() => navigate('/')}> ← Go Back</Button>
 
     </main>
   );

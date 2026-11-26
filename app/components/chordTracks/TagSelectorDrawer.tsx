@@ -3,7 +3,7 @@
 import { Drawer } from '@base-ui/react/drawer';
 import { Button } from '@base-ui/react/button';
 import { Input } from '@base-ui/react/input';
-import { X } from 'lucide-react';
+import { PenLine, X } from 'lucide-react';
 import { useEffect, useState } from "react";
 import type { TrackData } from "~/types/TrackData";
 import style from "./TagSelectorDrawer.module.css";
@@ -68,8 +68,8 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
     }
 
     return (
-        <Drawer.Root>
-            <Drawer.Trigger className="btn-action-alt">Select tags</Drawer.Trigger>
+          <Drawer.Root>
+            <Drawer.Trigger className="btn-action-alt btn-txt-icon"><PenLine size={14} />  Edit tags</Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Backdrop className="Backdrop" />
                 <Drawer.Viewport className="Viewport">
@@ -78,11 +78,11 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
                         <Drawer.Content className="Content">
 
 
-                            <h2>Select tags</h2>
+                            <h2>Edit tags</h2>
 
-                            <div>
+                            <div className={style.addTagContainer}>
                                 <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="New tag" />
-                                <Button onClick={addNewTag} className="btn-action-alt">Add new</Button>
+                                <Button onClick={addNewTag} className="btn-action-alt">Add</Button>
                             </div>
                             <div className={style.tags}>
                                 {allTags.map((tag, tagIndex) => (
@@ -94,7 +94,6 @@ export default function TagSelectorDrawer(props: TagSelectorDrawerProps) {
 
 
                             <div className="drawer-footer">
-                                <Drawer.Close className="btn-action-alt" onClick={props.handleClose}>Cancel</Drawer.Close>
                                 <Drawer.Close className="btn-action-alt" onClick={() => props.handleSave(tags)}>Save</Drawer.Close>
                             </div>
 

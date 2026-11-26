@@ -8,13 +8,17 @@ import { useChord } from "~/features/audio/ChordContext";
 import type { AudioAnalyzerWorkerIn, AudioAnalyzerWorkerOut } from "~/features/audio/AudioAnalyzerWorker";
 import { Button } from '@base-ui/react/button';
 
+type AudioWindow = Window & {
+    webkitAudioContext?: typeof AudioContext;
+};
+
 export default function AudioAnalyzer() {
 
     const [hitsData, sethitsData] = useState<HitsData | null>(null);
     const [audioData, setAudioData] = useState<CurrentAudioData | null>(null);
     const [evaluatedChordsDiagnostics, setEvaluatedChordsDiagnostics] = useState<EvaluatedChord[]>([]);
     const { setEvaluatedChord: setEvaluatedChords } = useChord();
-    const { isAnalyzing, setIsAnalyzing } = useChord();
+    const { setIsAnalyzing } = useChord();
 
     const workerRef = useRef<Worker>(null);
     const audioCtxRef = useRef<AudioContext | null>(null);
@@ -24,90 +28,16 @@ export default function AudioAnalyzer() {
 
     const hopSize = 4096;
 
-    const [isRecording, setIsRecording] = useState(true);
+    const [isRecording, setIsRecording] = useState(false);
+    const [isStarting, setIsStarting] = useState(false);
+    const [statusMessage, setStatusMessage] = useState('Tap Start to enable the microphone.');
     const [diagnosticsEnabled, setDiagnosticsEnabled] = useState(false);
 
     useEffect(() => {
 
         let isCurrent = true;
 
-        const startRecording = async () => {
-
-            const stream = await navigator.mediaDevices.getUserMedia({
-                audio: true,
-            });
-
-
-            if (!isCurrent) {
-                stream.getTracks().forEach(track => track.stop());
-                return;
-            }
-
-            console.log('approved')
-
-            workerRef.current = new Worker(
-                new URL("~/features/audio/AudioAnalyzerWorker.tsx", import.meta.url),
-                { type: "module" }
-            );
-            workerRef.current?.postMessage(
-                {
-                    type: "init",
-                    hopSize: hopSize,
-                } as AudioAnalyzerWorkerIn
-            );
-
-            streamRef.current = stream;
-
-            audioCtxRef.current = new AudioContext();
-
-            sourceRef.current = audioCtxRef.current.createMediaStreamSource(streamRef.current);
-            processorRef.current = audioCtxRef.current.createScriptProcessor(hopSize, 1, 1);
-
-            sourceRef.current.connect(processorRef.current);
-            processorRef.current.connect(audioCtxRef.current.destination);
-
-            processorRef.current.onaudioprocess = (e) => {
-                const samples = e.inputBuffer.getChannelData(0);
-
-                workerRef.current?.postMessage(
-                    {
-                        type: "push",
-                        samples,
-                        sampleRate: audioCtxRef.current?.sampleRate,
-                    } as AudioAnalyzerWorkerIn,
-                    [samples.buffer]
-                );
-            };
-
-            workerRef.current.onmessage = (e: MessageEvent<AudioAnalyzerWorkerOut>) => {
-
-                if (e.data.type === "spectrum") {
-                    if (!isAnalyzing) {
-                        setIsAnalyzing(true);
-                    }
-
-                    const analyzisResult = e.data.analysisResult;
-                    if (diagnosticsEnabled) {
-                        if (analyzisResult.audioData) setAudioData(analyzisResult.audioData);
-                        if (analyzisResult.hitsData) sethitsData(analyzisResult.hitsData);
-                        if (analyzisResult.evaluatedChords.length > 0) {
-                            setEvaluatedChordsDiagnostics(analyzisResult.evaluatedChords);
-                        }
-                    }
-                    if (analyzisResult.evaluatedChords.length > 0) {
-                        setEvaluatedChords({
-                            chords: analyzisResult.evaluatedChords.map(chord => chord.chordName).slice(0, 3),
-                            windowStart: analyzisResult.windowStart,
-                            windowEnd: analyzisResult.windowEnd
-                        });
-                    }
-                }
-            };
-        };
-
-        const cleanup = () => {
-            setIsAnalyzing(false);
-
+        const cleanupAudioResources = () => {
             if (streamRef.current) {
                 streamRef.current.getTracks().forEach(track => {
                     track.stop();
@@ -125,8 +55,128 @@ export default function AudioAnalyzer() {
                 audioCtxRef.current = null;
             }
 
+            sourceRef.current = null;
+            processorRef.current = null;
+
             workerRef.current?.terminate();
             workerRef.current = null;
+        };
+
+        const startRecording = async () => {
+            try {
+                if (!navigator.mediaDevices?.getUserMedia) {
+                    throw new Error('Microphone access is not supported by this browser.');
+                }
+
+                const AudioContextCtor = window.AudioContext ?? (window as AudioWindow).webkitAudioContext;
+                if (!AudioContextCtor) {
+                    throw new Error('Audio analysis is not supported by this browser.');
+                }
+
+                setIsStarting(true);
+                setStatusMessage('Waiting for microphone permission…');
+
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                });
+
+
+                if (!isCurrent) {
+                    stream.getTracks().forEach(track => track.stop());
+                    return;
+                }
+
+                console.log('approved')
+
+                workerRef.current = new Worker(
+                    new URL("~/features/audio/AudioAnalyzerWorker.tsx", import.meta.url),
+                    { type: "module" }
+                );
+                workerRef.current?.postMessage(
+                    {
+                        type: "init",
+                        hopSize: hopSize,
+                    } as AudioAnalyzerWorkerIn
+                );
+
+                streamRef.current = stream;
+
+                audioCtxRef.current = new AudioContextCtor();
+                if (audioCtxRef.current.state === 'suspended') {
+                    await audioCtxRef.current.resume();
+                }
+
+                if (!isCurrent) {
+                    cleanupAudioResources();
+                    return;
+                }
+
+                sourceRef.current = audioCtxRef.current.createMediaStreamSource(streamRef.current);
+                processorRef.current = audioCtxRef.current.createScriptProcessor(hopSize, 1, 1);
+
+                sourceRef.current.connect(processorRef.current);
+                processorRef.current.connect(audioCtxRef.current.destination);
+
+                processorRef.current.onaudioprocess = (e) => {
+                    if (!workerRef.current || !audioCtxRef.current) {
+                        return;
+                    }
+
+                    const samples = new Float32Array(e.inputBuffer.getChannelData(0));
+
+                    workerRef.current.postMessage(
+                        {
+                            type: "push",
+                            samples,
+                            sampleRate: audioCtxRef.current.sampleRate,
+                        } as AudioAnalyzerWorkerIn,
+                        [samples.buffer]
+                    );
+                };
+
+                workerRef.current.onmessage = (e: MessageEvent<AudioAnalyzerWorkerOut>) => {
+
+                    if (e.data.type === "spectrum") {
+                        setIsAnalyzing(true);
+                        setStatusMessage('Listening…');
+
+                        const analyzisResult = e.data.analysisResult;
+                        if (diagnosticsEnabled) {
+                            if (analyzisResult.audioData) setAudioData(analyzisResult.audioData);
+                            if (analyzisResult.hitsData) sethitsData(analyzisResult.hitsData);
+                            if (analyzisResult.evaluatedChords.length > 0) {
+                                setEvaluatedChordsDiagnostics(analyzisResult.evaluatedChords);
+                            }
+                        }
+                        if (analyzisResult.evaluatedChords.length > 0) {
+                            setEvaluatedChords({
+                                chords: analyzisResult.evaluatedChords.map(chord => chord.chordName).slice(0, 3),
+                                windowStart: analyzisResult.windowStart,
+                                windowEnd: analyzisResult.windowEnd
+                            });
+                        }
+                    }
+                };
+
+                setStatusMessage('Listening…');
+            } catch (error) {
+                cleanupAudioResources();
+
+                if (isCurrent) {
+                    const errorMessage = error instanceof Error ? error.message : 'Unable to start the microphone.';
+                    setStatusMessage(errorMessage);
+                    setIsRecording(false);
+                }
+            } finally {
+                if (isCurrent) {
+                    setIsStarting(false);
+                }
+            }
+        };
+
+        const cleanup = () => {
+            setIsAnalyzing(false);
+            cleanupAudioResources();
         };
 
         if (isRecording) {
@@ -151,15 +201,17 @@ export default function AudioAnalyzer() {
         setDiagnosticsEnabled(!diagnosticsEnabled);
     };
 
-    return <div style={{ display: 'none' }}>
+    return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginTop: '1rem' }}>
 
 
 
-        <Button className="btn-action" onClick={handleToggle}>
-            {isRecording ? 'STOP' : 'START'} RECORDING
+        <Button className="btn-action" onClick={handleToggle} disabled={isStarting}>
+            {isStarting ? 'STARTING…' : isRecording ? 'STOP' : 'START'} MICROPHONE
         </Button>
 
-        <Button className="btn-action" onClick={enableDiagnostics}>
+        <p style={{ margin: 0, opacity: 0.75, textAlign: 'center' }}>{statusMessage}</p>
+
+        <Button className="btn-action" onClick={enableDiagnostics} style={{ display: 'none' }}>
             {diagnosticsEnabled ? 'DISABLE' : 'ENABLE'} DIAGNOSTICS
         </Button>
 

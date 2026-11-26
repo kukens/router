@@ -1,37 +1,48 @@
 'use client'
 
+import { useEffect, useState } from 'react';
 import AudioAnalyzer from '~/components/AudioAnalyzer';
 import { ChordProvider } from '~/features/audio/ChordContext';
-import { Button } from '@base-ui/react/button';
-import { Link } from "react-router";
 import WorkOutTrackPlayer from '~/components/workOut/WorkOutTrackPlayer';
-import { useLocation } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import type { WorkOutTrack } from '~/data/workOutTracks';
-import { ArrowLeft } from 'lucide-react';
 import PageHeader from '~/components/shared/PageHeader';
 
-import pageStyles from "~/theme/Page.module.css";
-
-
-interface WorkOutTracksState {
-  WorkOutTracks: WorkOutTrack[];
-}
+const WORKOUT_STORAGE_KEY: string = 'chordsArenaWorkOut';
 
 export default function PlayTrack() {
+  const [workOutTracks, setWorkOutTracks] = useState<WorkOutTrack[]>([]);
+  const navigate = useNavigate();
 
-const location = useLocation();
-const locationState = location.state as WorkOutTracksState;
+  useEffect(() => {
+    try {
+      const storedWorkout = JSON.parse(
+        localStorage.getItem(WORKOUT_STORAGE_KEY) ?? '[]'
+      ) as WorkOutTrack[];
 
-console.log(locationState.WorkOutTracks)
+      if (storedWorkout.length === 0) {
+        navigate('/workout', { replace: true });
+        return;
+      }
+
+      setWorkOutTracks(storedWorkout);
+    } catch {
+      localStorage.removeItem(WORKOUT_STORAGE_KEY);
+      navigate('/workout', { replace: true });
+    }
+  }, [navigate]);
+
 
   return (
       <>
         <PageHeader title="Workout" backLink="/workout" />
 
+   {workOutTracks.length > 0 ? (
         <ChordProvider>
-          <WorkOutTrackPlayer WorkOutTracks={locationState.WorkOutTracks} />
+          <WorkOutTrackPlayer WorkOutTracks={workOutTracks} />
           <AudioAnalyzer />
         </ChordProvider>
+      ) : null}   
       </>
   );
 }

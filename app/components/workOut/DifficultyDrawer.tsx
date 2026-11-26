@@ -8,7 +8,7 @@ import styles from './DifficultyDrawer.module.css';
 
 
 export const difficultyLevels: Record<string, string> = {
-    1: "Begginer",
+    1: "Beginner",
     2: "Easy",
     3: "Intermediate",
     4: "Advanced",
