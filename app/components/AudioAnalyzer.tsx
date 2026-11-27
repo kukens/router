@@ -28,9 +28,8 @@ export default function AudioAnalyzer() {
 
     const hopSize = 4096;
 
-    const [isRecording, setIsRecording] = useState(false);
-    const [isStarting, setIsStarting] = useState(false);
-    const [statusMessage, setStatusMessage] = useState('Tap Start to enable the microphone.');
+    const [isStarting, setIsStarting] = useState(true);
+    const [statusMessage, setStatusMessage] = useState('Starting microphone…');
     const [diagnosticsEnabled, setDiagnosticsEnabled] = useState(false);
 
     useEffect(() => {
@@ -165,7 +164,6 @@ export default function AudioAnalyzer() {
                 if (isCurrent) {
                     const errorMessage = error instanceof Error ? error.message : 'Unable to start the microphone.';
                     setStatusMessage(errorMessage);
-                    setIsRecording(false);
                 }
             } finally {
                 if (isCurrent) {
@@ -179,23 +177,13 @@ export default function AudioAnalyzer() {
             cleanupAudioResources();
         };
 
-        if (isRecording) {
-            startRecording();
-        }
-        else {
-            cleanup();
-        }
-
+        startRecording();
         return () => {
             isCurrent = false;
             cleanup();
         }
 
-    }, [isRecording, diagnosticsEnabled]);
-
-    const handleToggle = () => {
-        setIsRecording(!isRecording);
-    };
+    }, [diagnosticsEnabled]);
 
     const enableDiagnostics = () => {
         setDiagnosticsEnabled(!diagnosticsEnabled);
@@ -204,12 +192,6 @@ export default function AudioAnalyzer() {
     return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', marginTop: '1rem' }}>
 
 
-
-        <Button className="btn-action" onClick={handleToggle} disabled={isStarting}>
-            {isStarting ? 'STARTING…' : isRecording ? 'STOP' : 'START'} MICROPHONE
-        </Button>
-
-        <p style={{ margin: 0, opacity: 0.75, textAlign: 'center' }}>{statusMessage}</p>
 
         <Button className="btn-action" onClick={enableDiagnostics} style={{ display: 'none' }}>
             {diagnosticsEnabled ? 'DISABLE' : 'ENABLE'} DIAGNOSTICS

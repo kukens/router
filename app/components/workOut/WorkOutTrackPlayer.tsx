@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@base-ui/react/button';
+import { useSwipeable } from 'react-swipeable';
 
 import styles from '~/components/workOut/WorkOutTrackPlayer.module.css'
 import { EmptyTrackData } from '~/types/TrackData';
@@ -29,6 +29,7 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
     const [displayedTrackIndex, setDisplayedTrackIndex] = useState(0);
     const [isTrackVisible, setIsTrackVisible] = useState(true);
     const transitionTimeoutRef = useRef<number | null>(null);
+    
     const consecutiveSuccessfulIterationsRef = useRef(0);
     
     const workoutTempo = typeof window === 'undefined'
@@ -126,9 +127,17 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
         }
     };
 
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: () => goToNextTrack(),
+        onSwipedRight: () => goToPreviousTrack(),
+        trackMouse: true,
+        preventScrollOnSwipe: true,
+        delta: 50,
+    });
+
     return (
         <>
-            <div className={`${styles.trackContent} ${styles.trackFadeReady} ${isTrackVisible ? styles.trackFadeIn : styles.trackFadeOut}`}>
+            <div {...swipeHandlers} className={`${styles.trackContent} ${styles.trackFadeReady} ${isTrackVisible ? styles.trackFadeIn : styles.trackFadeOut}`}>
                 <div className={styles.title}>
                     <h2>{trackData.name}</h2>
 
@@ -145,11 +154,6 @@ export default function WorkOutTrackPlayer(props: WorkOutTrackProps) {
 
                 <div className={styles.footer}>
                     <p>Playing {displayedTrackIndex + 1} from {props.WorkOutTracks.length} tracks</p>
-
-                    <div className={styles.navigationButtons}>
-                        <Button onClick={goToPreviousTrack} className="btn-action" disabled={props.WorkOutTracks.length <= 1}>Previous</Button>
-                        <Button onClick={goToNextTrack} className="btn-action" disabled={props.WorkOutTracks.length <= 1}>Next</Button>
-                    </div>
                 </div>
             </div>
         </>

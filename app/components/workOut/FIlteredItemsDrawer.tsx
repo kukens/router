@@ -5,7 +5,7 @@ import { Drawer } from "@base-ui/react";
 import { useState, useEffect, useRef } from "react";
 import { WORKOUT_TRAKCS } from "../../data/workOutTracks";
 import styles from './FIlteredItemsDrawer.module.css'
-import { Check, ListMusic, Settings } from "lucide-react";
+import { Check, Grip, ListMusic, Settings } from "lucide-react";
 
 interface FilteredItemsDrawerProps {
     isOpen: boolean
@@ -154,51 +154,67 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, itemId: number) => {
         if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
 
-        const target = e.target as HTMLElement;
-        if (target.closest('[role="checkbox"]')) return;
-
-        dragOriginRef.current = { x: e.clientX, y: e.clientY };
-        e.preventDefault();
-
-        const rowElement = e.currentTarget;
+        const origin = { x: e.clientX, y: e.clientY };
+        let previousY = e.clientY;
+        let previousTime = performance.now();
+        let momentumVelocity = 0;
+        let momentumRaf: number | null = null;
+        let dragActivated = false;
 
         if (longPressTimerRef.current !== null) {
             window.clearTimeout(longPressTimerRef.current);
         }
 
-        try {
-            rowElement.setPointerCapture(e.pointerId);
-        } catch { }
-
         longPressTimerRef.current = window.setTimeout(() => {
+            dragActivated = true;
             dragStateRef.current = { itemId, pointerId: e.pointerId };
             setDraggedItem(itemId);
             lastClientYRef.current = e.clientY;
             computePlaceholderIndex(e.clientY, itemId);
             updateAutoScrollSpeed(e.clientY);
 
-            if (navigator.vibrate) {
-                navigator.vibrate(20);
-            }
+            try {
+                e.currentTarget.setPointerCapture(e.pointerId);
+            } catch { }
 
+            if (navigator.vibrate) navigator.vibrate(20);
         }, 500);
 
+        const stopMomentum = () => {
+            if (momentumRaf !== null) {
+                cancelAnimationFrame(momentumRaf);
+                momentumRaf = null;
+            }
+        };
+
         const onMove = (ev: PointerEvent) => {
-            if (!dragStateRef.current) {
-                const origin = dragOriginRef.current;
+            if (!dragActivated) {
+                const movement = Math.hypot(ev.clientX - origin.x, ev.clientY - origin.y);
+                if (movement > 8) {
+                    if (longPressTimerRef.current !== null) {
+                        window.clearTimeout(longPressTimerRef.current);
+                        longPressTimerRef.current = null;
+                    }
 
-                if (origin && listContainerRef.current) {
-                    const movement = ev.clientY - origin.y;
+                    stopMomentum();
+                    ev.preventDefault();
 
-                    if (Math.abs(movement) > 12) {
-                        ev.preventDefault();
-                        listContainerRef.current.scrollTop -= movement;
-                        dragOriginRef.current = { x: ev.clientX, y: ev.clientY };
+                    const container = listContainerRef.current;
+                    if (container) {
+                        const now = performance.now();
+                        const elapsed = Math.max(1, now - previousTime);
+                        const delta = ev.clientY - previousY;
+
+                        container.scrollTop -= delta;
+                        momentumVelocity = (delta / elapsed) * 16;
+                        previousY = ev.clientY;
+                        previousTime = now;
                     }
                 }
                 return;
             }
 
+            if (!dragStateRef.current) return;
             if (ev.pointerId !== dragStateRef.current.pointerId) return;
 
             ev.preventDefault();
@@ -207,16 +223,42 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
             updateAutoScrollSpeed(ev.clientY);
         };
 
-        const cancelLongPress = () => {
+        const startMomentum = () => {
+            if (Math.abs(momentumVelocity) < 0.15) return;
+
+            const tick = () => {
+                const container = listContainerRef.current;
+                if (!container) {
+                    momentumRaf = null;
+                    return;
+                }
+
+                container.scrollTop -= momentumVelocity;
+                momentumVelocity *= 0.94;
+
+                if (Math.abs(momentumVelocity) >= 0.15) {
+                    momentumRaf = requestAnimationFrame(tick);
+                } else {
+                    momentumRaf = null;
+                }
+            };
+
+            momentumRaf = requestAnimationFrame(tick);
+        };
+
+        const onUp = (ev: PointerEvent) => {
             if (longPressTimerRef.current !== null) {
                 window.clearTimeout(longPressTimerRef.current);
                 longPressTimerRef.current = null;
             }
 
-            if (!dragStateRef.current) {
+            if (!dragActivated || !dragStateRef.current) {
+                startMomentum();
                 cleanup();
                 return;
             }
+
+            if (ev.pointerId !== dragStateRef.current.pointerId) return;
 
             const draggingId = dragStateRef.current.itemId;
             finalizeReorder(draggingId, placeholderIndexRef.current);
@@ -225,7 +267,6 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
             setDraggedItem(null);
             setPlaceholderIndex(null);
             placeholderIndexRef.current = null;
-            dragOriginRef.current = null;
             lastClientYRef.current = null;
             stopAutoScroll();
             cleanup();
@@ -233,13 +274,13 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
 
         const cleanup = () => {
             window.removeEventListener('pointermove', onMove);
-            window.removeEventListener('pointerup', cancelLongPress);
-            window.removeEventListener('pointercancel', cancelLongPress);
+            window.removeEventListener('pointerup', onUp);
+            window.removeEventListener('pointercancel', onUp);
         };
 
         window.addEventListener('pointermove', onMove);
-        window.addEventListener('pointerup', cancelLongPress);
-        window.addEventListener('pointercancel', cancelLongPress);
+        window.addEventListener('pointerup', onUp);
+        window.addEventListener('pointercancel', onUp);
     };
 
     const resetOrder = () => {
@@ -285,6 +326,7 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                             <div data-base-ui-swipe-ignore
                                 ref={listContainerRef}
                                 className={styles.scrollable}
+                                style={draggedItem ? { touchAction: 'none' } : undefined}
                             >
                                 {orderedItems.map((trackId, index) => {
                                     const trackData = getTrackData(trackId);
@@ -292,20 +334,41 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                     const isDragged = draggedItem === trackId;
 
                                     return (
-                                        <div key={trackId} className={`${isVisible ? '' : styles.deselected}`}>
-                                            {placeholderIndex === index && (
-                                                <div className={styles.placeholderBar}></div>
-                                            )}
-                                            <div data-track-id={trackId}
-                                                className={styles.result}
-                                                onPointerDown={(e) => handlePointerDown(e, trackId)}
-                                                style={isDragged
-                                                    ? { opacity: 0.5, transform: 'scale(0.95)' }
-                                                    : { opacity: 1, transform: 'scale(1)' }}>
+                                      <>
+                                          
+                                          
+                                          
+                                            {placeholderIndex === index && draggedItem !== null && (() => {
+                                                const draggedTrack = getTrackData(draggedItem);
+                                                return draggedTrack ? (
+                                                    <div className={`${styles.result} ${styles.dragPreview}`}>
+                                                          <label className={styles.resultLabel}>
+                                                            
+                                                        <div className={styles[`result-content`]}>
+                                                        <span className={styles.name}>
+                                                            {draggedTrack?.name ?? String(trackId)}
+                                                        </span>
+                                                       
+                                                            <div className={styles.chords}>
+                                                                {draggedTrack.chords.map((chord, index) => (
+                                                                    <span className={styles.chord} key={index}>{chord}</span>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                    </div>
+                                                    
+                                                ) : null;
+                                            })()}
+                                            
+                                
+                                            <div onPointerDown={(e) => handlePointerDown(e, trackId)} data-track-id={trackId}
+                                                className={`${styles.result} ${isVisible ? '' : styles.deselected}`}
+                                                style={isDragged ? { display: 'none' } : {  }} >
 
                                                 <label htmlFor={`select-${index}`} className={styles.resultLabel}>
 
-                                                    <div className={`${styles.checkboxWrapper}`}>
+                                                    <div className={`${styles.checkboxWrapper}`} onPointerDown={(e) => handlePointerDown(e, trackId)}>
                                                         <Checkbox.Root id={`select-${index}`} defaultChecked checked={isVisible} onCheckedChange={(e) => toggleItem(trackId)} className="Checkbox">
                                                             <Checkbox.Indicator className="Indicator">
                                                                
@@ -328,9 +391,10 @@ export default function FilteredItemsDrawer(props: FilteredItemsDrawerProps) {
                                                     </div>
                                                 </label>
 
+
                                             </div>
 
-                                        </div>
+                                        </>
 
                                     );
                                 })}
